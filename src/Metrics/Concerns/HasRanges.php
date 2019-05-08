@@ -1,7 +1,5 @@
 <?php namespace Arcanedev\LaravelMetrics\Metrics\Concerns;
 
-use Illuminate\Support\Carbon;
-
 /**
  * Trait     HasRanges
  *
@@ -59,32 +57,32 @@ trait HasRanges
     /**
      * Calculate the current range.
      *
-     * @param  string|int  $range
+     * @param  string|int             $range
+     * @param  \Cake\Chronos\Chronos  $now
      *
      * @return array
      */
-    protected function currentRange($range): array
+    protected function currentRange($range, $now): array
     {
         return [
-            Carbon::now()->subDays($range),
-            Carbon::now(),
+            $now->subDays($range),
+            $now,
         ];
     }
-
-
 
     /**
      * Calculate the previous range.
      *
-     * @param  string|int  $range
+     * @param  string|int             $range
+     * @param  \Cake\Chronos\Chronos  $now
      *
      * @return array
      */
-    protected function previousRange($range): array
+    protected function previousRange($range, $now): array
     {
         return [
-            now()->subDays($range * 2),
-            now()->subDays($range),
+            $now->subDays($range * 2),
+            $now->subDays($range),
         ];
     }
 }

@@ -20,7 +20,7 @@ abstract class Value extends Metric
      *
      * @return string
      */
-    public static function type(): string
+    public function type(): string
     {
         return 'value';
     }

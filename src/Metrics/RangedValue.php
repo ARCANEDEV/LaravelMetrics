@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\LaravelMetrics\Metrics;
 
 use Arcanedev\LaravelMetrics\Results\RangedValueResult;
+use Cake\Chronos\Chronos;
 
 /**
  * Class     RangedValue
@@ -27,7 +28,7 @@ abstract class RangedValue extends Metric
      *
      * @return string
      */
-    public static function type(): string
+    public function type(): string
     {
         return 'ranged-value';
     }
@@ -127,8 +128,9 @@ abstract class RangedValue extends Metric
         $dateColumn = $dateColumn ?? $query->getModel()->getCreatedAtColumn();
         $range      = $this->getSelectedRange();
 
-        $current  = (clone $query)->whereBetween($dateColumn, $this->currentRange($range))->{$method}($column);
-        $previous = (clone $query)->whereBetween($dateColumn, $this->previousRange($range))->{$method}($column);
+        $now      = Chronos::now();
+        $previous = with(clone $query)->whereBetween($dateColumn, $this->previousRange($range, $now))->{$method}($column);
+        $current  = with(clone $query)->whereBetween($dateColumn, $this->currentRange($range, $now))->{$method}($column);
 
         return $this->result(round($current, 0))
                     ->previous(round($previous, 0));

@@ -1,15 +1,16 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue;
 
+use Arcanedev\LaravelMetrics\Metrics\RangedValue;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
 use Illuminate\Http\Request;
 
 /**
- * Class     TotalPublishedPosts
+ * Class     AveragePublishedPosts
  *
  * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class TotalPublishedPosts extends RangedValue
+class AveragePublishedPostViews extends RangedValue
 {
     /* -----------------------------------------------------------------
      |  Main Methods
@@ -25,6 +26,6 @@ class TotalPublishedPosts extends RangedValue
      */
     public function calculate(Request $request)
     {
-        return $this->count(Post::class, 'id', 'published_at');
+        return $this->average(Post::class, 'views', 'published_at');
     }
 }

@@ -1,11 +1,9 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Metrics;
 
+use Arcanedev\LaravelMetrics\Metrics\Value;
 use Arcanedev\LaravelMetrics\Results\ValueResult;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value\{AveragePostViews, MaxPostViews, MinPostViews, TotalPosts,
     TotalPostViews};
-use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
-use Arcanedev\LaravelMetrics\Metrics\Value;
-use Arcanedev\LaravelMetrics\Tests\TestCase;
 
 /**
  * Class     ValueTest
@@ -16,28 +14,6 @@ use Arcanedev\LaravelMetrics\Tests\TestCase;
 class ValueTest extends TestCase
 {
     /* -----------------------------------------------------------------
-     |  Main Methods
-     | -----------------------------------------------------------------
-     */
-
-    /**
-     * Setup the test environment.
-     *
-     * @return void
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->loadMigrations();
-        $this->loadFactories();
-
-        factory(Post::class)->create(['views' => 150]);
-        factory(Post::class)->create(['views' => 100]);
-        factory(Post::class)->create(['views' => 50]);
-    }
-
-    /* -----------------------------------------------------------------
      |  Tests
      | -----------------------------------------------------------------
      */
@@ -45,46 +21,73 @@ class ValueTest extends TestCase
     /** @test */
     public function it_can_calculate_count()
     {
-        $result = $this->calculate(new TotalPosts);
+        static::assertIsValueMetric($metric = new TotalPosts);
+
+        $result = $this->calculate($metric);
 
         static::assertIsValueResult($result);
-        static::assertEquals(3, $result->value);
+        static::assertEquals(5, $result->value);
     }
 
     /** @test */
     public function it_can_calculate_sum()
     {
-        $result = $this->calculate(new TotalPostViews);
+        static::assertIsValueMetric($metric = new TotalPostViews);
 
-        static::assertIsValueResult($result);
-        static::assertEquals(300, $result->value);
-    }
-
-    /** @test */
-    public function it_can_calculate_average()
-    {
-        $result = $this->calculate(new AveragePostViews);
-
-        static::assertIsValueResult($result);
-        static::assertEquals(100, $result->value);
-    }
-
-    /** @test */
-    public function it_can_calculate_max()
-    {
-        $result = $this->calculate(new MaxPostViews);
+        $result = $this->calculate($metric);
 
         static::assertIsValueResult($result);
         static::assertEquals(150, $result->value);
     }
 
     /** @test */
-    public function it_can_calculate_min()
+    public function it_can_calculate_average()
     {
-        $result = $this->calculate(new MinPostViews);
+        static::assertIsValueMetric($metric = new AveragePostViews);
+
+        $result = $this->calculate($metric);
+
+        static::assertIsValueResult($result);
+        static::assertEquals(30, $result->value);
+    }
+
+    /** @test */
+    public function it_can_calculate_max()
+    {
+        static::assertIsValueMetric($metric = new MaxPostViews);
+
+        $result = $this->calculate($metric);
 
         static::assertIsValueResult($result);
         static::assertEquals(50, $result->value);
+    }
+
+    /** @test */
+    public function it_can_calculate_min()
+    {
+        static::assertIsValueMetric($metric = new MinPostViews);
+
+        $result = $this->calculate($metric);
+
+        static::assertIsValueResult($result);
+        static::assertEquals(10, $result->value);
+    }
+
+    /** @test */
+    public function it_can_convert_to_array_and_json()
+    {
+        $metric = new TotalPosts;
+
+        $expected = [
+            'metric' => TotalPosts::class,
+            'type'   => 'value',
+            'title'  => 'Total Posts',
+        ];
+
+        static::assertEquals($expected, $metric->toArray());
+
+        static::assertJsonStringEqualsJsonString(json_encode($expected), $metric->toJson());
+        static::assertJsonStringEqualsJsonString(json_encode($expected), json_encode($metric));
     }
 
     /* -----------------------------------------------------------------
@@ -93,17 +96,15 @@ class ValueTest extends TestCase
      */
 
     /**
-     * Calculate the metric.
+     * Assert the given object is a value metric instance.
      *
-     * @param  \Arcanedev\LaravelMetrics\Metrics\Value  $metric
-     *
-     * @return mixed
+     * @param  object  $metric
      */
-    protected function calculate(Value $metric)
+    protected static function assertIsValueMetric($metric)
     {
+        static::assertIsMetric($metric);
+        static::assertInstanceOf(\Arcanedev\LaravelMetrics\Metrics\Value::class, $metric);
         static::assertSame('value', $metric->type());
-
-        return $metric->resolve($this->app['request']);
     }
 
     /**

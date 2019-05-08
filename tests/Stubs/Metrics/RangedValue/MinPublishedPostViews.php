@@ -4,18 +4,13 @@ use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
 use Illuminate\Http\Request;
 
 /**
- * Class     TotalPublishedPosts
+ * Class     MinPublishedPostViews
  *
  * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class TotalPublishedPosts extends RangedValue
+class MinPublishedPostViews extends RangedValue
 {
-    /* -----------------------------------------------------------------
-     |  Main Methods
-     | -----------------------------------------------------------------
-     */
-
     /**
      * Calculate the metric.
      *
@@ -25,6 +20,6 @@ class TotalPublishedPosts extends RangedValue
      */
     public function calculate(Request $request)
     {
-        return $this->count(Post::class, 'id', 'published_at');
+        return $this->max(Post::class, 'views', 'published_at');
     }
 }

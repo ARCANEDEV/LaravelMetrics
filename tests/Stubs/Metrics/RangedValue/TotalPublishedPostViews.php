@@ -28,21 +28,4 @@ class TotalPublishedPostViews extends RangedValue
     {
         return $this->sum(Post::class, 'views', 'published_at');
     }
-
-    /**
-     * Get the ranges available for the metric.
-     *
-     * @return array
-     */
-    public function ranges(): array
-    {
-        $days = __('Days');
-
-        return [
-            3  => "3 {$days}",
-            7  => "7 {$days}",
-            14 => "14 {$days}",
-            30 => "30 {$days}",
-        ];
-    }
 }

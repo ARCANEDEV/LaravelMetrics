@@ -3,10 +3,13 @@
 use Arcanedev\LaravelMetrics\Concerns\ConvertsToArray;
 use Closure;
 use DateInterval;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use JsonSerializable;
 
 /**
  * Class     Metric
@@ -14,7 +17,7 @@ use Illuminate\Support\Str;
  * @package  Arcanedev\LaravelMetrics\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-abstract class Metric
+abstract class Metric implements Arrayable, Jsonable, JsonSerializable
 {
     /* -----------------------------------------------------------------
      |  Traits
@@ -45,7 +48,7 @@ abstract class Metric
      *
      * @return string
      */
-    abstract public static function type(): string;
+    abstract public function type(): string;
 
     /**
      * Get the metric's title.
@@ -140,6 +143,7 @@ abstract class Metric
     {
         return [
             'metric' => static::class,
+            'type'   => $this->type(),
             'title'  => $this->title(),
         ];
     }
