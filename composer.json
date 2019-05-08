@@ -1,0 +1,43 @@
+{
+    "name":        "arcanedev/laravel-metrics",
+    "description": "Provides a Metrics for Laravel 5",
+    "keywords":    ["arcanedev", "arcanesoft", "laravel", "metrics", "data", "value", "trends"],
+    "homepage":    "https://github.com/ARCANEDEV/LaravelMetrics",
+    "authors": [
+        {
+            "name":     "ARCANEDEV",
+            "email":    "arcanedev.maroc@gmail.com",
+            "homepage": "https://github.com/arcanedev-maroc",
+            "role":     "Developer"
+        }
+    ],
+    "type":    "library",
+    "license": "MIT",
+    "require": {
+        "php":               ">=7.1.3",
+        "ext-json":          "*",
+        "arcanedev/support": "~4.5.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "~3.8.0",
+        "phpunit/phpcov":      "~5.0|~6.0",
+        "phpunit/phpunit":     "~7.0|~8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Arcanedev\\LaravelMetrics\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Arcanedev\\LaravelMetrics\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Arcanedev\\LaravelMetrics\\MetricsServiceProvider"
+            ]
+        }
+    }
+}
