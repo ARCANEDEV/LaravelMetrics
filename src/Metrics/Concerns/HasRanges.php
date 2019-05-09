@@ -82,7 +82,7 @@ trait HasRanges
     {
         return [
             $now->subDays($range * 2),
-            $now->subDays($range),
+            $now->subDays($range)->subSeconds(1),
         ];
     }
 }

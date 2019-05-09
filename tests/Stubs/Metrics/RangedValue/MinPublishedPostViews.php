@@ -20,6 +20,6 @@ class MinPublishedPostViews extends RangedValue
      */
     public function calculate(Request $request)
     {
-        return $this->max(Post::class, 'views', 'published_at');
+        return $this->min(Post::class, 'views', 'published_at');
     }
 }

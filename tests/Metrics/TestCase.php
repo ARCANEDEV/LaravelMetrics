@@ -29,8 +29,6 @@ abstract class TestCase extends BaseTestCase
 
         $this->loadMigrations();
         $this->loadFactories();
-
-        $this->createPosts();
     }
 
     /* -----------------------------------------------------------------

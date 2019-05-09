@@ -41,7 +41,10 @@ abstract class TestCase extends BaseTestCase
      */
     protected function loadMigrations()
     {
-        $this->loadMigrationsFrom(__DIR__ .'/fixtures/migrations');
+        $this->loadMigrationsFrom([
+            '--database' => 'testing',
+            '--realpath' => realpath(__DIR__ .'/fixtures/migrations'),
+        ]);
     }
 
     /**
@@ -55,9 +58,9 @@ abstract class TestCase extends BaseTestCase
     /**
      * Create posts for the tests.
      */
-    protected function createPosts()
+    protected function createPosts($now = null)
     {
-        $now = Chronos::now();
+        $now = $now ?: Chronos::now();
 
         factory(Post::class)->create(['views' => 10, 'published_at' => $now]);
         factory(Post::class)->create(['views' => 20, 'published_at' => $now->subDays(3)]);

@@ -116,7 +116,7 @@ abstract class Metric implements Arrayable, Jsonable, JsonSerializable
      *
      * @param  \Illuminate\Http\Request  $request
      *
-     * @return mixed
+     * @return \Arcanedev\LaravelMetrics\Results\Result|mixed
      */
     abstract public function calculate(Request $request);
 
@@ -170,26 +170,26 @@ abstract class Metric implements Arrayable, Jsonable, JsonSerializable
      */
     protected function cacheResult($cacheFor, Closure $callback)
     {
-        $cacheFor = is_numeric($cacheFor)
-            ? new DateInterval(sprintf('PT%dS', $cacheFor * 60))
-            : $cacheFor;
+        if (is_numeric($cacheFor))
+            $cacheFor = new DateInterval(sprintf('PT%dS', $cacheFor * 60));
 
-        return Cache::remember($this->getCacheKey(), $cacheFor, $callback);
-    }
-
-    /**
-     * Get the cache key.
-     *
-     * @return string
-     */
-    protected function getCacheKey(): string
-    {
-        $prefix = config('metrics.cache.prefix', 'arcanedev.metrics');
-
-        return sprintf(
-            "{$prefix}.%s.%s",
+        $key = sprintf(
+            '%s.%s.%s',
+            Str::slug($this->getCachePrefix(), '.'),
             Str::slug(str_replace('\\', '_', static::class)),
             $this->request->input('range', 'no-range')
         );
+
+        return Cache::remember($key, $cacheFor, $callback);
+    }
+
+    /**
+     * Get the cache's prefix.
+     *
+     * @return string
+     */
+    protected function getCachePrefix(): string
+    {
+        return config('metrics.cache.prefix', 'arcanedev.metrics');
     }
 }

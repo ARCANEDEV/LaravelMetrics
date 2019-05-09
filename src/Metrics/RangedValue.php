@@ -132,8 +132,8 @@ abstract class RangedValue extends Metric
         $previous = with(clone $query)->whereBetween($dateColumn, $this->previousRange($range, $now))->{$method}($column);
         $current  = with(clone $query)->whereBetween($dateColumn, $this->currentRange($range, $now))->{$method}($column);
 
-        return $this->result(round($current, 0))
-                    ->previous(round($previous, 0));
+        return $this->result($method === 'count' ? $current : round($current, 0))
+                    ->previous($method === 'count' ? $previous : round($previous, 0));
     }
 
     /**
@@ -152,7 +152,7 @@ abstract class RangedValue extends Metric
     /**
      * Make a new result instance.
      *
-     * @param mixed|null $value
+     * @param  mixed|null  $value
      *
      * @return \Arcanedev\LaravelMetrics\Results\RangedValueResult|mixed
      */
