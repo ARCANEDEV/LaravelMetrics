@@ -156,7 +156,7 @@ abstract class Partition extends Metric
     /**
      * Make a new result instance.
      *
-     * @param mixed|null $value
+     * @param  mixed|null  $value
      *
      * @return \Arcanedev\LaravelMetrics\Results\PartitionResult|mixed
      */

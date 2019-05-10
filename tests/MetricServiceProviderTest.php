@@ -53,7 +53,9 @@ class MetricServiceProviderTest extends TestCase
     /** @test */
     public function it_can_provides()
     {
-        $expected = [];
+        $expected = [
+            \Arcanedev\LaravelMetrics\Contracts\Manager::class,
+        ];
 
         static::assertSame($expected, $this->provider->provides());
     }

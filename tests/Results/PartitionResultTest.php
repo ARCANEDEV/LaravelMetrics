@@ -1,14 +1,15 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Results;
 
-use Arcanedev\LaravelMetrics\Results\RangedValueResult;
+use Arcanedev\LaravelMetrics\Results\PartitionResult;
+use Illuminate\Support\Collection;
 
 /**
- * Class     RangedResultTest
+ * Class     PartitionResultTest
  *
  * @package  Arcanedev\LaravelMetrics\Tests\Results
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class RangedResultTest extends ResultTestCase
+class PartitionResultTest extends ResultTestCase
 {
     /* -----------------------------------------------------------------
      |  Tests
@@ -22,7 +23,8 @@ class RangedResultTest extends ResultTestCase
 
         static::assertIsMetricResult($result);
 
-        self::assertNull($result->value);
+        self::assertInstanceOf(Collection::class, $result->value);
+        self::assertTrue($result->value->isEmpty());
     }
 
     /** @test */
@@ -30,27 +32,33 @@ class RangedResultTest extends ResultTestCase
     {
         $result = $this->makeResult()->value(10);
 
-        self::assertSame(10, $result->value);
+        self::assertInstanceOf(Collection::class, $result->value);
+        self::assertCount(1, $result->value);
+        self::assertEquals([10], $result->value->all());
+
+        $result->value($expected = ['key' => 'hello', 'value' => 'world']);
+
+        self::assertInstanceOf(Collection::class, $result->value);
+        self::assertCount(2, $result->value);
+        self::assertEquals($expected, $result->value->all());
     }
 
     /** @test */
     public function it_can_convert_to_array()
     {
-        $result = $this->makeResult(123)
+        $result = $this->makeResult(['plan-1' => 123, 'plan-2' => 321])
             ->prefix('$')
             ->suffix('per unit')
-            ->format('0,00')
-            ->previous(321, 'Previous value');
+            ->format('0,00');
 
         $expected = [
-            'value'    => 123,
-            'format'   => '0,00',
-            'prefix'   => '$',
-            'suffix'   => 'per unit',
-            'previous' => [
-                'value' => 321,
-                'label' => 'Previous value'
+            'value'  => [
+                ['value' => 123, 'label' => 'plan-1'],
+                ['value' => 321, 'label' => 'plan-2'],
             ],
+            'format' => '0,00',
+            'prefix' => '$',
+            'suffix' => 'per unit',
         ];
 
         static::assertEquals($expected, $result->toArray());
@@ -59,21 +67,19 @@ class RangedResultTest extends ResultTestCase
     /** @test */
     public function it_can_convert_to_json()
     {
-        $result = $this->makeResult(123)
+        $result = $this->makeResult(['plan-1' => 123, 'plan-2' => 321])
             ->prefix('$')
             ->suffix('per unit')
-            ->format('0,00')
-            ->previous(321, 'Previous value');
+            ->format('0,00');
 
         $expected = json_encode([
-            'value'    => 123,
-            'format'   => '0,00',
-            'prefix'   => '$',
-            'suffix'   => 'per unit',
-            'previous' => [
-                'value' => 321,
-                'label' => 'Previous value',
+            'value'  => [
+                ['value' => 123, 'label' => 'plan-1'],
+                ['value' => 321, 'label' => 'plan-2'],
             ],
+            'format' => '0,00',
+            'prefix' => '$',
+            'suffix' => 'per unit',
         ]);
 
         static::assertJson($actual = $result->toJson());
@@ -89,14 +95,14 @@ class RangedResultTest extends ResultTestCase
      */
 
     /**
-     * Make a result instance.
+     * Make a result.
      *
-     * @param mixed|null $value
+     * @param  mixed|null  $value
      *
-     * @return \Arcanedev\LaravelMetrics\Results\RangedValueResult|mixed
+     * @return \Arcanedev\LaravelMetrics\Results\PartitionResult
      */
     protected function makeResult($value = null)
     {
-        return new RangedValueResult($value);
+        return new PartitionResult($value);
     }
 }

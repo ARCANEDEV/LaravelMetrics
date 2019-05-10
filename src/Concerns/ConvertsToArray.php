@@ -18,7 +18,7 @@ trait ConvertsToArray
      *
      * @return array
      */
-    abstract public function toArray();
+    abstract public function toArray(): array;
 
     /**
      * Convert the object to its JSON representation.
@@ -27,7 +27,7 @@ trait ConvertsToArray
      *
      * @return string
      */
-    public function toJson($options = 0)
+    public function toJson($options = 0): string
     {
         return json_encode($this->jsonSerialize(), $options);
     }
@@ -37,7 +37,7 @@ trait ConvertsToArray
      *
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }

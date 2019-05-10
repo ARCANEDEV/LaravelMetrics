@@ -145,18 +145,17 @@ class PartitionResult extends Result
     public function toArray(): array
     {
         $value = $this->mapValue(function ($key, $value) {
-            return array_filter([
-                'color' => $this->colors[$key] ?? null,
-                'label' => $this->labels[$key] ?? $key,
-                'value' => $value,
-            ], function ($value) {
+            return array_filter($this->formatValue($key, $value), function ($value) {
                 return ! is_null($value);
             });
         })->unless(is_null($this->sort), function (Collection $values) {
             return $values->sortBy('value', SORT_REGULAR, $this->sort === 'desc');
         })->values()->all();
 
-        return compact('value');
+        return array_merge(
+            parent::toArray(),
+            compact('value')
+        );
     }
 
     /* -----------------------------------------------------------------
@@ -176,5 +175,22 @@ class PartitionResult extends Result
         return $this->value->map(function ($value, $key) use ($callback) {
             return $callback($key, $value);
         });
+    }
+
+    /**
+     * Format the value.
+     *
+     * @param  mixed  $key
+     * @param  mixed  $value
+     *
+     * @return array
+     */
+    protected function formatValue($key, $value): array
+    {
+        return [
+            'color' => $this->colors[$key] ?? null,
+            'label' => $this->labels[$key] ?? $key,
+            'value' => $value,
+        ];
     }
 }

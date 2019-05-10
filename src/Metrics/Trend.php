@@ -1,5 +1,7 @@
 <?php namespace Arcanedev\LaravelMetrics\Metrics;
 
+use Arcanedev\LaravelMetrics\Results\TrendResult;
+
 /**
  * Class     Trend
  *

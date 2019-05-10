@@ -1,12 +1,9 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Metrics;
 
+use Arcanedev\LaravelMetrics\Metrics\Partition;
 use Arcanedev\LaravelMetrics\Results\PartitionResult;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition\AverageUserPointsByType;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition\CountUserTypes;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition\CountUserTypesWithCustomLabelsAndColors;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition\MaxUserPointsByType;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition\MinUserPointsByType;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition\SumUserPointsByType;
+use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition\{AverageUserPointsByType, CountUserTypes,
+    CountUserTypesWithCustomLabelsAndColors, MaxUserPointsByType, MinUserPointsByType, SumUserPointsByType};
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;
 use Illuminate\Support\Collection;
 
@@ -27,12 +24,13 @@ class PartitionTest extends TestCase
     public function it_can_calculate_count()
     {
         $this->createUsers();
+
         static::assertIsValueMetric($metric = new CountUserTypes);
 
         $result = $this->calculate($metric);
 
         $expected = [
-            'value' => [
+            'value'  => [
                 [
                     'label' => 'bronze',
                     'value' => 8,
@@ -45,11 +43,13 @@ class PartitionTest extends TestCase
                     'label' => 'silver',
                     'value' => 4,
                 ],
-            ]
+            ],
+            'format' => null,
+            'prefix' => null,
+            'suffix' => null,
         ];
 
         static::assertInstanceOf(Collection::class, $result->value);
-        static::assertCount(3, $result->value);
         static::assertEquals($expected, $result->toArray());
     }
 
@@ -57,12 +57,13 @@ class PartitionTest extends TestCase
     public function it_can_calculate_average()
     {
         $this->createUsers();
+
         static::assertIsValueMetric($metric = new AverageUserPointsByType);
 
         $result = $this->calculate($metric);
 
         $expected = [
-            'value' => [
+            'value'  => [
                 [
                     'label' => 'bronze',
                     'value' => 69.0,
@@ -75,11 +76,13 @@ class PartitionTest extends TestCase
                     'label' => 'silver',
                     'value' => 275.0,
                 ],
-            ]
+            ],
+            'format' => null,
+            'prefix' => null,
+            'suffix' => null,
         ];
 
         static::assertInstanceOf(Collection::class, $result->value);
-        static::assertCount(3, $result->value);
         static::assertEquals($expected, $result->toArray());
     }
 
@@ -93,7 +96,7 @@ class PartitionTest extends TestCase
         $result = $this->calculate($metric);
 
         $expected = [
-            'value' => [
+            'value'  => [
                 [
                     'label' => 'bronze',
                     'value' => 550.0,
@@ -106,11 +109,13 @@ class PartitionTest extends TestCase
                     'label' => 'silver',
                     'value' => 1100.0,
                 ],
-            ]
+            ],
+            'format' => null,
+            'prefix' => null,
+            'suffix' => null,
         ];
 
         static::assertInstanceOf(Collection::class, $result->value);
-        static::assertCount(3, $result->value);
         static::assertEquals($expected, $result->toArray());
     }
 
@@ -124,7 +129,7 @@ class PartitionTest extends TestCase
         $result = $this->calculate($metric);
 
         $expected = [
-            'value' => [
+            'value'  => [
                 [
                     'label' => 'bronze',
                     'value' => 100.0,
@@ -137,11 +142,13 @@ class PartitionTest extends TestCase
                     'label' => 'silver',
                     'value' => 300.0,
                 ],
-            ]
+            ],
+            'format' => null,
+            'prefix' => null,
+            'suffix' => null,
         ];
 
         static::assertInstanceOf(Collection::class, $result->value);
-        static::assertCount(3, $result->value);
         static::assertEquals($expected, $result->toArray());
     }
 
@@ -155,7 +162,7 @@ class PartitionTest extends TestCase
         $result = $this->calculate($metric);
 
         $expected = [
-            'value' => [
+            'value'  => [
                 [
                     'label' => 'bronze',
                     'value' => 50.0,
@@ -168,11 +175,13 @@ class PartitionTest extends TestCase
                     'label' => 'silver',
                     'value' => 250.0,
                 ],
-            ]
+            ],
+            'format' => null,
+            'prefix' => null,
+            'suffix' => null,
         ];
 
         static::assertInstanceOf(Collection::class, $result->value);
-        static::assertCount(3, $result->value);
         static::assertEquals($expected, $result->toArray());
     }
 
@@ -185,7 +194,7 @@ class PartitionTest extends TestCase
         $result = $this->calculate($metric);
 
         $expected = [
-            'value' => [
+            'value'  => [
                 [
                     'label' => 'bronze',
                     'value' => 8,
@@ -198,17 +207,19 @@ class PartitionTest extends TestCase
                     'label' => 'silver',
                     'value' => 4,
                 ],
-            ]
+            ],
+            'format' => null,
+            'prefix' => null,
+            'suffix' => null,
         ];
 
         static::assertInstanceOf(Collection::class, $result->value);
-        static::assertCount(3, $result->value);
         static::assertEquals($expected, $result->toArray());
 
         $result->sort('asc');
 
         $expected = [
-            'value' => [
+            'value'  => [
                 [
                     'label' => 'gold',
                     'value' => 3,
@@ -221,7 +232,10 @@ class PartitionTest extends TestCase
                     'label' => 'bronze',
                     'value' => 8,
                 ],
-            ]
+            ],
+            'format' => null,
+            'prefix' => null,
+            'suffix' => null,
         ];
 
         static::assertEquals($expected, $result->toArray());
@@ -229,7 +243,7 @@ class PartitionTest extends TestCase
         $result->sort('desc');
 
         $expected = [
-            'value' => [
+            'value'  => [
                 [
                     'label' => 'bronze',
                     'value' => 8,
@@ -242,7 +256,10 @@ class PartitionTest extends TestCase
                     'label' => 'gold',
                     'value' => 3,
                 ],
-            ]
+            ],
+            'format' => null,
+            'prefix' => null,
+            'suffix' => null,
         ];
 
         static::assertEquals($expected, $result->toArray());
@@ -257,7 +274,7 @@ class PartitionTest extends TestCase
         $result = $this->calculate($metric);
 
         $expected = [
-            'value' => [
+            'value'  => [
                 [
                     'label' => 'Bronze',
                     'value' => 8,
@@ -273,11 +290,13 @@ class PartitionTest extends TestCase
                     'value' => 4,
                     'color' => '#C0C0C0',
                 ],
-            ]
+            ],
+            'format' => null,
+            'prefix' => null,
+            'suffix' => null,
         ];
 
         static::assertInstanceOf(Collection::class, $result->value);
-        static::assertCount(3, $result->value);
         static::assertEquals($expected, $result->toArray());
     }
 
@@ -294,21 +313,29 @@ class PartitionTest extends TestCase
     protected static function assertIsValueMetric($metric)
     {
         static::assertIsMetric($metric);
-        static::assertInstanceOf(\Arcanedev\LaravelMetrics\Metrics\Partition::class, $metric);
+        static::assertInstanceOf(Partition::class, $metric);
         static::assertSame('partition', $metric->type());
     }
 
     /**
-     * Assert the given object is a value result instance.
+     * Assert the given object is a partition result instance.
      *
      * @param  mixed   $actual
      * @param  string  $message
      */
-    protected static function assertIsValueResult($actual, string $message = '')
+    protected static function assertIsPartitionResult($actual, string $message = '')
     {
         static::assertInstanceOf(PartitionResult::class, $actual, $message);
     }
 
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * Create users for tests.
+     */
     protected function createUsers()
     {
         factory(User::class, 1)->states(['gold', 'premium'])->create(['points' => 2000]);

@@ -1,5 +1,6 @@
 <?php namespace Arcanedev\LaravelMetrics;
 
+use Arcanedev\LaravelMetrics\Contracts\Manager;
 use Arcanedev\Support\PackageServiceProvider;
 
 /**
@@ -35,6 +36,8 @@ class MetricServiceProvider extends PackageServiceProvider
         parent::register();
 
         $this->registerConfig();
+
+        $this->singleton(Contracts\Manager::class, Manager::class);
     }
 
     /**
@@ -43,5 +46,17 @@ class MetricServiceProvider extends PackageServiceProvider
     public function boot()
     {
         parent::boot();
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides(): array
+    {
+        return [
+            Contracts\Manager::class,
+        ];
     }
 }

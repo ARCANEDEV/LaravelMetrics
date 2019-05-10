@@ -1,7 +1,6 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 
 /**
  * Class     CountUserTypesWithCustomLabelsAndColors
@@ -16,6 +15,13 @@ class CountUserTypesWithCustomLabelsAndColors extends CountUserTypes
      | -----------------------------------------------------------------
      */
 
+    /**
+     * Calculate the metric.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Arcanedev\LaravelMetrics\Results\PartitionResult
+     */
     public function calculate(Request $request)
     {
         return parent::calculate($request)->label(function ($key) {

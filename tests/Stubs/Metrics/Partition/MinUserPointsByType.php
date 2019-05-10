@@ -20,9 +20,9 @@ class MinUserPointsByType extends Partition
     /**
      * Calculate the metric.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      *
-     * @return \Arcanedev\LaravelMetrics\Results\Result|mixed
+     * @return \Arcanedev\LaravelMetrics\Results\PartitionResult
      */
     public function calculate(Request $request)
     {

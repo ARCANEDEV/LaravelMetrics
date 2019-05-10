@@ -1,7 +1,6 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Results;
 
 use Arcanedev\LaravelMetrics\Results\ValueResult;
-use Arcanedev\LaravelMetrics\Tests\TestCase;
 
 /**
  * Class     ValueResultTest
@@ -9,7 +8,7 @@ use Arcanedev\LaravelMetrics\Tests\TestCase;
  * @package  Arcanedev\LaravelMetrics\Tests\Results
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class ValueResultTest extends TestCase
+class ValueResultTest extends ResultTestCase
 {
     /* -----------------------------------------------------------------
      |  Tests
@@ -21,17 +20,7 @@ class ValueResultTest extends TestCase
     {
         $result = new ValueResult;
 
-        $expectations = [
-            \JsonSerializable::class,
-            \Illuminate\Contracts\Support\Jsonable::class,
-            \Illuminate\Contracts\Support\Arrayable::class,
-            \Arcanedev\LaravelMetrics\Results\Result::class,
-            \Arcanedev\LaravelMetrics\Results\ValueResult::class,
-        ];
-
-        foreach ($expectations as $expected) {
-            static::assertInstanceOf($expected, $result);
-        }
+        static::assertIsMetricResult($result);
 
         self::assertNull($result->value);
     }
@@ -39,39 +28,15 @@ class ValueResultTest extends TestCase
     /** @test */
     public function it_can_set_value()
     {
-        $result = (new ValueResult)->value(10);
+        $result = $this->makeResult()->value(10);
 
         self::assertSame(10, $result->value);
     }
 
     /** @test */
-    public function it_can_set_prefix()
-    {
-        $result = (new ValueResult)->prefix('$');
-
-        self::assertSame('$', $result->prefix);
-    }
-
-    /** @test */
-    public function it_can_set_suffix()
-    {
-        $result = (new ValueResult)->suffix('$');
-
-        self::assertSame('$', $result->suffix);
-    }
-
-    /** @test */
-    public function it_can_set_format()
-    {
-        $result = (new ValueResult)->format('0,00');
-
-        self::assertSame('0,00', $result->format);
-    }
-
-    /** @test */
     public function it_can_convert_to_array()
     {
-        $result = (new ValueResult(123))
+        $result = $this->makeResult(123)
             ->prefix('$')
             ->suffix('per unit')
             ->format('0,00');
@@ -89,7 +54,7 @@ class ValueResultTest extends TestCase
     /** @test */
     public function it_can_convert_to_json()
     {
-        $result = (new ValueResult(123))
+        $result = $this->makeResult(123)
             ->prefix('$')
             ->suffix('per unit')
             ->format('0,00');
@@ -106,5 +71,22 @@ class ValueResultTest extends TestCase
 
         static::assertJson($actual = json_encode($result));
         static::assertJsonStringEqualsJsonString($expected, $actual);
+    }
+
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * Make a result instance.
+     *
+     * @param  mixed|null  $value
+     *
+     * @return \Arcanedev\LaravelMetrics\Results\Result|mixed
+     */
+    protected function makeResult($value = null)
+    {
+        return new ValueResult($value);
     }
 }

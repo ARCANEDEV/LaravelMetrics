@@ -36,7 +36,7 @@ abstract class Value extends Metric
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
      * @param  string|string                                 $column
      *
-     * @return \Arcanedev\LaravelMetrics\Results\ValueResult
+     * @return \Arcanedev\LaravelMetrics\Results\ValueResult|mixed
      */
     public function count($model, $column = null)
     {
@@ -49,7 +49,7 @@ abstract class Value extends Metric
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
      * @param  string                                        $column
      *
-     * @return \Arcanedev\LaravelMetrics\Results\ValueResult
+     * @return \Arcanedev\LaravelMetrics\Results\ValueResult|mixed
      */
     public function average($model, string $column)
     {
@@ -62,7 +62,7 @@ abstract class Value extends Metric
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
      * @param  string                                        $column
      *
-     * @return \Arcanedev\LaravelMetrics\Results\ValueResult
+     * @return \Arcanedev\LaravelMetrics\Results\ValueResult|mixed
      */
     public function sum($model, string $column)
     {
@@ -75,7 +75,7 @@ abstract class Value extends Metric
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
      * @param  string                                        $column
      *
-     * @return \Arcanedev\LaravelMetrics\Results\ValueResult
+     * @return \Arcanedev\LaravelMetrics\Results\ValueResult|mixed
      */
     public function max($model, string $column)
     {
@@ -88,7 +88,7 @@ abstract class Value extends Metric
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
      * @param  string                                        $column
      *
-     * @return \Arcanedev\LaravelMetrics\Results\ValueResult
+     * @return \Arcanedev\LaravelMetrics\Results\ValueResult|mixed
      */
     public function min($model, string $column)
     {
@@ -102,7 +102,7 @@ abstract class Value extends Metric
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
      * @param  string|null                                   $column
      *
-     * @return \Arcanedev\LaravelMetrics\Results\ValueResult
+     * @return \Arcanedev\LaravelMetrics\Results\ValueResult|mixed
      */
     protected function aggregate(string $method, $model, string $column = null)
     {
@@ -124,7 +124,7 @@ abstract class Value extends Metric
      *
      * @param  mixed|null  $value
      *
-     * @return \Arcanedev\LaravelMetrics\Results\ValueResult
+     * @return \Arcanedev\LaravelMetrics\Results\ValueResult|mixed
      */
     protected function result($value = null)
     {
