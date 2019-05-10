@@ -7,6 +7,8 @@
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
  * @property  \Illuminate\Http\Request  $request
+ *
+ * @method  array  ranges()
  */
 trait HasRanges
 {
@@ -25,16 +27,6 @@ trait HasRanges
         return $this->request->input('range');
     }
 
-    /**
-     * Get the ranges available for the metric.
-     *
-     * @return array
-     */
-    public function ranges(): array
-    {
-        return [];
-    }
-
     /* -----------------------------------------------------------------
      |  Other Methods
      | -----------------------------------------------------------------
@@ -47,11 +39,11 @@ trait HasRanges
      */
     public function rangesToArray(): array
     {
-        $ranges = array_map(function ($value, $label) {
-            return compact('value', 'label');
-        }, array_keys($this->ranges()), $this->ranges());
+        $ranges = method_exists($this, 'ranges') ? $this->ranges() : [];
 
-        return compact('ranges');
+        return array_map(function ($value, $label) {
+            return compact('value', 'label');
+        }, array_keys($ranges), $ranges);
     }
 
     /**

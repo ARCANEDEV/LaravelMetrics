@@ -17,6 +17,9 @@ class CreateUsersTestTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email');
+            $table->enum('type', ['bronze', 'silver', 'gold'])->default('bronze');
+            $table->integer('points')->default(0);
+            $table->boolean('is_premium')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

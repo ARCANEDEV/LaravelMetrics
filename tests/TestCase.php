@@ -62,10 +62,10 @@ abstract class TestCase extends BaseTestCase
     {
         $now = $now ?: Chronos::now();
 
-        factory(Post::class)->create(['views' => 10, 'published_at' => $now]);
-        factory(Post::class)->create(['views' => 20, 'published_at' => $now->subDays(3)]);
-        factory(Post::class)->create(['views' => 30, 'published_at' => $now->subDays(7)]);
-        factory(Post::class)->create(['views' => 40, 'published_at' => $now->subDays(14)]);
         factory(Post::class)->create(['views' => 50, 'published_at' => $now->subDays(30)]);
+        factory(Post::class)->create(['views' => 40, 'published_at' => $now->subDays(14)]);
+        factory(Post::class)->create(['views' => 30, 'published_at' => $now->subDays(7)]);
+        factory(Post::class)->create(['views' => 20, 'published_at' => $now->subDays(3)]);
+        factory(Post::class)->create(['views' => 10, 'published_at' => $now]);
     }
 }

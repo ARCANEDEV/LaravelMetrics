@@ -1,15 +1,16 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue;
+<?php namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition;
 
-use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
+use Arcanedev\LaravelMetrics\Metrics\Partition;
+use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;
 use Illuminate\Http\Request;
 
 /**
- * Class     TotalPublishedPostViews
+ * Class     MinUserPointsByType
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue
+ * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class TotalPublishedPostViews extends RangedValue
+class MinUserPointsByType extends Partition
 {
     /* -----------------------------------------------------------------
      |  Main Methods
@@ -21,10 +22,10 @@ class TotalPublishedPostViews extends RangedValue
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return mixed
+     * @return \Arcanedev\LaravelMetrics\Results\Result|mixed
      */
     public function calculate(Request $request)
     {
-        return $this->sum(Post::class, 'views', 'published_at');
+        return $this->min(User::class, 'points', 'type');
     }
 }

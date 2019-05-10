@@ -96,6 +96,7 @@ abstract class Value extends Metric
     }
 
     /**
+     * Handle the aggregate calculation of the metric.
      *
      * @param string                                         $method
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
@@ -110,7 +111,7 @@ abstract class Value extends Metric
 
         $value  = $query->{$method}($column);
 
-        return $this->result(round($value, 0));
+        return $this->result($method === 'count' ? $value : round($value, 0));
     }
 
     /* -----------------------------------------------------------------

@@ -1,6 +1,5 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue;
 
-use Arcanedev\LaravelMetrics\Metrics\RangedValue;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
 use Illuminate\Http\Request;
 

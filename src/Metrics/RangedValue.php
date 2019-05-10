@@ -114,6 +114,8 @@ abstract class RangedValue extends Metric
      */
 
     /**
+     * Handle the aggregate calculation of the metric.
+     *
      * @param  string                                      $method
      * @param  \Illuminate\Database\Eloquent\Model|string  $model
      * @param  string|null                                 $column
@@ -145,7 +147,7 @@ abstract class RangedValue extends Metric
     {
         return array_merge(
             parent::toArray(),
-            $this->rangesToArray()
+            ['ranges' => $this->rangesToArray()]
         );
     }
 

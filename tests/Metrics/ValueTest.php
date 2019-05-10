@@ -30,7 +30,7 @@ class ValueTest extends TestCase
         $result = $this->calculate($metric);
 
         static::assertIsValueResult($result);
-        static::assertEquals(5, $result->value);
+        static::assertSame(5, $result->value);
 
         Chronos::setTestNow();
     }
@@ -46,7 +46,7 @@ class ValueTest extends TestCase
         $result = $this->calculate($metric);
 
         static::assertIsValueResult($result);
-        static::assertEquals(150, $result->value);
+        static::assertSame(150.0, $result->value);
 
         Chronos::setTestNow();
     }
@@ -62,7 +62,7 @@ class ValueTest extends TestCase
         $result = $this->calculate($metric);
 
         static::assertIsValueResult($result);
-        static::assertEquals(30, $result->value);
+        static::assertSame(30.0, $result->value);
 
         Chronos::setTestNow();
     }
@@ -78,7 +78,7 @@ class ValueTest extends TestCase
         $result = $this->calculate($metric);
 
         static::assertIsValueResult($result);
-        static::assertEquals(50, $result->value);
+        static::assertSame(50.0, $result->value);
 
         Chronos::setTestNow();
     }
@@ -94,7 +94,7 @@ class ValueTest extends TestCase
         $result = $this->calculate($metric);
 
         static::assertIsValueResult($result);
-        static::assertEquals(10, $result->value);
+        static::assertSame(10.0, $result->value);
 
         Chronos::setTestNow();
     }

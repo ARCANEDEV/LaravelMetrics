@@ -47,7 +47,7 @@ If you discover any security related issues, please email arcanedev.maroc@gmail.
 
 [badge_laravel]:      https://img.shields.io/badge/Laravel-5.8-orange.svg?style=flat-square
 [badge_license]:      https://img.shields.io/packagist/l/arcanedev/laravel-metrics.svg?style=flat-square
-[badge_build]:        https://img.shields.io/travis/ARCANEDEV/LaravelMetrics.svg?style=flat-square
+[badge_build]:        https://img.shields.io/travis/com/ARCANEDEV/LaravelMetrics/master.svg?style=flat-square
 [badge_coverage]:     https://img.shields.io/scrutinizer/coverage/g/ARCANEDEV/LaravelMetrics.svg?style=flat-square
 [badge_quality]:      https://img.shields.io/scrutinizer/g/ARCANEDEV/LaravelMetrics.svg?style=flat-square
 [badge_insight]:      https://img.shields.io/sensiolabs/i/d8ea89a0-d96c-42a6-a06a-2b64ebc44d71.svg?style=flat-square

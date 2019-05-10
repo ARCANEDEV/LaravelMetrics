@@ -34,10 +34,10 @@ class RangedValueTest extends TestCase
         static::assertEquals(1, $result->value);
 
         $expectations = [
-            3  => ['value' => 2, 'previous' => 0.0],
-            7  => ['value' => 3, 'previous' => 0.0],
-            14 => ['value' => 4, 'previous' => 0.0],
-            30 => ['value' => 5, 'previous' => 0.0],
+            3  => ['value' => 2, 'previous' => 0],
+            7  => ['value' => 3, 'previous' => 1],
+            14 => ['value' => 4, 'previous' => 0],
+            30 => ['value' => 5, 'previous' => 0],
         ];
 
         foreach ($expectations as $range => $expected) {
@@ -48,6 +48,7 @@ class RangedValueTest extends TestCase
 
             static::assertIsRangedValueResult($result);
             static::assertSame($expected['value'], $result->value, "Fails the current value on range [{$range}]");
+            static::assertSame($expected['previous'], $result->previous['value'], "Fails the previous value on range [{$range}]");
         }
 
         Chronos::setTestNow();
