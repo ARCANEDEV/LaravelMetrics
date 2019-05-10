@@ -21,6 +21,7 @@ class CreateUsersTestTable extends Migration
             $table->integer('points')->default(0);
             $table->boolean('is_premium')->default(false);
             $table->timestamps();
+            $table->timestamp('verified_at')->nullable();
             $table->softDeletes();
         });
     }

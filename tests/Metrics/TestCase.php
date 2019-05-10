@@ -1,8 +1,6 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Metrics;
 
-use Arcanedev\LaravelMetrics\Metrics\RangedValue;
 use Arcanedev\LaravelMetrics\Tests\TestCase as BaseTestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 
 /**

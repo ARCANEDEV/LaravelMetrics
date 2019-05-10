@@ -1,23 +1,31 @@
 <?php namespace Arcanedev\LaravelMetrics\Metrics;
 
+use Arcanedev\LaravelMetrics\Metrics\Concerns\HasExpressions;
 use Arcanedev\LaravelMetrics\Results\PartitionResult;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Class     Partition
+ * Class     NullablePartition
  *
  * @package  Arcanedev\LaravelMetrics\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-abstract class Partition extends Metric
+abstract class NullablePartition extends Metric
 {
+    /* -----------------------------------------------------------------
+     |  Traits
+     | -----------------------------------------------------------------
+     */
+
+    use HasExpressions;
+
     /* -----------------------------------------------------------------
      |  Getters
      | -----------------------------------------------------------------
      */
 
     /**
-     * Get the metric type.
+     * Get the metric's type.
      *
      * @return string
      */
@@ -40,65 +48,9 @@ abstract class Partition extends Metric
      *
      * @return \Arcanedev\LaravelMetrics\Results\PartitionResult|mixed
      */
-    public function count($model, string $groupBy, $column = null)
+    protected function count(string $model, string $groupBy, $column = null)
     {
         return $this->aggregate('count', $model, $column, $groupBy);
-    }
-
-    /**
-     * Calculate the `average` of the metric.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string                                        $column
-     * @param  string                                        $groupBy
-     *
-     * @return \Arcanedev\LaravelMetrics\Results\PartitionResult|mixed
-     */
-    public function average($model, string $column, string $groupBy)
-    {
-        return $this->aggregate('avg', $model, $column, $groupBy);
-    }
-
-    /**
-     * Calculate the `sum` of the metric.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string                                        $column
-     * @param  string                                        $groupBy
-     *
-     * @return \Arcanedev\LaravelMetrics\Results\PartitionResult|mixed
-     */
-    public function sum($model, string $column, string $groupBy)
-    {
-        return $this->aggregate('sum', $model, $column, $groupBy);
-    }
-
-    /**
-     * Calculate the `max` of the metric.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string                                        $column
-     * @param  string                                        $groupBy
-     *
-     * @return \Arcanedev\LaravelMetrics\Results\PartitionResult|mixed
-     */
-    public function max($model, string $column, string $groupBy)
-    {
-        return $this->aggregate('max', $model, $column, $groupBy);
-    }
-
-    /**
-     * Calculate the `min` of the metric.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string                                        $column
-     * @param  string                                        $groupBy
-     *
-     * @return \Arcanedev\LaravelMetrics\Results\PartitionResult|mixed
-     */
-    public function min($model, string $column, string $groupBy)
-    {
-        return $this->aggregate('min', $model, $column, $groupBy);
     }
 
     /* -----------------------------------------------------------------
@@ -116,20 +68,23 @@ abstract class Partition extends Metric
      *
      * @return \Arcanedev\LaravelMetrics\Results\PartitionResult|mixed
      */
-    protected function aggregate($method, $model, $column, $groupBy)
+    protected function aggregate(string $method, $model, ?string $column, string $groupBy)
     {
         $query         = static::getQuery($model);
         $wrappedColumn = $query->getQuery()->getGrammar()->wrap(
             $column ?? $query->getModel()->getQualifiedKeyName()
         );
 
-        $value = $query->select([$groupBy, DB::raw("{$method}({$wrappedColumn}) as aggregate")])
-            ->groupBy($groupBy)
+        $groupAlias = "{$groupBy}_count";
+
+        $value = $query->select([
+            DB::raw("{$this->getExpression($query, 'if_null', $groupBy)} as {$groupAlias}"),
+            DB::raw("{$method}({$wrappedColumn}) as aggregate"),
+        ])
+            ->groupBy($groupAlias)
             ->get()
-            ->mapWithKeys(function ($result) use ($groupBy, $method) {
-                return array_map(function ($value) use ($method) {
-                    return $method === 'count' ? $value : round($value, 0);
-                }, $this->formatAggregateResult($result, $groupBy));
+            ->mapWithKeys(function ($result) use ($groupAlias) {
+                return $this->formatAggregateResult($result, $groupAlias);
             })
             ->all();
 
@@ -156,7 +111,7 @@ abstract class Partition extends Metric
     /**
      * Make a new result instance.
      *
-     * @param  mixed|null  $value
+     * @param  mixed|null $value
      *
      * @return \Arcanedev\LaravelMetrics\Results\PartitionResult|mixed
      */

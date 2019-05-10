@@ -1,0 +1,25 @@
+<?php namespace Arcanedev\LaravelMetrics\Expressions\IfNull;
+
+/**
+ * Class     PostgresExpression
+ *
+ * @package  Arcanedev\LaravelMetrics\Expressions\IfNull
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ */
+class PostgresExpression extends MySqlExpression
+{
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * Get the value of the expression.
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        return "CASE WHEN {$this->value} IS NULL THEN 0 ELSE 1 END";
+    }
+}

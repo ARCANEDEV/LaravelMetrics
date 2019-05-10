@@ -4,7 +4,6 @@ use Arcanedev\LaravelMetrics\Metrics\Partition;
 use Arcanedev\LaravelMetrics\Results\PartitionResult;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition\{AverageUserPointsByType, CountUserTypes,
     CountUserTypesWithCustomLabelsAndColors, MaxUserPointsByType, MinUserPointsByType, SumUserPointsByType};
-use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;
 use Illuminate\Support\Collection;
 
 /**
@@ -25,7 +24,7 @@ class PartitionTest extends TestCase
     {
         $this->createUsers();
 
-        static::assertIsValueMetric($metric = new CountUserTypes);
+        static::assertIsPartitionMetric($metric = new CountUserTypes);
 
         $result = $this->calculate($metric);
 
@@ -58,7 +57,7 @@ class PartitionTest extends TestCase
     {
         $this->createUsers();
 
-        static::assertIsValueMetric($metric = new AverageUserPointsByType);
+        static::assertIsPartitionMetric($metric = new AverageUserPointsByType);
 
         $result = $this->calculate($metric);
 
@@ -91,7 +90,7 @@ class PartitionTest extends TestCase
     {
         $this->createUsers();
 
-        static::assertIsValueMetric($metric = new SumUserPointsByType);
+        static::assertIsPartitionMetric($metric = new SumUserPointsByType);
 
         $result = $this->calculate($metric);
 
@@ -124,7 +123,7 @@ class PartitionTest extends TestCase
     {
         $this->createUsers();
 
-        static::assertIsValueMetric($metric = new MaxUserPointsByType);
+        static::assertIsPartitionMetric($metric = new MaxUserPointsByType);
 
         $result = $this->calculate($metric);
 
@@ -157,7 +156,7 @@ class PartitionTest extends TestCase
     {
         $this->createUsers();
 
-        static::assertIsValueMetric($metric = new MinUserPointsByType);
+        static::assertIsPartitionMetric($metric = new MinUserPointsByType);
 
         $result = $this->calculate($metric);
 
@@ -189,7 +188,7 @@ class PartitionTest extends TestCase
     public function it_can_calculate_and_sort()
     {
         $this->createUsers();
-        static::assertIsValueMetric($metric = new CountUserTypes);
+        static::assertIsPartitionMetric($metric = new CountUserTypes);
 
         $result = $this->calculate($metric);
 
@@ -269,7 +268,7 @@ class PartitionTest extends TestCase
     public function it_can_calculate_with_custom_labels_and_colors()
     {
         $this->createUsers();
-        static::assertIsValueMetric($metric = new CountUserTypesWithCustomLabelsAndColors);
+        static::assertIsPartitionMetric($metric = new CountUserTypesWithCustomLabelsAndColors);
 
         $result = $this->calculate($metric);
 
@@ -306,11 +305,11 @@ class PartitionTest extends TestCase
      */
 
     /**
-     * Assert the given object is a value metric instance.
+     * Assert the given object is a partition metric instance.
      *
      * @param  object  $metric
      */
-    protected static function assertIsValueMetric($metric)
+    protected static function assertIsPartitionMetric($metric)
     {
         static::assertIsMetric($metric);
         static::assertInstanceOf(Partition::class, $metric);
@@ -326,25 +325,5 @@ class PartitionTest extends TestCase
     protected static function assertIsPartitionResult($actual, string $message = '')
     {
         static::assertInstanceOf(PartitionResult::class, $actual, $message);
-    }
-
-    /* -----------------------------------------------------------------
-     |  Other Methods
-     | -----------------------------------------------------------------
-     */
-
-    /**
-     * Create users for tests.
-     */
-    protected function createUsers()
-    {
-        factory(User::class, 1)->states(['gold', 'premium'])->create(['points' => 2000]);
-        factory(User::class, 2)->states(['gold'])->create(['points' => 1000]);
-
-        factory(User::class, 2)->states(['silver'])->create(['points' => 300]);
-        factory(User::class, 2)->states(['silver'])->create(['points' => 250]);
-
-        factory(User::class, 3)->states(['bronze'])->create(['points' => 100]);
-        factory(User::class, 5)->states(['bronze'])->create(['points' => 50]);
     }
 }
