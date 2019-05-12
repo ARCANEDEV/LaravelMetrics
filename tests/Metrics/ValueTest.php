@@ -108,9 +108,9 @@ class ValueTest extends TestCase
         $metric = new TotalPosts;
 
         $expected = [
-            'metric' => TotalPosts::class,
-            'type'   => 'value',
-            'title'  => 'Total Posts',
+            'class' => TotalPosts::class,
+            'type'  => 'value',
+            'title' => 'Total Posts',
         ];
 
         static::assertEquals($expected, $metric->toArray());

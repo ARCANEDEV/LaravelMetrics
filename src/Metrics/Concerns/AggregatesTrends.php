@@ -379,4 +379,69 @@ trait AggregatesTrends
     {
         return $this->min(Trend::BY_MINUTES, $model, $column, $dateColumn);
     }
+
+    /* -----------------------------------------------------------------
+     |  Aggregate Methods
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * Calculate the `count` of the metric.
+     *
+     * @param  string                                        $unit
+     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
+     * @param  string|null                                   $dateColumn
+     * @param  string|null                                   $column
+     *
+     * @return \Arcanedev\LaravelMetrics\Results\TrendResult|mixed
+     */
+    abstract public function count($unit, $model, $dateColumn = null, $column = null);
+
+    /**
+     * Return a value result showing a average aggregate over time.
+     *
+     * @param  string                                        $unit
+     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
+     * @param  string                                        $column
+     * @param  string|null                                   $dateColumn
+     *
+     * @return \Arcanedev\LaravelMetrics\Results\TrendResult|mixed
+     */
+    abstract public function average(string $unit, $model, $column, $dateColumn = null);
+
+    /**
+     * Return a value result showing a sum aggregate over time.
+     *
+     * @param  string                                        $unit
+     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
+     * @param  string                                        $column
+     * @param  string|null                                   $dateColumn
+     *
+     * @return \Arcanedev\LaravelMetrics\Results\TrendResult|mixed
+     */
+    abstract public function sum(string $unit, $model, $column, $dateColumn = null);
+
+    /**
+     * Return a value result showing a max aggregate over time.
+     *
+     * @param  string                                        $unit
+     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
+     * @param  string                                        $column
+     * @param  string|null                                   $dateColumn
+     *
+     * @return \Arcanedev\LaravelMetrics\Results\TrendResult|mixed
+     */
+    abstract public function max(string $unit, $model, $column, $dateColumn = null);
+
+    /**
+     * Return a value result showing a min aggregate over time.
+     *
+     * @param  string                                        $unit
+     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
+     * @param  string                                        $column
+     * @param  string|null                                   $dateColumn
+     *
+     * @return \Arcanedev\LaravelMetrics\Results\TrendResult|mixed
+     */
+    abstract public function min(string $unit, $model, $column, $dateColumn = null);
 }

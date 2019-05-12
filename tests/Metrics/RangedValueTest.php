@@ -199,7 +199,7 @@ class RangedValueTest extends TestCase
         $metric = new TotalPublishedPosts;
 
         $expected = [
-            'metric' => TotalPublishedPosts::class,
+            'class'  => TotalPublishedPosts::class,
             'type'   => 'ranged-value',
             'title'  => 'Total Published Posts',
             'ranges' => [

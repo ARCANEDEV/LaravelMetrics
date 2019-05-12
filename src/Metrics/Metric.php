@@ -142,9 +142,9 @@ abstract class Metric implements Arrayable, Jsonable, JsonSerializable
     public function toArray(): array
     {
         return [
-            'metric' => static::class,
-            'type'   => $this->type(),
-            'title'  => $this->title(),
+            'class' => static::class,
+            'type'  => $this->type(),
+            'title' => $this->title(),
         ];
     }
 
