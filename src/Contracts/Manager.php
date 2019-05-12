@@ -8,5 +8,78 @@
  */
 interface Manager
 {
-    //
+    /* -----------------------------------------------------------------
+     |  Getters & Setters
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * Get the registered metrics.
+     *
+     * @return array
+     */
+    public function registered(): array;
+
+    /**
+     * Get the selected metrics.
+     *
+     * @return array
+     */
+    public function selected(): array;
+
+    /**
+     * Set the selected metrics.
+     *
+     * @param  array  $metrics
+     *
+     * @return $this
+     */
+    public function setSelected(array $metrics);
+
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * Get a metric instance.
+     *
+     * @param  string      $metric
+     * @param  mixed|null  $default
+     *
+     * @return \Arcanedev\LaravelMetrics\Metrics\Metric|mixed
+     */
+    public function get(string $metric, $default = null);
+
+    /**
+     * Register the metric.
+     *
+     * @param  array|string  $metrics
+     *
+     * @return $this
+     */
+    public function register($metrics);
+
+    /**
+     * Check if the metric exists.
+     *
+     * @param  string  $metric
+     *
+     * @return bool
+     */
+    public function has(string $metric): bool;
+
+    /**
+     * Check if the selected metrics is not empty
+     *
+     * @return bool
+     */
+    public function hasSelected(): bool;
+
+    /**
+     * Build the selected metrics.
+     *
+     * @return array
+     */
+    public function buildSelected(): array;
 }

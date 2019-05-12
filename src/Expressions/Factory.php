@@ -1,5 +1,6 @@
 <?php namespace Arcanedev\LaravelMetrics\Expressions;
 
+use Arcanedev\LaravelMetrics\Exceptions\ExpressionNotFound;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
 
@@ -28,6 +29,13 @@ class Factory
             'pgsql'   => IfNull\PostgresExpression::class,
             'sqlite'  => IfNull\SqliteExpression::class,
         ],
+
+        'trend_date_format' => [
+            'mariadb' => TrendDateFormat\MySqlExpression::class,
+            'mysql'   => TrendDateFormat\MySqlExpression::class,
+            'pgsql'   => TrendDateFormat\PostgresExpression::class,
+            'sqlite'  => TrendDateFormat\SqliteExpression::class,
+        ],
     ];
 
     /* -----------------------------------------------------------------
@@ -50,7 +58,7 @@ class Factory
         $expression = Arr::get(static::$expressions, "{$name}.{$driver}");
 
         if (is_null($expression))
-            throw new InvalidArgumentException("Expression `{$name}` not found for `{$driver}` driver");
+            throw ExpressionNotFound::make($name, $driver);
 
         return new $expression($value, ...$params);
     }

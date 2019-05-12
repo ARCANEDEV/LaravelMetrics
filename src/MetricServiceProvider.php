@@ -1,6 +1,5 @@
 <?php namespace Arcanedev\LaravelMetrics;
 
-use Arcanedev\LaravelMetrics\Contracts\Manager;
 use Arcanedev\Support\PackageServiceProvider;
 
 /**
@@ -46,6 +45,8 @@ class MetricServiceProvider extends PackageServiceProvider
     public function boot()
     {
         parent::boot();
+
+        $this->publishConfig();
     }
 
     /**

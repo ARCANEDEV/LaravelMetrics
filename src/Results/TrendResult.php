@@ -8,5 +8,65 @@
  */
 class TrendResult extends Result
 {
-    //
+    /* -----------------------------------------------------------------
+     |  Properties
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * The trend data of the result.
+     *
+     * @var array
+     */
+    public $trend = [];
+
+    /* -----------------------------------------------------------------
+     |  Setters
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * Set the latest value of the trend as the primary value.
+     *
+     * @return $this
+     */
+    public function showLatestValue()
+    {
+        if (is_array($this->trend))
+            return $this->value(last($this->trend));
+
+        return $this;
+    }
+
+    /**
+     * Set the trend of data for the metric.
+     *
+     * @param  array  $trend
+     *
+     * @return $this
+     */
+    public function trend(array $trend)
+    {
+        $this->trend = $trend;
+
+        return $this;
+    }
+
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return array_merge(
+            parent::toArray(),
+            ['trend'  => $this->trend]
+        );
+    }
 }

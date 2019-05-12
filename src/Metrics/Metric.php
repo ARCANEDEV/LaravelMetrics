@@ -174,10 +174,12 @@ abstract class Metric implements Arrayable, Jsonable, JsonSerializable
             $cacheFor = new DateInterval(sprintf('PT%dS', $cacheFor * 60));
 
         $key = sprintf(
-            '%s.%s.%s',
+            '%s.%s.%s.%s.%s',
             Str::slug($this->getCachePrefix(), '.'),
             Str::slug(str_replace('\\', '_', static::class)),
-            $this->request->input('range', 'no-range')
+            $this->request->input('range', 'no-range'),
+            $this->request->input('timezone', 'no-timezone'),
+            $this->request->input('twelveHourTime', '24-hour-time')
         );
 
         return Cache::remember($key, $cacheFor, $callback);
