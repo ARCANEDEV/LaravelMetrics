@@ -19,6 +19,6 @@ class InvalidTrendUnitException extends InvalidArgumentException
      */
     public static function make(string $unit)
     {
-        return new static("Invalid trend unit provided [{$unit}].");
+        return new static("Invalid trend unit provided [{$unit}]");
     }
 }

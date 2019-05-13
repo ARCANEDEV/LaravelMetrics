@@ -1,9 +1,10 @@
 <?php namespace Arcanedev\LaravelMetrics;
 
 use Arcanedev\LaravelMetrics\Contracts\Manager as ManagerContract;
-use Arcanedev\LaravelMetrics\Exceptions\MetricNotFound;
+use Arcanedev\LaravelMetrics\Metrics\Metric;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 /**
  * Class     Manager
@@ -104,11 +105,25 @@ class Manager implements ManagerContract
      */
     public function get(string $metric, $default = null)
     {
-        return $this->has($metric) ? $this->app->make($metric) : $default;
+        return $this->has($metric) ? $this->make($metric) : $default;
     }
 
     /**
-     * Register the metrics.
+     * Get/Make the given metric from the container.
+     *
+     * @param  string  $metric
+     *
+     * @return \Arcanedev\LaravelMetrics\Metrics\Metric|mixed
+     */
+    public function make(string $metric): Metric
+    {
+        $this->register($metric);
+
+        return $this->app->make($metric);
+    }
+
+    /**
+     * Register the metrics into the container.
      *
      * @param  array|string  $metrics
      *
@@ -135,7 +150,20 @@ class Manager implements ManagerContract
      */
     public function has(string $metric): bool
     {
-        return $this->app->has($metric);
+        return $this->app->has($metric)
+            || $this->isRegistered($metric);
+    }
+
+    /**
+     * Check if the metric is registered.
+     *
+     * @param  string  $metric
+     *
+     * @return bool
+     */
+    public function isRegistered(string $metric): bool
+    {
+        return in_array($metric, $this->registered);
     }
 
     /**
@@ -149,16 +177,16 @@ class Manager implements ManagerContract
     }
 
     /**
-     * Build the selected metrics.
+     * Make the selected metrics.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function buildSelected(): array
+    public function makeSelected(): Collection
     {
-        return array_map(function ($class) {
-            return with($this->get($class), function () use ($class) {
-                throw new MetricNotFound('Metric not found: '.$class);
-            });
-        }, $this->selected());
+        $selected = array_combine($this->selected(), $this->selected());
+
+        return Collection::make($selected)->transform(function ($class) {
+            return $this->make($class);
+        });
     }
 }

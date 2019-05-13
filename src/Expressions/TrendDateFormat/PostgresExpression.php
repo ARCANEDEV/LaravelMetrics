@@ -64,7 +64,7 @@ class PostgresExpression extends Expression
             return ' + interval \''.$offset.' hour\'';
         elseif ($offset === 0)
             return '';
-        else
-            return ' - interval \''.($offset * -1).' HOUR\'';
+
+        return ' - interval \''.($offset * -1).' HOUR\'';
     }
 }

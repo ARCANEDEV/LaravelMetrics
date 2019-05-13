@@ -174,7 +174,7 @@ abstract class Trend extends Metric
         $expression = $this->getExpression($query, 'trend_date_format', $dateColumn, [$unit, $query, $timezone]);
 
         $dates = TrendDatePeriod::make(
-            $startingDate = static::getAggregateStartingDate($unit, $range),
+            $startingDate = TrendDatePeriod::getStartingDate($unit, $range),
             $endingDate = Chronos::now(),
             $unit,
             $timezone
@@ -243,43 +243,6 @@ abstract class Trend extends Metric
 
             case self::BY_MINUTES:
                 return Chronos::createFromFormat('Y-m-d H:i:00', $date);
-
-            default:
-                throw InvalidTrendUnitException::make($unit);
-        }
-    }
-
-    /**
-     * Determine the proper aggregate starting date.
-     *
-     * @param  string      $unit
-     * @param  mixed|null  $range
-     *
-     * @return \Cake\Chronos\Chronos
-     */
-    protected static function getAggregateStartingDate(string $unit, $range = null): Chronos
-    {
-        $range = $range ?: 2;
-
-        switch ($unit) {
-            case self::BY_MONTHS:
-                return Chronos::now()->subMonths($range - 1)->firstOfMonth()->setTime(0, 0);
-
-            case self::BY_WEEKS:
-                return Chronos::now()->subWeeks($range - 1)->startOfWeek()->setTime(0, 0);
-
-            case self::BY_DAYS:
-                return Chronos::now()->subDays($range - 1)->setTime(0, 0);
-
-            case self::BY_HOURS:
-                return with(Chronos::now()->subHours($range - 1), function (Chronos $now) {
-                    return $now->setTimeFromTimeString("{$now->hour}:00");
-                });
-
-            case self::BY_MINUTES:
-                return with(Chronos::now()->subMinutes($range - 1), function (Chronos $now) {
-                    return $now->setTimeFromTimeString("{$now->hour}:{$now->minute}:00");
-                });
 
             default:
                 throw InvalidTrendUnitException::make($unit);

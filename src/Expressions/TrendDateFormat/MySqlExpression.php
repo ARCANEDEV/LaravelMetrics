@@ -64,7 +64,7 @@ class MySqlExpression extends Expression
             return ' + INTERVAL '.$offset.' HOUR';
         elseif ($offset === 0)
             return '';
-        else
-            return ' - INTERVAL '.($offset * -1).' HOUR';
+
+        return ' - INTERVAL '.($offset * -1).' HOUR';
     }
 }

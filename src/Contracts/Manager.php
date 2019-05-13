@@ -1,5 +1,7 @@
 <?php namespace Arcanedev\LaravelMetrics\Contracts;
 
+use Illuminate\Support\Collection;
+
 /**
  * Interface     Manager
  *
@@ -52,7 +54,16 @@ interface Manager
     public function get(string $metric, $default = null);
 
     /**
-     * Register the metric.
+     * Get/Make the given metric from the container.
+     *
+     * @param  string  $metric
+     *
+     * @return \Arcanedev\LaravelMetrics\Metrics\Metric|mixed
+     */
+    public function make(string $metric);
+
+    /**
+     * Register the metrics into the container.
      *
      * @param  array|string  $metrics
      *
@@ -70,6 +81,15 @@ interface Manager
     public function has(string $metric): bool;
 
     /**
+     * Check if the metric is registered.
+     *
+     * @param  string  $metric
+     *
+     * @return bool
+     */
+    public function isRegistered(string $metric): bool;
+
+    /**
      * Check if the selected metrics is not empty
      *
      * @return bool
@@ -77,9 +97,9 @@ interface Manager
     public function hasSelected(): bool;
 
     /**
-     * Build the selected metrics.
+     * Make the selected metrics.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function buildSelected(): array;
+    public function makeSelected(): Collection;
 }

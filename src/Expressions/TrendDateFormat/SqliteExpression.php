@@ -60,7 +60,7 @@ class SqliteExpression extends Expression
             return '\'+'.$offset.' hour\'';
         elseif ($offset === 0)
             return '\'+0 hour\'';
-        else
-            return '\'-'.($offset * -1).' hour\'';
+
+        return '\'-'.($offset * -1).' hour\'';
     }
 }

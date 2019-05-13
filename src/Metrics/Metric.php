@@ -3,8 +3,7 @@
 use Arcanedev\LaravelMetrics\Concerns\ConvertsToArray;
 use Closure;
 use DateInterval;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\{Arrayable, Jsonable};
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;

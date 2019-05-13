@@ -2,8 +2,6 @@
 
 use Arcanedev\LaravelMetrics\Expressions\Expression as BaseExpression;
 use Cake\Chronos\Chronos;
-use DateTime;
-use DateTimeZone;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -51,11 +49,11 @@ abstract class Expression extends BaseExpression
      * @param  mixed                                  $value
      * @param  string                                 $unit
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string                                 $timezone
+     * @param  string|null                            $timezone
      *
      * @return void
      */
-    public function __construct($value, string $unit, Builder $query, $timezone)
+    public function __construct($value, string $unit, Builder $query, $timezone = null)
     {
         parent::__construct($value);
 
@@ -76,10 +74,9 @@ abstract class Expression extends BaseExpression
      */
     public function offset()
     {
-        if ($this->timezone)
-            return (new DateTime(Chronos::now()->format('Y-m-d H:i:s'), new DateTimeZone($this->timezone)))->getOffset() / 60 / 60;
-
-        return 0;
+        return $this->timezone
+            ? Chronos::now()->setTimezone($this->timezone)->getOffset() / 60 / 60
+            : 0;
     }
 
     /**
