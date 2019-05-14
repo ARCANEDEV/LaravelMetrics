@@ -30,6 +30,12 @@ class PartitionResultTest extends ResultTestCase
     /** @test */
     public function it_can_set_value()
     {
+        $result = $this->makeResult(10);
+
+        self::assertInstanceOf(Collection::class, $result->value);
+        self::assertCount(1, $result->value);
+        self::assertEquals([10], $result->value->all());
+
         $result = $this->makeResult()->value(10);
 
         self::assertInstanceOf(Collection::class, $result->value);

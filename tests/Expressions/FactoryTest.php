@@ -146,7 +146,7 @@ class FactoryTest extends TestCase
             ['mariadb', Trend::BY_WEEKS, 'date_format("published_at", \'%x-%v\')'],
             ['mysql', Trend::BY_WEEKS, 'date_format("published_at", \'%x-%v\')'],
             ['pgsql', Trend::BY_WEEKS, 'to_char("published_at", \'IYYY-IW\')'],
-            ['sqlite', Trend::BY_WEEKS, 'strftime(\'%Y-%W\', datetime("published_at", \'+0 hour\'))'],
+            ['sqlite', Trend::BY_WEEKS, 'strftime(\'%Y\', datetime("published_at", \'+0 hour\')) || \'-\' || (strftime(\'%W\', datetime("published_at", \'+0 hour\')) + (1 - strftime(\'%W\', strftime(\'%Y\', datetime("published_at")) || \'-01-04\')))'],
 
             // BY DAYS
             ['mariadb', Trend::BY_DAYS, 'date_format("published_at", \'%Y-%m-%d\')'],
@@ -225,9 +225,9 @@ class FactoryTest extends TestCase
             ],
             [
                 'sqlite', Trend::BY_WEEKS, [
-                    'UTC'              => 'strftime(\'%Y-%W\', datetime("published_at", \'+0 hour\'))',
-                    'Asia/Tokyo'       => 'strftime(\'%Y-%W\', datetime("published_at", \'+9 hour\'))',
-                    'America/New_York' => 'strftime(\'%Y-%W\', datetime("published_at", \'-4 hour\'))',
+                    'UTC'              => 'strftime(\'%Y\', datetime("published_at", \'+0 hour\')) || \'-\' || (strftime(\'%W\', datetime("published_at", \'+0 hour\')) + (1 - strftime(\'%W\', strftime(\'%Y\', datetime("published_at")) || \'-01-04\')))',
+                    'Asia/Tokyo'       => 'strftime(\'%Y\', datetime("published_at", \'+9 hour\')) || \'-\' || (strftime(\'%W\', datetime("published_at", \'+9 hour\')) + (1 - strftime(\'%W\', strftime(\'%Y\', datetime("published_at")) || \'-01-04\')))',
+                    'America/New_York' => 'strftime(\'%Y\', datetime("published_at", \'-4 hour\')) || \'-\' || (strftime(\'%W\', datetime("published_at", \'-4 hour\')) + (1 - strftime(\'%W\', strftime(\'%Y\', datetime("published_at")) || \'-01-04\')))',
                 ],
             ],
 

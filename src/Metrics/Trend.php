@@ -4,7 +4,6 @@ use Arcanedev\LaravelMetrics\Exceptions\InvalidTrendUnitException;
 use Arcanedev\LaravelMetrics\Helpers\TrendDatePeriod;
 use Arcanedev\LaravelMetrics\Results\TrendResult;
 use Cake\Chronos\Chronos;
-use DateTime;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -194,7 +193,7 @@ abstract class Trend extends Metric
                 DB::raw("{$method}({$wrappedColumn}) as aggregate")
             ])
             ->whereBetween($dateColumn, [$startingDate, $endingDate])
-            ->groupBy(DB::raw($expression))
+            ->groupBy('date_result')
             ->orderBy('date_result')
             ->get()
             ->mapWithKeys(function ($result) use ($method, $unit, $twelveHourTime) {
@@ -209,7 +208,7 @@ abstract class Trend extends Metric
                 ];
             });
 
-        $results = $dates->merge($results);
+        $results = $dates->merge($results)->sortKeys();
 
         if ($results->count() > $range)
             $results->shift();
@@ -233,7 +232,7 @@ abstract class Trend extends Metric
 
             case self::BY_WEEKS:
                 [$year, $week] = explode('-', $date);
-                return Chronos::instance((new DateTime)->setISODate($year, $week)->setTime(0, 0));
+                return (new Chronos)->setISODate($year, $week)->setTime(0, 0);
 
             case self::BY_DAYS:
                 return Chronos::createFromFormat('Y-m-d', $date);

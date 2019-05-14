@@ -2,7 +2,9 @@
 
 use Arcanedev\LaravelMetrics\Results\TrendResult;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Trend\CountPublishedPostsByDays;
+use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Trend\CountPublishedPostsByHours;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Trend\CountPublishedPostsByMonths;
+use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Trend\CountPublishedPostsByWeeks;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
 use Cake\Chronos\Chronos;
 use Illuminate\Http\Request;
@@ -16,7 +18,7 @@ use Illuminate\Http\Request;
 class TrendTest extends TestCase
 {
     /* -----------------------------------------------------------------
-     |  Tests
+     |  Count Tests
      | -----------------------------------------------------------------
      */
 
@@ -67,10 +69,63 @@ class TrendTest extends TestCase
     }
 
     /** @test */
+    public function it_can_calculate_count_by_weeks()
+    {
+        Chronos::setTestNow($now = Chronos::create(2019, 5, 5, 0, 0, 0));
+
+        factory(Post::class)->create(['views' => 10, 'published_at' => $now]);
+        factory(Post::class)->create(['views' => 50, 'published_at' => $now->subWeeks(1)]);
+        factory(Post::class)->create(['views' => 40, 'published_at' => $now->subWeeks(1)]);
+        factory(Post::class)->create(['views' => 30, 'published_at' => $now->subWeeks(2)]);
+        factory(Post::class)->create(['views' => 20, 'published_at' => $now->subWeeks(2)]);
+
+        $metric = new CountPublishedPostsByWeeks;
+
+        static::assertIsTrendMetric($metric);
+
+        $result = $this->calculate($metric);
+
+        static::assertIsTrendResult($result);
+
+        $expected = [
+            '2019-04-29 2019-05-05' => [
+                'label' => 'April 29 - May 5',
+                'value' => 1,
+            ],
+        ];
+        static::assertEquals($expected, $result->trend);
+
+        $result = $this->calculate($metric, Request::create('/', 'GET', ['range' => 3]));
+
+        $expected = [
+            '2019-04-15 2019-04-21' => [
+                'label' => 'April 15 - April 21',
+                'value' => 2,
+            ],
+            '2019-04-22 2019-04-28' => [
+                'label' => 'April 22 - April 28',
+                'value' => 2,
+            ],
+            '2019-04-29 2019-05-05' => [
+                'label' => 'April 29 - May 5',
+                'value' => 1,
+            ],
+        ];
+        static::assertEquals($expected, $result->trend);
+
+        Chronos::setTestNow();
+    }
+
+    /** @test */
     public function it_can_calculate_count_by_days()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Chronos::setTestNow($now = Chronos::create(2019, 5, 1, 0, 0, 0));
+
+        factory(Post::class)->create(['views' => 10, 'published_at' => $now]);
+        factory(Post::class)->create(['views' => 50, 'published_at' => $now->subDays(1)]);
+        factory(Post::class)->create(['views' => 40, 'published_at' => $now->subDays(1)]);
+        factory(Post::class)->create(['views' => 30, 'published_at' => $now->subDays(2)]);
+        factory(Post::class)->create(['views' => 20, 'published_at' => $now->subDays(2)]);
 
         static::assertIsTrendMetric($metric = new CountPublishedPostsByDays);
 
@@ -78,13 +133,32 @@ class TrendTest extends TestCase
 
         static::assertIsTrendResult($result);
 
-        static::assertCount(1, $result->trend);
-        static::assertSame(1, last($result->trend)['value']);
+        $expected = [
+            '2019-05-01' => [
+                'label' => 'May 1, 2019',
+                'value' => 1,
+            ],
+        ];
+
+        static::assertEquals($expected, $result->trend);
 
         $result = $this->calculate($metric, Request::create('/', 'GET', ['range' => 3]));
 
-        static::assertCount(3, $result->trend);
-        static::assertSame(1, last($result->trend)['value']);
+        $expected = [
+            '2019-04-29' => [
+                'label' => 'April 29, 2019',
+                'value' => 2,
+            ],
+            '2019-04-30' => [
+                'label' => 'April 30, 2019',
+                'value' => 2,
+            ],
+            '2019-05-01' => [
+                'label' => 'May 1, 2019',
+                'value' => 1,
+            ],
+        ];
+        static::assertEquals($expected, $result->trend);
 
         Chronos::setTestNow();
     }
@@ -92,24 +166,47 @@ class TrendTest extends TestCase
     /** @test */
     public function it_can_calculate_count_by_hours()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Chronos::setTestNow($now = Chronos::create(2019, 5, 1, 0, 0, 0));
 
-        static::assertIsTrendMetric($metric = new CountPublishedPostsByDays);
+        factory(Post::class)->create(['views' => 10, 'published_at' => $now]);
+        factory(Post::class)->create(['views' => 50, 'published_at' => $now->subHours(1)]);
+        factory(Post::class)->create(['views' => 40, 'published_at' => $now->subHours(1)]);
+        factory(Post::class)->create(['views' => 30, 'published_at' => $now->subHours(2)]);
+        factory(Post::class)->create(['views' => 20, 'published_at' => $now->subHours(2)]);
+
+        static::assertIsTrendMetric($metric = new CountPublishedPostsByHours);
 
         $result = $this->calculate($metric);
 
         static::assertIsTrendResult($result);
 
-        static::assertCount(1, $result->trend);
-        static::assertSame(1, last($result->trend)['value']);
-
-        Chronos::setTestNow();
+        $expected = [
+            '2019-05-01 00:00' => [
+                'label' => 'May 1 - 0:00',
+                'value' => 1,
+            ],
+        ];
+        static::assertEquals($expected, $result->trend);
 
         $result = $this->calculate($metric, Request::create('/', 'GET', ['range' => 3]));
 
-        static::assertCount(3, $result->trend);
-        static::assertSame(1, last($result->trend)['value']);
+        $expected = [
+            '2019-04-30 22:00' => [
+                'label' => 'April 30 - 22:00',
+                'value' => 2,
+            ],
+            '2019-04-30 23:00' => [
+                'label' => 'April 30 - 23:00',
+                'value' => 2,
+            ],
+            '2019-05-01 00:00' => [
+                'label' => 'May 1 - 0:00',
+                'value' => 1,
+            ],
+        ];
+        static::assertEquals($expected, $result->trend);
+
+        Chronos::setTestNow();
     }
 
     /* -----------------------------------------------------------------

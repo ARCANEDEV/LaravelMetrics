@@ -1,14 +1,15 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Results;
 
+use Arcanedev\LaravelMetrics\Results\TrendResult;
 use Arcanedev\LaravelMetrics\Results\ValueResult;
 
 /**
- * Class     ValueResultTest
+ * Class     TrendResultTest
  *
  * @package  Arcanedev\LaravelMetrics\Tests\Results
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class ValueResultTest extends ResultTestCase
+class TrendResultTest extends ResultTestCase
 {
     /* -----------------------------------------------------------------
      |  Tests
@@ -23,6 +24,7 @@ class ValueResultTest extends ResultTestCase
         static::assertIsMetricResult($result);
 
         self::assertNull($result->value);
+        self::assertSame([], $result->trend);
     }
 
     /** @test */
@@ -38,6 +40,54 @@ class ValueResultTest extends ResultTestCase
     }
 
     /** @test */
+    public function it_can_set_trend()
+    {
+        $result = $this->makeResult()->trend($trend = [
+            '2019-3' => [
+                'label' => 'March, 2019',
+                'value' => 23,
+            ],
+            '2019-4' => [
+                'label' => 'April, 2019',
+                'value' => 30,
+            ],
+            '2019-5' => [
+                'label' => 'May, 2019',
+                'value' => 12,
+            ],
+        ]);
+
+        static::assertEquals($trend, $result->trend);
+    }
+
+    /** @test */
+    public function it_can_show_latest_value()
+    {
+        $result = $this->makeResult()->trend($trend = [
+            '2019-3' => [
+                'label' => 'March, 2019',
+                'value' => 23,
+            ],
+            '2019-4' => [
+                'label' => 'April, 2019',
+                'value' => 30,
+            ],
+            '2019-5' => [
+                'label' => 'May, 2019',
+                'value' => 12,
+            ],
+        ]);
+
+        static::assertNull($result->value);
+        static::assertEquals($trend, $result->trend);
+
+        $result->showLatestValue();
+
+        static::assertSame(12, $result->value);
+        static::assertEquals($trend, $result->trend);
+    }
+
+    /** @test */
     public function it_can_convert_to_array()
     {
         $result = $this->makeResult(123)
@@ -50,6 +100,7 @@ class ValueResultTest extends ResultTestCase
             'format' => '0,00',
             'prefix' => '$',
             'suffix' => 'per unit',
+            'trend'  => [],
         ];
 
         static::assertEquals($expected, $result->toArray());
@@ -68,6 +119,7 @@ class ValueResultTest extends ResultTestCase
             'format' => '0,00',
             'prefix' => '$',
             'suffix' => 'per unit',
+            'trend'  => [],
         ]);
 
         static::assertJson($actual = $result->toJson());
@@ -87,10 +139,10 @@ class ValueResultTest extends ResultTestCase
      *
      * @param  mixed|null  $value
      *
-     * @return \Arcanedev\LaravelMetrics\Results\Result|mixed
+     * @return \Arcanedev\LaravelMetrics\Results\TrendResult|mixed
      */
     protected function makeResult($value = null)
     {
-        return new ValueResult($value);
+        return new TrendResult($value);
     }
 }

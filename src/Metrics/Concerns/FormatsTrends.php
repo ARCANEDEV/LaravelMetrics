@@ -106,7 +106,7 @@ trait FormatsTrends
     protected static function formatAggregateKeyByWeeks(Chronos $date): string
     {
         return sprintf('%s %s',
-            static::formatAggregateKeyByDays($date->startOfWeek()),
+            static::formatAggregateKeyByDays($date),
             static::formatAggregateKeyByDays($date->endOfWeek())
         );
     }

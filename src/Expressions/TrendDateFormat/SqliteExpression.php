@@ -31,7 +31,7 @@ class SqliteExpression extends Expression
                 return "strftime('%Y-%m', datetime({$this->wrap($this->value)}, {$interval}))";
 
             case Trend::BY_WEEKS:
-                return "strftime('%Y-%W', datetime({$this->wrap($this->value)}, {$interval}))";
+                return "strftime('%Y', datetime({$this->wrap($this->value)}, {$interval})) || '-' || (strftime('%W', datetime({$this->wrap($this->value)}, {$interval})) + (1 - strftime('%W', strftime('%Y', datetime({$this->wrap($this->value)})) || '-01-04')))";
 
             case Trend::BY_DAYS:
                 return "strftime('%Y-%m-%d', datetime({$this->wrap($this->value)}, {$interval}))";

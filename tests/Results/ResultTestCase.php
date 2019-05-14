@@ -27,7 +27,7 @@ abstract class ResultTestCase extends TestCase
     /** @test */
     public function it_can_set_suffix()
     {
-        $result = (new RangedValueResult)->suffix('$');
+        $result = $this->makeResult()->suffix('$');
 
         self::assertSame('$', $result->suffix);
     }
@@ -35,7 +35,7 @@ abstract class ResultTestCase extends TestCase
     /** @test */
     public function it_can_set_format()
     {
-        $result = (new RangedValueResult)->format('0,00');
+        $result = $this->makeResult()->format('0,00');
 
         self::assertSame('0,00', $result->format);
     }

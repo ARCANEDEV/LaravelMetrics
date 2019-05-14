@@ -32,10 +32,9 @@ class TrendResult extends Result
      */
     public function showLatestValue()
     {
-        if (is_array($this->trend))
-            return $this->value(last($this->trend));
-
-        return $this;
+        return $this->value(
+            last($this->trend)['value'] ?? null
+        );
     }
 
     /**
