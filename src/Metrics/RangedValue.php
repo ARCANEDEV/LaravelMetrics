@@ -128,7 +128,7 @@ abstract class RangedValue extends Metric
         $query      = static::getQuery($model);
         $column     = $column ?? $query->getModel()->getQualifiedKeyName();
         $dateColumn = $dateColumn ?? $query->getModel()->getCreatedAtColumn();
-        $range      = $this->getSelectedRange();
+        $range      = $this->request->input('range');
 
         $now      = Chronos::now();
         $previous = with(clone $query)->whereBetween($dateColumn, $this->previousRange($range, $now))->{$method}($column);

@@ -1,14 +1,13 @@
 <?php namespace Arcanedev\LaravelMetrics\Metrics;
 
 use Arcanedev\LaravelMetrics\Concerns\ConvertsToArray;
+use Arcanedev\LaravelMetrics\Contracts\Metric as MetricContract;
 use Closure;
 use DateInterval;
-use Illuminate\Contracts\Support\{Arrayable, Jsonable};
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
-use JsonSerializable;
 
 /**
  * Class     Metric
@@ -16,7 +15,7 @@ use JsonSerializable;
  * @package  Arcanedev\LaravelMetrics\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-abstract class Metric implements Arrayable, Jsonable, JsonSerializable
+abstract class Metric implements MetricContract
 {
     /* -----------------------------------------------------------------
      |  Traits
@@ -41,13 +40,6 @@ abstract class Metric implements Arrayable, Jsonable, JsonSerializable
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
-
-    /**
-     * Get the metric's type.
-     *
-     * @return string
-     */
-    abstract public function type(): string;
 
     /**
      * Get the metric's title.
@@ -109,15 +101,6 @@ abstract class Metric implements Arrayable, Jsonable, JsonSerializable
             ? $this->cacheResult($cacheFor, $resolver)
             : $resolver();
     }
-
-    /**
-     * Calculate the metric.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     *
-     * @return \Arcanedev\LaravelMetrics\Results\Result|mixed
-     */
-    abstract public function calculate(Request $request);
 
     /**
      * Make a new result instance.

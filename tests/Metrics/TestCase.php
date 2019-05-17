@@ -62,6 +62,7 @@ abstract class TestCase extends BaseTestCase
         $expectations = [
             \Illuminate\Contracts\Support\Arrayable::class,
             \Illuminate\Contracts\Support\Jsonable::class,
+            \Arcanedev\LaravelMetrics\Contracts\Metric::class,
             \Arcanedev\LaravelMetrics\Metrics\Metric::class,
         ];
 
