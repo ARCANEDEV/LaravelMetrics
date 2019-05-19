@@ -63,9 +63,8 @@ class TrendResult extends Result
      */
     public function toArray(): array
     {
-        return array_merge(
-            parent::toArray(),
-            ['trend'  => $this->trend]
-        );
+        return array_merge(parent::toArray(), [
+            'trend'  => $this->trend,
+        ]);
     }
 }

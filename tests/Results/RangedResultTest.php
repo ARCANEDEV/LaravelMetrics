@@ -31,25 +31,46 @@ class RangedResultTest extends ResultTestCase
         $result = $this->makeResult()->value(10);
 
         self::assertSame(10, $result->value);
+
+        $excepted = [
+            'value'    => 10,
+            'format'   => null,
+            'prefix'   => null,
+            'suffix'   => null,
+            'previous' => [
+                'value' => null,
+                'label' => null,
+            ],
+            'change' => [
+                'value' => null,
+                'label' => 'No Prior Data',
+            ],
+        ];
+
+        static::assertEquals($excepted, $result->toArray());
     }
 
     /** @test */
     public function it_can_convert_to_array()
     {
-        $result = $this->makeResult(123)
+        $result = $this->makeResult(150)
             ->prefix('$')
             ->suffix('per unit')
             ->format('0,00')
-            ->previous(321, 'Previous value');
+            ->previous(50, 'Previous value');
 
         $expected = [
-            'value'    => 123,
+            'value'    => 150,
             'format'   => '0,00',
             'prefix'   => '$',
             'suffix'   => 'per unit',
             'previous' => [
-                'value' => 321,
-                'label' => 'Previous value'
+                'value' => 50,
+                'label' => 'Previous value',
+            ],
+            'change' => [
+                'value' => 66.67,
+                'label' => '66.67% Increase',
             ],
         ];
 
@@ -59,20 +80,24 @@ class RangedResultTest extends ResultTestCase
     /** @test */
     public function it_can_convert_to_json()
     {
-        $result = $this->makeResult(123)
+        $result = $this->makeResult(100)
             ->prefix('$')
             ->suffix('per unit')
             ->format('0,00')
-            ->previous(321, 'Previous value');
+            ->previous(200, 'Previous value');
 
         $expected = json_encode([
-            'value'    => 123,
+            'value'    => 100,
             'format'   => '0,00',
             'prefix'   => '$',
             'suffix'   => 'per unit',
             'previous' => [
-                'value' => 321,
+                'value' => 200,
                 'label' => 'Previous value',
+            ],
+            'change' => [
+                'value' => -100,
+                'label' => '100% Decrease',
             ],
         ]);
 
@@ -81,6 +106,67 @@ class RangedResultTest extends ResultTestCase
 
         static::assertJson($actual = json_encode($result));
         static::assertJsonStringEqualsJsonString($expected, $actual);
+    }
+
+    /** @test */
+    public function it_can_calculate_change()
+    {
+        $result = $this->makeResult(10);
+
+        $expected = [
+            'value'    => 10,
+            'format'   => null,
+            'prefix'   => null,
+            'suffix'   => null,
+            'previous' => [
+                'value' => null,
+                'label' => null,
+            ],
+            'change'   => [
+                'value' => null,
+                'label' => 'No Prior Data',
+            ],
+        ];
+
+        static::assertEquals($expected, $result->toArray());
+
+        $result = $this->makeResult()->previous(10);
+
+        $expected = [
+            'value'    => null,
+            'format'   => null,
+            'prefix'   => null,
+            'suffix'   => null,
+            'previous' => [
+                'value' => 10,
+                'label' => null,
+            ],
+            'change'   => [
+                'value' => -100.0,
+                'label' => '100% Decrease',
+            ],
+        ];
+
+        static::assertEquals($expected, $result->toArray());
+
+        $result = $this->makeResult(10)->previous(10);
+
+        $expected = [
+            'value'    => 10,
+            'format'   => null,
+            'prefix'   => null,
+            'suffix'   => null,
+            'previous' => [
+                'value' => 10,
+                'label' => null,
+            ],
+            'change'   => [
+                'value' => 0,
+                'label' => 'Constant',
+            ],
+        ];
+
+        static::assertEquals($expected, $result->toArray());
     }
 
     /* -----------------------------------------------------------------

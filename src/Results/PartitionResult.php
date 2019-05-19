@@ -124,8 +124,10 @@ class PartitionResult extends Result
      *
      * @return $this
      */
-    public function sort(string $direction)
+    public function sort(string $direction = 'asc')
     {
+        $direction = strtolower($direction);
+
         if (in_array($direction, ['asc', 'desc']))
             $this->sort = $direction;
 
@@ -152,10 +154,7 @@ class PartitionResult extends Result
             return $values->sortBy('value', SORT_REGULAR, $this->sort === 'desc');
         })->values()->all();
 
-        return array_merge(
-            parent::toArray(),
-            compact('value')
-        );
+        return array_merge(parent::toArray(), compact('value'));
     }
 
     /* -----------------------------------------------------------------

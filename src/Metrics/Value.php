@@ -95,6 +95,11 @@ abstract class Value extends Metric
         return $this->aggregate('min', $model, $column);
     }
 
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
+     */
+
     /**
      * Handle the aggregate calculation of the metric.
      *
@@ -113,11 +118,6 @@ abstract class Value extends Metric
 
         return $this->result($method === 'count' ? $value : round($value, 0));
     }
-
-    /* -----------------------------------------------------------------
-     |  Other Methods
-     | -----------------------------------------------------------------
-     */
 
     /**
      * Make a new result instance.
