@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
 
 /**
  * Class     Metric
@@ -22,7 +23,8 @@ abstract class Metric implements MetricContract
      | -----------------------------------------------------------------
      */
 
-    use ConvertsToArray;
+    use Macroable,
+        ConvertsToArray;
 
     /* -----------------------------------------------------------------
      |  Properties

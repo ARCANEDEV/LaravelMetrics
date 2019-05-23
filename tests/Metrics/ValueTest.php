@@ -1,8 +1,9 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Metrics;
 
+use Arcanedev\LaravelMetrics\Metrics\Value;
 use Arcanedev\LaravelMetrics\Results\ValueResult;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value\{AveragePostViews, CachedMetric, MaxPostViews, MinPostViews,
-    TotalPosts, TotalPostViews};
+use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value\{AveragePostViews, CachedMetric, MaxPostViews,
+    MetricExtendedWithMacro, MinPostViews, TotalPosts, TotalPostViews};
 use Cake\Chronos\Chronos;
 use Illuminate\Support\Facades\Cache;
 
@@ -129,6 +130,19 @@ class ValueTest extends TestCase
         static::assertIsValueMetric($metric = new CachedMetric);
 
         $this->calculate($metric);
+    }
+
+    /** @test */
+    public function it_can_extend_with_custom_macros()
+    {
+        MetricExtendedWithMacro::macro('authorizedToSee', function ($role) {
+            return $this->authorize($role);
+        });
+
+        $metric = new MetricExtendedWithMacro;
+
+        static::assertTrue($metric->authorizedToSee('admin'));
+        static::assertFalse($metric->authorizedToSee('client'));
     }
 
     /* -----------------------------------------------------------------
