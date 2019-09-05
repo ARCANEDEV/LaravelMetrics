@@ -2,11 +2,9 @@
 
 use Arcanedev\LaravelMetrics\Concerns\ConvertsToArray;
 use Arcanedev\LaravelMetrics\Contracts\Metric as MetricContract;
-use Closure;
-use DateInterval;
+use Arcanedev\LaravelMetrics\Metrics\Concerns\HasCachedResults;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 
@@ -24,7 +22,8 @@ abstract class Metric implements MetricContract
      */
 
     use Macroable,
-        ConvertsToArray;
+        ConvertsToArray,
+        HasCachedResults;
 
     /* -----------------------------------------------------------------
      |  Properties
@@ -56,7 +55,17 @@ abstract class Metric implements MetricContract
     }
 
     /**
-     * Set the Http request.
+     * Get the Http request instance.
+     *
+     * @return \Illuminate\Http\Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    /**
+     * Set the Http request instance.
      *
      * @param  \Illuminate\Http\Request  $request
      *
@@ -67,16 +76,6 @@ abstract class Metric implements MetricContract
         $this->request = $request;
 
         return $this;
-    }
-
-    /**
-     * Determine for how many minutes the metric should be cached.
-     *
-     * @return \DateTimeInterface|\DateInterval|float|int|void
-     */
-    public function cacheFor()
-    {
-        //
     }
 
     /* -----------------------------------------------------------------
@@ -142,40 +141,5 @@ abstract class Metric implements MetricContract
     protected static function getQuery($model): Builder
     {
         return $model instanceof Builder ? $model : (new $model)->newQuery();
-    }
-
-    /**
-     * Cache the result.
-     *
-     * @param  mixed     $cacheFor
-     * @param  \Closure  $callback
-     *
-     * @return mixed
-     */
-    protected function cacheResult($cacheFor, Closure $callback)
-    {
-        if (is_numeric($cacheFor))
-            $cacheFor = new DateInterval(sprintf('PT%dS', $cacheFor * 60));
-
-        $key = sprintf(
-            '%s.%s.%s.%s.%s',
-            Str::slug($this->getCachePrefix(), '.'),
-            Str::slug(str_replace('\\', '_', static::class)),
-            $this->request->input('range', 'no-range'),
-            $this->request->input('timezone', 'no-timezone'),
-            $this->request->input('twelveHourTime', '24-hour-time')
-        );
-
-        return Cache::remember($key, $cacheFor, $callback);
-    }
-
-    /**
-     * Get the cache's prefix.
-     *
-     * @return string
-     */
-    protected function getCachePrefix(): string
-    {
-        return config('metrics.cache.prefix', 'arcanedev.metrics');
     }
 }
