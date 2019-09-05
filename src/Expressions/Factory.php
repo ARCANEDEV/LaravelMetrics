@@ -28,6 +28,7 @@ class Factory
             'mysql'   => IfNull\MySqlExpression::class,
             'pgsql'   => IfNull\PostgresExpression::class,
             'sqlite'  => IfNull\SqliteExpression::class,
+            'sqlsrv'  => IfNull\SqlServerExpression::class,
         ],
 
         'trend_date_format' => [
@@ -35,6 +36,7 @@ class Factory
             'mysql'   => TrendDateFormat\MySqlExpression::class,
             'pgsql'   => TrendDateFormat\PostgresExpression::class,
             'sqlite'  => TrendDateFormat\SqliteExpression::class,
+            'sqlsrv'  => TrendDateFormat\SqlServerExpression::class,
         ],
     ];
 

@@ -44,7 +44,7 @@ abstract class TestCase extends BaseTestCase
     {
         $this->loadMigrationsFrom([
             '--database' => 'testing',
-            '--realpath' => realpath(__DIR__ .'/fixtures/migrations'),
+            '--path'     => realpath(__DIR__ .'/fixtures/migrations'),
         ]);
     }
 

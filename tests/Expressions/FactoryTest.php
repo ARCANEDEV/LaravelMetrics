@@ -26,6 +26,7 @@ class FactoryTest extends TestCase
             'mysql'   => 'IF(ISNULL(`activated_at`), 0, 1)',
             'pgsql'   => 'CASE WHEN activated_at IS NULL THEN 0 ELSE 1 END',
             'sqlite'  => 'CASE WHEN `activated_at` IS NULL THEN 0 ELSE 1 END',
+            'sqlsrv'  => 'CASE WHEN activated_at IS NULL THEN 0 ELSE 1 END',
         ];
 
         foreach ($expectations as $driver => $expected) {
@@ -125,6 +126,7 @@ class FactoryTest extends TestCase
             ['mysql'],
             ['pgsql'],
             ['sqlite'],
+            ['sqlsrv'],
         ];
     }
 
@@ -141,30 +143,35 @@ class FactoryTest extends TestCase
             ['mysql', Trend::BY_MONTHS, 'date_format("published_at", \'%Y-%m\')'],
             ['pgsql', Trend::BY_MONTHS, 'to_char("published_at", \'YYYY-MM\')'],
             ['sqlite', Trend::BY_MONTHS, 'strftime(\'%Y-%m\', datetime("published_at", \'+0 hour\'))'],
+            ['sqlsrv', Trend::BY_MONTHS, 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM\')'],
 
             // BY WEEKS
             ['mariadb', Trend::BY_WEEKS, 'date_format("published_at", \'%x-%v\')'],
             ['mysql', Trend::BY_WEEKS, 'date_format("published_at", \'%x-%v\')'],
             ['pgsql', Trend::BY_WEEKS, 'to_char("published_at", \'IYYY-IW\')'],
             ['sqlite', Trend::BY_WEEKS, 'strftime(\'%Y\', datetime("published_at", \'+0 hour\')) || \'-\' || (strftime(\'%W\', datetime("published_at", \'+0 hour\')) + (1 - strftime(\'%W\', strftime(\'%Y\', datetime("published_at")) || \'-01-04\')))'],
+            ['sqlsrv', Trend::BY_WEEKS, 'concat(YEAR(DATEADD(hour, , "published_at")), \'-\', datepart(ISO_WEEK, DATEADD(hour, , "published_at")))'],
 
             // BY DAYS
             ['mariadb', Trend::BY_DAYS, 'date_format("published_at", \'%Y-%m-%d\')'],
             ['mysql', Trend::BY_DAYS, 'date_format("published_at", \'%Y-%m-%d\')'],
             ['pgsql', Trend::BY_DAYS, 'to_char("published_at", \'YYYY-MM-DD\')'],
             ['sqlite', Trend::BY_DAYS, 'strftime(\'%Y-%m-%d\', datetime("published_at", \'+0 hour\'))'],
+            ['sqlsrv', Trend::BY_DAYS, 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM-dd\')'],
 
             // BY HOURS
             ['mariadb', Trend::BY_HOURS, 'date_format("published_at", \'%Y-%m-%d %H:00\')'],
             ['mysql', Trend::BY_HOURS, 'date_format("published_at", \'%Y-%m-%d %H:00\')'],
             ['pgsql', Trend::BY_HOURS, 'to_char("published_at", \'YYYY-MM-DD HH24:00\')'],
             ['sqlite', Trend::BY_HOURS, 'strftime(\'%Y-%m-%d %H:00\', datetime("published_at", \'+0 hour\'))'],
+            ['sqlsrv', Trend::BY_HOURS, 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM-dd HH:00\')'],
 
             // BY MINUTES
             ['mariadb', Trend::BY_MINUTES, 'date_format("published_at", \'%Y-%m-%d %H:%i:00\')'],
             ['mysql', Trend::BY_MINUTES, 'date_format("published_at", \'%Y-%m-%d %H:%i:00\')'],
             ['pgsql', Trend::BY_MINUTES, 'to_char("published_at", \'YYYY-MM-DD HH24:mi:00\')'],
             ['sqlite', Trend::BY_MINUTES, 'strftime(\'%Y-%m-%d %H:%M:00\', datetime("published_at", \'+0 hour\'))'],
+            ['sqlsrv', Trend::BY_MINUTES, 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM-dd HH:mm:00\')'],
         ];
     }
 
@@ -200,6 +207,13 @@ class FactoryTest extends TestCase
                     'America/New_York' => 'strftime(\'%Y-%m\', datetime("published_at", \'-4 hour\'))',
                 ],
             ],
+            [
+                'sqlsrv', Trend::BY_MONTHS, [
+                    'UTC'              => 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM\')',
+                    'Asia/Tokyo'       => 'FORMAT(DATEADD(hour, 9, "published_at"), \'yyyy-MM\')',
+                    'America/New_York' => 'FORMAT(DATEADD(hour, -4, "published_at"), \'yyyy-MM\')',
+                ],
+            ],
 
             // BY WEEKS
             [
@@ -228,6 +242,14 @@ class FactoryTest extends TestCase
                     'UTC'              => 'strftime(\'%Y\', datetime("published_at", \'+0 hour\')) || \'-\' || (strftime(\'%W\', datetime("published_at", \'+0 hour\')) + (1 - strftime(\'%W\', strftime(\'%Y\', datetime("published_at")) || \'-01-04\')))',
                     'Asia/Tokyo'       => 'strftime(\'%Y\', datetime("published_at", \'+9 hour\')) || \'-\' || (strftime(\'%W\', datetime("published_at", \'+9 hour\')) + (1 - strftime(\'%W\', strftime(\'%Y\', datetime("published_at")) || \'-01-04\')))',
                     'America/New_York' => 'strftime(\'%Y\', datetime("published_at", \'-4 hour\')) || \'-\' || (strftime(\'%W\', datetime("published_at", \'-4 hour\')) + (1 - strftime(\'%W\', strftime(\'%Y\', datetime("published_at")) || \'-01-04\')))',
+                ],
+            ],
+
+            [
+                'sqlsrv', Trend::BY_WEEKS, [
+                    'UTC'              => 'concat(YEAR(DATEADD(hour, , "published_at")), \'-\', datepart(ISO_WEEK, DATEADD(hour, , "published_at")))',
+                    'Asia/Tokyo'       => 'concat(YEAR(DATEADD(hour, 9, "published_at")), \'-\', datepart(ISO_WEEK, DATEADD(hour, 9, "published_at")))',
+                    'America/New_York' => 'concat(YEAR(DATEADD(hour, -4, "published_at")), \'-\', datepart(ISO_WEEK, DATEADD(hour, -4, "published_at")))',
                 ],
             ],
 
@@ -260,6 +282,13 @@ class FactoryTest extends TestCase
                     'America/New_York' => 'strftime(\'%Y-%m-%d\', datetime("published_at", \'-4 hour\'))',
                 ],
             ],
+            [
+                'sqlsrv', Trend::BY_DAYS, [
+                    'UTC'              => 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM-dd\')',
+                    'Asia/Tokyo'       => 'FORMAT(DATEADD(hour, 9, "published_at"), \'yyyy-MM-dd\')',
+                    'America/New_York' => 'FORMAT(DATEADD(hour, -4, "published_at"), \'yyyy-MM-dd\')',
+                ],
+            ],
 
             // BY HOURS
             [
@@ -290,6 +319,13 @@ class FactoryTest extends TestCase
                     'America/New_York' => 'strftime(\'%Y-%m-%d %H:00\', datetime("published_at", \'-4 hour\'))',
                 ],
             ],
+            [
+                'sqlsrv', Trend::BY_HOURS, [
+                    'UTC'              => 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM-dd HH:00\')',
+                    'Asia/Tokyo'       => 'FORMAT(DATEADD(hour, 9, "published_at"), \'yyyy-MM-dd HH:00\')',
+                    'America/New_York' => 'FORMAT(DATEADD(hour, -4, "published_at"), \'yyyy-MM-dd HH:00\')',
+                ],
+            ],
 
             // BY MINUTES
             [
@@ -318,6 +354,13 @@ class FactoryTest extends TestCase
                     'UTC'              => 'strftime(\'%Y-%m-%d %H:%M:00\', datetime("published_at", \'+0 hour\'))',
                     'Asia/Tokyo'       => 'strftime(\'%Y-%m-%d %H:%M:00\', datetime("published_at", \'+9 hour\'))',
                     'America/New_York' => 'strftime(\'%Y-%m-%d %H:%M:00\', datetime("published_at", \'-4 hour\'))',
+                ],
+            ],
+            [
+                'sqlsrv', Trend::BY_MINUTES, [
+                    'UTC'              => 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM-dd HH:mm:00\')',
+                    'Asia/Tokyo'       => 'FORMAT(DATEADD(hour, 9, "published_at"), \'yyyy-MM-dd HH:mm:00\')',
+                    'America/New_York' => 'FORMAT(DATEADD(hour, -4, "published_at"), \'yyyy-MM-dd HH:mm:00\')',
                 ],
             ],
         ];
