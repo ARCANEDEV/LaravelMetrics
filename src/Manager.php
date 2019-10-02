@@ -2,9 +2,8 @@
 
 use Arcanedev\LaravelMetrics\Contracts\Manager as ManagerContract;
 use Arcanedev\LaravelMetrics\Metrics\Metric;
+use Illuminate\Support\{Arr, Collection};
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 
 /**
  * Class     Manager

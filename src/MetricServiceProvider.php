@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\LaravelMetrics;
 
-use Arcanedev\Support\PackageServiceProvider;
+use Arcanedev\Support\Providers\PackageServiceProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
 /**
  * Class     MetricServiceProvider
@@ -8,7 +9,7 @@ use Arcanedev\Support\PackageServiceProvider;
  * @package  Arcanedev\LaravelMetrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class MetricServiceProvider extends PackageServiceProvider
+class MetricServiceProvider extends PackageServiceProvider implements DeferrableProvider
 {
     /* -----------------------------------------------------------------
      |  Properties
@@ -30,7 +31,7 @@ class MetricServiceProvider extends PackageServiceProvider
     /**
      * Register the service provider.
      */
-    public function register()
+    public function register(): void
     {
         parent::register();
 
@@ -42,10 +43,8 @@ class MetricServiceProvider extends PackageServiceProvider
     /**
      * Boot the service provider.
      */
-    public function boot()
+    public function boot(): void
     {
-        parent::boot();
-
         $this->publishConfig();
     }
 

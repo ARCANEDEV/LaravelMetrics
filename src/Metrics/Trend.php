@@ -249,7 +249,7 @@ abstract class Trend extends Metric
     }
 
     /**
-     * Prepare the metric for JSON serialization.
+     * Get the instance as an array.
      *
      * @return array
      */

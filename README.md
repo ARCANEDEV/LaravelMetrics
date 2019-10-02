@@ -21,7 +21,7 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/LaravelMetric
 ## Features
 
   - A great Log viewer API.
-  - Laravel `5.8` & `6.0` are supported.
+  - Laravel `5.8 | 6.x` are supported.
   - Well documented package (IDE Friendly).
   - Well tested (100% code coverage with maximum code quality).
 
@@ -45,7 +45,7 @@ If you discover any security related issues, please email arcanedev.maroc@gmail.
 - [ARCANEDEV][link-author]
 - [All Contributors][link-contributors]
 
-[badge_laravel]:      https://img.shields.io/badge/Laravel-5.8%20&%206.0-orange.svg?style=flat-square
+[badge_laravel]:      https://img.shields.io/badge/Laravel-5.8%20&%206.x-orange.svg?style=flat-square
 [badge_license]:      https://img.shields.io/packagist/l/arcanedev/laravel-metrics.svg?style=flat-square
 [badge_build]:        https://img.shields.io/travis/com/ARCANEDEV/LaravelMetrics/master.svg?style=flat-square
 [badge_coverage]:     https://img.shields.io/scrutinizer/coverage/g/ARCANEDEV/LaravelMetrics.svg?style=flat-square
