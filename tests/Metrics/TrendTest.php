@@ -253,6 +253,21 @@ class TrendTest extends TestCase
         Chronos::setTestNow();
     }
 
+    /** @test */
+    public function it_can_convert_metric_to_array()
+    {
+        $metric   = new CountPublishedPostsByHours;
+        $expected = [
+            'class'  => CountPublishedPostsByHours::class,
+            'type'   => 'trend',
+            'title'  => 'Count Published Posts By Hours',
+            'ranges' => [],
+        ];
+
+        static::assertIsTrendMetric($metric);
+        static::assertEquals($expected, $metric->toArray());
+    }
+
     /* -----------------------------------------------------------------
      |  Assertions
      | -----------------------------------------------------------------
