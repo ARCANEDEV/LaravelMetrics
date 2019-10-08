@@ -10,6 +10,8 @@ use JsonSerializable;
  *
  * @package  Arcanedev\LaravelMetrics\Contracts
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @method  \Arcanedev\LaravelMetrics\Results\Result|mixed  calculate(\Illuminate\Http\Request $request)
  */
 interface Metric extends Arrayable, Jsonable, JsonSerializable
 {
@@ -31,18 +33,4 @@ interface Metric extends Arrayable, Jsonable, JsonSerializable
      * @return string
      */
     public function type(): string;
-
-    /* -----------------------------------------------------------------
-     |  Main Methods
-     | -----------------------------------------------------------------
-     */
-
-    /**
-     * Calculate the metric.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     *
-     * @return \Arcanedev\LaravelMetrics\Results\Result|mixed
-     */
-    public function calculate(Request $request);
 }

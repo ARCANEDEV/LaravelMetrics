@@ -48,7 +48,7 @@ abstract class NullablePartition extends Metric
      *
      * @return \Arcanedev\LaravelMetrics\Results\PartitionResult|mixed
      */
-    protected function count(string $model, string $groupBy, $column = null)
+    protected function count($model, string $groupBy, $column = null)
     {
         return $this->aggregate('count', $model, $column, $groupBy);
     }
