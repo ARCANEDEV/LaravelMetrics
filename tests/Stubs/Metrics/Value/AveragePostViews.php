@@ -1,7 +1,7 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value;
 
-use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
 use Arcanedev\LaravelMetrics\Metrics\Value;
+use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
 use Illuminate\Http\Request;
 
 /**

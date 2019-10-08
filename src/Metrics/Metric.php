@@ -94,13 +94,15 @@ abstract class Metric implements MetricContract
     {
         $this->setRequest($request);
 
-        $resolver = function () use ($request) {
-            return $this->calculate($request);
+        $callback = function () use ($request) {
+            return app()->call([$this, 'calculate'], [
+                'request' => $this->getRequest(),
+            ]);
         };
 
         return ($cacheFor = $this->cacheFor())
-            ? $this->cacheResult($cacheFor, $resolver)
-            : $resolver();
+            ? $this->cacheResult($cacheFor, $callback)
+            : $callback();
     }
 
     /**
@@ -140,6 +142,9 @@ abstract class Metric implements MetricContract
      */
     protected static function getQuery($model): Builder
     {
-        return $model instanceof Builder ? $model : (new $model)->newQuery();
+        if ($model instanceof Builder)
+            return $model;
+
+        return (new $model)->newQuery();
     }
 }
