@@ -51,7 +51,7 @@ abstract class Metric implements MetricContract
     {
         $class = class_basename(static::class);
 
-        return Str::title(Str::snake($class, ' '));
+        return __(Str::title(Str::snake($class, ' ')));
     }
 
     /**
