@@ -1,6 +1,6 @@
 # Laravel Metrics [![Packagist License][badge_license]](LICENSE.md) [![For Laravel][badge_laravel]][link-github-repo]
 
-[![Travis Status][badge_build]][link-travis]
+[![Github Workflow Status][badge_build]][link-github-status]
 [![Coverage Status][badge_coverage]][link-scrutinizer]
 [![Scrutinizer Code Quality][badge_quality]][link-scrutinizer]
 [![SensioLabs Insight][badge_insight]][link-insight]
@@ -47,7 +47,7 @@ If you discover any security related issues, please email arcanedev.maroc@gmail.
 
 [badge_laravel]:      https://img.shields.io/badge/Laravel-5.8%20&%206.x-orange.svg?style=flat-square
 [badge_license]:      https://img.shields.io/packagist/l/arcanedev/laravel-metrics.svg?style=flat-square
-[badge_build]:        https://img.shields.io/travis/com/ARCANEDEV/LaravelMetrics/master.svg?style=flat-square
+[badge_build]:       https://img.shields.io/github/workflow/status/ARCANEDEV/LaravelMetrics/run-tests?style=flat-square
 [badge_coverage]:     https://img.shields.io/scrutinizer/coverage/g/ARCANEDEV/LaravelMetrics.svg?style=flat-square
 [badge_quality]:      https://img.shields.io/scrutinizer/g/ARCANEDEV/LaravelMetrics.svg?style=flat-square
 [badge_insight]:      https://img.shields.io/sensiolabs/i/d8ea89a0-d96c-42a6-a06a-2b64ebc44d71.svg?style=flat-square
@@ -57,10 +57,10 @@ If you discover any security related issues, please email arcanedev.maroc@gmail.
 [badge_downloads]:    https://img.shields.io/packagist/dt/arcanedev/laravel-metrics.svg?style=flat-square
 
 [link-author]:        https://github.com/arcanedev-maroc
+[link-github-status]: https://github.com/ARCANEDEV/LaravelMetrics/actions
 [link-github-repo]:   https://github.com/ARCANEDEV/LaravelMetrics
 [link-github-issues]: https://github.com/ARCANEDEV/LaravelMetrics/issues
 [link-contributors]:  https://github.com/ARCANEDEV/LaravelMetrics/graphs/contributors
 [link-packagist]:     https://packagist.org/packages/arcanedev/laravel-metrics
-[link-travis]:        https://travis-ci.org/ARCANEDEV/LaravelMetrics
 [link-scrutinizer]:   https://scrutinizer-ci.com/g/ARCANEDEV/LaravelMetrics/?branch=master
 [link-insight]:       https://insight.sensiolabs.com/projects/d8ea89a0-d96c-42a6-a06a-2b64ebc44d71
