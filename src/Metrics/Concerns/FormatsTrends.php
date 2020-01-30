@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Metrics\Concerns;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Metrics\Concerns;
 
 use Arcanedev\LaravelMetrics\Exceptions\InvalidTrendUnitException;
 use Cake\Chronos\Chronos;

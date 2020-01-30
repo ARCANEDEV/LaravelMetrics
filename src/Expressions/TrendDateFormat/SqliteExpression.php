@@ -1,7 +1,10 @@
-<?php namespace Arcanedev\LaravelMetrics\Expressions\TrendDateFormat;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Expressions\TrendDateFormat;
 
 use Arcanedev\LaravelMetrics\Exceptions\InvalidTrendUnitException;
-use Arcanedev\LaravelMetrics\Expressions\TrendDateFormat\Expression;
 use Arcanedev\LaravelMetrics\Metrics\Trend;
 
 /**
@@ -20,9 +23,9 @@ class SqliteExpression extends Expression
     /**
      * Get the value of the expression.
      *
-     * @return mixed
+     * @return string
      */
-    public function getValue()
+    public function getValue(): string
     {
         $interval = $this->interval();
 
@@ -56,10 +59,13 @@ class SqliteExpression extends Expression
     {
         $offset = $this->offset();
 
-        if ($offset > 0)
+        if ($offset > 0) {
             return '\'+'.$offset.' hour\'';
-        elseif ($offset === 0)
+        }
+
+        if ($offset === 0) {
             return '\'+0 hour\'';
+        }
 
         return '\'-'.($offset * -1).' hour\'';
     }

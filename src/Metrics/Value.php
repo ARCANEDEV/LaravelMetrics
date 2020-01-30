@@ -1,5 +1,10 @@
-<?php namespace Arcanedev\LaravelMetrics\Metrics;
+<?php
 
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Metrics;
+
+use Arcanedev\LaravelMetrics\Metrics\Concerns\HasRoundedValue;
 use Arcanedev\LaravelMetrics\Results\ValueResult;
 
 /**
@@ -11,7 +16,14 @@ use Arcanedev\LaravelMetrics\Results\ValueResult;
 abstract class Value extends Metric
 {
     /* -----------------------------------------------------------------
-     |  Getters
+     |  Traits
+     | -----------------------------------------------------------------
+     */
+
+    use HasRoundedValue;
+
+    /* -----------------------------------------------------------------
+     |  Getters & Setters
      | -----------------------------------------------------------------
      */
 
@@ -116,7 +128,7 @@ abstract class Value extends Metric
 
         $value  = $query->{$method}($column);
 
-        return $this->result($method === 'count' ? $value : round($value, 0));
+        return $this->result($method === 'count' ? $value : $this->roundValue($value));
     }
 
     /**

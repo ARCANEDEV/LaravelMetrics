@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Metrics\Concerns;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Metrics\Concerns;
 
 use Arcanedev\LaravelMetrics\Expressions\{Expression, Factory};
 
@@ -25,8 +29,8 @@ trait HasExpressions
      *
      * @return \Arcanedev\LaravelMetrics\Expressions\Expression|mixed
      */
-    protected function getExpression($query, string $name, $value = null, array $params = []): Expression
+    protected static function getExpression($query, string $name, $value = null, array $params = []): Expression
     {
-        return Factory::make($query->getConnection()->getDriverName(), $name, $value, $params);
+        return Factory::resolveExpression($query, $name, $value, $params);
     }
 }

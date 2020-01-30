@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Results;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Results;
 
 use Closure;
 use Illuminate\Support\Collection;

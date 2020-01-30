@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Expressions;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Expressions;
 
 use Illuminate\Database\Query\Expression as QueryExpression;
 
@@ -8,7 +12,7 @@ use Illuminate\Database\Query\Expression as QueryExpression;
  * @package  Arcanedev\LaravelMetrics\Expressions
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class Expression extends QueryExpression
+abstract class Expression extends QueryExpression
 {
     //
 }

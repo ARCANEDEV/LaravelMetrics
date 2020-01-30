@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Helpers;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Helpers;
 
 use Arcanedev\LaravelMetrics\Exceptions\InvalidTrendUnitException;
 use Arcanedev\LaravelMetrics\Metrics\Trend;

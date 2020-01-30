@@ -3,6 +3,7 @@
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;
 use Cake\Chronos\Chronos;
+use Illuminate\Support\Collection;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 /**
@@ -60,30 +61,41 @@ abstract class TestCase extends BaseTestCase
      * Create posts for the tests.
      *
      * @param  \Cake\Chronos\Chronos|null  $now
+     *
+     * @return \Illuminate\Support\Collection
      */
     protected function createPosts($now = null)
     {
         $now = $now ?: Chronos::now();
 
-        factory(Post::class)->create(['views' => 50, 'published_at' => $now->subDays(30)]);
-        factory(Post::class)->create(['views' => 40, 'published_at' => $now->subDays(14)]);
-        factory(Post::class)->create(['views' => 30, 'published_at' => $now->subDays(7)]);
-        factory(Post::class)->create(['views' => 20, 'published_at' => $now->subDays(3)]);
-        factory(Post::class)->create(['views' => 10, 'published_at' => $now]);
+        return new Collection([
+            factory(Post::class)->create(['views' => 50, 'published_at' => $now->subDays(30)]),
+            factory(Post::class)->create(['views' => 40, 'published_at' => $now->subDays(14)]),
+            factory(Post::class)->create(['views' => 30, 'published_at' => $now->subDays(7)]),
+            factory(Post::class)->create(['views' => 20, 'published_at' => $now->subDays(3)]),
+            factory(Post::class)->create(['views' => 10, 'published_at' => $now]),
+        ]);
     }
 
     /**
      * Create users for tests.
+     *
+     * @return \Illuminate\Support\Collection
      */
     protected function createUsers()
     {
-        factory(User::class, 1)->states(['gold', 'premium', 'verified'])->create(['points' => 2000]);
-        factory(User::class, 2)->states(['gold', 'verified'])->create(['points' => 1000]);
+        return new Collection([
+            // GOLD
+            factory(User::class, 1)->states(['gold', 'premium', 'verified'])->create(['points' => 2000]),
+            factory(User::class, 2)->states(['gold', 'verified'])->create(['points' => 1000]),
 
-        factory(User::class, 2)->states(['silver', 'verified'])->create(['points' => 300]);
-        factory(User::class, 2)->states(['silver'])->create(['points' => 250]);
+            // SILVER
+            factory(User::class, 2)->states(['silver', 'verified'])->create(['points' => 300]),
+            factory(User::class, 2)->states(['silver'])->create(['points' => 250]),
 
-        factory(User::class, 3)->states(['bronze', 'verified'])->create(['points' => 100]);
-        factory(User::class, 5)->states(['bronze'])->create(['points' => 50]);
+            // BRONZE
+            factory(User::class, 3)->states(['bronze', 'verified'])->create(['points' => 100]),
+            factory(User::class, 5)->states(['bronze'])->create(['points' => 50]),
+        ]);
     }
 }

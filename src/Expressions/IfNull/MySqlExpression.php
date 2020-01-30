@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Expressions\IfNull;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Expressions\IfNull;
 
 use Arcanedev\LaravelMetrics\Expressions\Expression;
 
@@ -20,7 +24,7 @@ class MySqlExpression extends Expression
      *
      * @return string
      */
-    public function getValue()
+    public function getValue(): string
     {
         return "IF(ISNULL(`{$this->value}`), 0, 1)";
     }

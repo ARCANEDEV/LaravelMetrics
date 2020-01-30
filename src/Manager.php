@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics;
 
 use Arcanedev\LaravelMetrics\Contracts\Manager as ManagerContract;
 use Arcanedev\LaravelMetrics\Metrics\Metric;

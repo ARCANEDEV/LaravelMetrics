@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Metrics;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Metrics;
 
 use Arcanedev\LaravelMetrics\Concerns\ConvertsToArray;
 use Arcanedev\LaravelMetrics\Contracts\Metric as MetricContract;
@@ -136,15 +140,20 @@ abstract class Metric implements MetricContract
     /**
      * Get the query builder.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
+     * @param  \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder|string  $model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected static function getQuery($model): Builder
     {
-        if ($model instanceof Builder)
-            return $model;
+        if (is_string($model)) {
+            $model = new $model;
+        }
 
-        return (new $model)->newQuery();
+        if ($model instanceof Builder) {
+            return $model;
+        }
+
+        return $model->newQuery();
     }
 }

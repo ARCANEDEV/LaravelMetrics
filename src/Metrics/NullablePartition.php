@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Metrics;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Metrics;
 
 use Arcanedev\LaravelMetrics\Metrics\Concerns\HasExpressions;
 use Arcanedev\LaravelMetrics\Results\PartitionResult;
@@ -76,9 +80,10 @@ abstract class NullablePartition extends Metric
         );
 
         $groupAlias = "{$groupBy}_count";
+        $expression = static::getExpression($query, 'if_null', $groupBy);
 
         $value = $query->select([
-            DB::raw("{$this->getExpression($query, 'if_null', $groupBy)} as {$groupAlias}"),
+            DB::raw("{$expression} as {$groupAlias}"),
             DB::raw("{$method}({$wrappedColumn}) as aggregate"),
         ])
             ->groupBy($groupAlias)

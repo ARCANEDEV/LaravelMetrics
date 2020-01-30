@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Concerns;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Concerns;
 
 /**
  * Trait     ConvertsToArray

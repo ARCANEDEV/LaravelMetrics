@@ -1,9 +1,16 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Metrics;
 
-use Arcanedev\LaravelMetrics\Metrics\Value;
 use Arcanedev\LaravelMetrics\Results\ValueResult;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value\{AveragePostViews, CachedMetric, MaxPostViews,
-    MetricExtendedWithMacro, MinPostViews, TotalPosts, TotalPostViews};
+use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value\{
+    AveragePostViews,
+    AverageViewsCount,
+    CachedMetric,
+    MaxPostViews,
+    MetricExtendedWithMacro,
+    MinPostViews,
+    TotalPosts,
+    TotalPostViews};
+use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
 use Cake\Chronos\Chronos;
 use Illuminate\Support\Facades\Cache;
 
@@ -23,8 +30,8 @@ class ValueTest extends TestCase
     /** @test */
     public function it_can_calculate_count()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Chronos::setTestNow($now = Chronos::now());
+        $this->createPosts($now);
 
         static::assertIsValueMetric($metric = new TotalPosts);
 
@@ -39,8 +46,8 @@ class ValueTest extends TestCase
     /** @test */
     public function it_can_calculate_sum()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Chronos::setTestNow($now = Chronos::now());
+        $this->createPosts($now);
 
         static::assertIsValueMetric($metric = new TotalPostViews);
 
@@ -55,8 +62,8 @@ class ValueTest extends TestCase
     /** @test */
     public function it_can_calculate_average()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Chronos::setTestNow($now = Chronos::now());
+        $this->createPosts($now);
 
         static::assertIsValueMetric($metric = new AveragePostViews);
 
@@ -103,8 +110,8 @@ class ValueTest extends TestCase
     /** @test */
     public function it_can_convert_to_array_and_json()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Chronos::setTestNow($now = Chronos::now());
+        $this->createPosts($now);
 
         $metric = new TotalPosts;
 
@@ -143,6 +150,34 @@ class ValueTest extends TestCase
 
         static::assertTrue($metric->authorizedToSee('admin'));
         static::assertFalse($metric->authorizedToSee('client'));
+    }
+
+    /** @test */
+    public function it_can_get_rounded_value_with_custom_precision()
+    {
+        Chronos::setTestNow($now = Chronos::now());
+        $averageViews = factory(Post::class, 2)->create(['published_at' => $now])->average('views');
+
+        static::assertIsValueMetric($metric = new AverageViewsCount);
+
+        $result = $this->calculate($metric);
+
+        static::assertIsValueResult($result);
+        static::assertSame(round($averageViews, 1), $result->value);
+    }
+
+    /** @test */
+    public function it_can_get_rounded_value_with_default_precision()
+    {
+        Chronos::setTestNow($now = Chronos::now());
+        $averageViews = factory(Post::class, 3)->create(['published_at' => $now])->average('views');
+
+        static::assertIsValueMetric($metric = (new AverageViewsCount)->precision(2));
+
+        $result = $this->calculate($metric);
+
+        static::assertIsValueResult($result);
+        static::assertSame(round($averageViews, 2), $result->value);
     }
 
     /* -----------------------------------------------------------------

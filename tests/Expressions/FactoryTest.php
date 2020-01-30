@@ -143,35 +143,35 @@ class FactoryTest extends TestCase
             ['mysql', Trend::BY_MONTHS, 'date_format("published_at", \'%Y-%m\')'],
             ['pgsql', Trend::BY_MONTHS, 'to_char("published_at", \'YYYY-MM\')'],
             ['sqlite', Trend::BY_MONTHS, 'strftime(\'%Y-%m\', datetime("published_at", \'+0 hour\'))'],
-            ['sqlsrv', Trend::BY_MONTHS, 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM\')'],
+            ['sqlsrv', Trend::BY_MONTHS, 'FORMAT(DATEADD(hour, 0, "published_at"), \'yyyy-MM\')'],
 
             // BY WEEKS
             ['mariadb', Trend::BY_WEEKS, 'date_format("published_at", \'%x-%v\')'],
             ['mysql', Trend::BY_WEEKS, 'date_format("published_at", \'%x-%v\')'],
             ['pgsql', Trend::BY_WEEKS, 'to_char("published_at", \'IYYY-IW\')'],
             ['sqlite', Trend::BY_WEEKS, 'strftime(\'%Y\', datetime("published_at", \'+0 hour\')) || \'-\' || (strftime(\'%W\', datetime("published_at", \'+0 hour\')) + (1 - strftime(\'%W\', strftime(\'%Y\', datetime("published_at")) || \'-01-04\')))'],
-            ['sqlsrv', Trend::BY_WEEKS, 'concat(YEAR(DATEADD(hour, , "published_at")), \'-\', datepart(ISO_WEEK, DATEADD(hour, , "published_at")))'],
+            ['sqlsrv', Trend::BY_WEEKS, 'concat(YEAR(DATEADD(hour, 0, "published_at")), \'-\', datepart(ISO_WEEK, DATEADD(hour, 0, "published_at")))'],
 
             // BY DAYS
             ['mariadb', Trend::BY_DAYS, 'date_format("published_at", \'%Y-%m-%d\')'],
             ['mysql', Trend::BY_DAYS, 'date_format("published_at", \'%Y-%m-%d\')'],
             ['pgsql', Trend::BY_DAYS, 'to_char("published_at", \'YYYY-MM-DD\')'],
             ['sqlite', Trend::BY_DAYS, 'strftime(\'%Y-%m-%d\', datetime("published_at", \'+0 hour\'))'],
-            ['sqlsrv', Trend::BY_DAYS, 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM-dd\')'],
+            ['sqlsrv', Trend::BY_DAYS, 'FORMAT(DATEADD(hour, 0, "published_at"), \'yyyy-MM-dd\')'],
 
             // BY HOURS
             ['mariadb', Trend::BY_HOURS, 'date_format("published_at", \'%Y-%m-%d %H:00\')'],
             ['mysql', Trend::BY_HOURS, 'date_format("published_at", \'%Y-%m-%d %H:00\')'],
             ['pgsql', Trend::BY_HOURS, 'to_char("published_at", \'YYYY-MM-DD HH24:00\')'],
             ['sqlite', Trend::BY_HOURS, 'strftime(\'%Y-%m-%d %H:00\', datetime("published_at", \'+0 hour\'))'],
-            ['sqlsrv', Trend::BY_HOURS, 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM-dd HH:00\')'],
+            ['sqlsrv', Trend::BY_HOURS, 'FORMAT(DATEADD(hour, 0, "published_at"), \'yyyy-MM-dd HH:00\')'],
 
             // BY MINUTES
             ['mariadb', Trend::BY_MINUTES, 'date_format("published_at", \'%Y-%m-%d %H:%i:00\')'],
             ['mysql', Trend::BY_MINUTES, 'date_format("published_at", \'%Y-%m-%d %H:%i:00\')'],
             ['pgsql', Trend::BY_MINUTES, 'to_char("published_at", \'YYYY-MM-DD HH24:mi:00\')'],
             ['sqlite', Trend::BY_MINUTES, 'strftime(\'%Y-%m-%d %H:%M:00\', datetime("published_at", \'+0 hour\'))'],
-            ['sqlsrv', Trend::BY_MINUTES, 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM-dd HH:mm:00\')'],
+            ['sqlsrv', Trend::BY_MINUTES, 'FORMAT(DATEADD(hour, 0, "published_at"), \'yyyy-MM-dd HH:mm:00\')'],
         ];
     }
 
@@ -183,35 +183,35 @@ class FactoryTest extends TestCase
                 'mariadb', Trend::BY_MONTHS, [
                     'UTC'              => 'date_format("published_at", \'%Y-%m\')',
                     'Asia/Tokyo'       => 'date_format("published_at" + INTERVAL 9 HOUR, \'%Y-%m\')',
-                    'America/New_York' => 'date_format("published_at" - INTERVAL 4 HOUR, \'%Y-%m\')',
+                    'Pacific/Honolulu' => 'date_format("published_at" - INTERVAL 10 HOUR, \'%Y-%m\')',
                 ],
             ],
             [
                 'mysql', Trend::BY_MONTHS, [
                     'UTC'              => 'date_format("published_at", \'%Y-%m\')',
                     'Asia/Tokyo'       => 'date_format("published_at" + INTERVAL 9 HOUR, \'%Y-%m\')',
-                    'America/New_York' => 'date_format("published_at" - INTERVAL 4 HOUR, \'%Y-%m\')',
+                    'Pacific/Honolulu' => 'date_format("published_at" - INTERVAL 10 HOUR, \'%Y-%m\')',
                 ],
             ],
             [
                 'pgsql', Trend::BY_MONTHS, [
                     'UTC'              => 'to_char("published_at", \'YYYY-MM\')',
                     'Asia/Tokyo'       => 'to_char("published_at" + interval \'9 hour\', \'YYYY-MM\')',
-                    'America/New_York' => 'to_char("published_at" - interval \'4 HOUR\', \'YYYY-MM\')',
+                    'Pacific/Honolulu' => 'to_char("published_at" - interval \'10 HOUR\', \'YYYY-MM\')',
                 ]
             ],
             [
                 'sqlite', Trend::BY_MONTHS, [
                     'UTC'              => 'strftime(\'%Y-%m\', datetime("published_at", \'+0 hour\'))',
                     'Asia/Tokyo'       => 'strftime(\'%Y-%m\', datetime("published_at", \'+9 hour\'))',
-                    'America/New_York' => 'strftime(\'%Y-%m\', datetime("published_at", \'-4 hour\'))',
+                    'Pacific/Honolulu' => 'strftime(\'%Y-%m\', datetime("published_at", \'-10 hour\'))',
                 ],
             ],
             [
                 'sqlsrv', Trend::BY_MONTHS, [
-                    'UTC'              => 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM\')',
+                    'UTC'              => 'FORMAT(DATEADD(hour, 0, "published_at"), \'yyyy-MM\')',
                     'Asia/Tokyo'       => 'FORMAT(DATEADD(hour, 9, "published_at"), \'yyyy-MM\')',
-                    'America/New_York' => 'FORMAT(DATEADD(hour, -4, "published_at"), \'yyyy-MM\')',
+                    'Pacific/Honolulu' => 'FORMAT(DATEADD(hour, -10, "published_at"), \'yyyy-MM\')',
                 ],
             ],
 
@@ -220,36 +220,36 @@ class FactoryTest extends TestCase
                 'mariadb', Trend::BY_WEEKS, [
                     'UTC'              => 'date_format("published_at", \'%x-%v\')',
                     'Asia/Tokyo'       => 'date_format("published_at" + INTERVAL 9 HOUR, \'%x-%v\')',
-                    'America/New_York' => 'date_format("published_at" - INTERVAL 4 HOUR, \'%x-%v\')',
+                    'Pacific/Honolulu' => 'date_format("published_at" - INTERVAL 10 HOUR, \'%x-%v\')',
                 ],
             ],
             [
                 'mysql', Trend::BY_WEEKS, [
                     'UTC'              => 'date_format("published_at", \'%x-%v\')',
                     'Asia/Tokyo'       => 'date_format("published_at" + INTERVAL 9 HOUR, \'%x-%v\')',
-                    'America/New_York' => 'date_format("published_at" - INTERVAL 4 HOUR, \'%x-%v\')',
+                    'Pacific/Honolulu' => 'date_format("published_at" - INTERVAL 10 HOUR, \'%x-%v\')',
                 ],
             ],
             [
                 'pgsql', Trend::BY_WEEKS, [
                     'UTC'              => 'to_char("published_at", \'IYYY-IW\')',
                     'Asia/Tokyo'       => 'to_char("published_at" + interval \'9 hour\', \'IYYY-IW\')',
-                    'America/New_York' => 'to_char("published_at" - interval \'4 HOUR\', \'IYYY-IW\')',
+                    'Pacific/Honolulu' => 'to_char("published_at" - interval \'10 HOUR\', \'IYYY-IW\')',
                 ],
             ],
             [
                 'sqlite', Trend::BY_WEEKS, [
                     'UTC'              => 'strftime(\'%Y\', datetime("published_at", \'+0 hour\')) || \'-\' || (strftime(\'%W\', datetime("published_at", \'+0 hour\')) + (1 - strftime(\'%W\', strftime(\'%Y\', datetime("published_at")) || \'-01-04\')))',
                     'Asia/Tokyo'       => 'strftime(\'%Y\', datetime("published_at", \'+9 hour\')) || \'-\' || (strftime(\'%W\', datetime("published_at", \'+9 hour\')) + (1 - strftime(\'%W\', strftime(\'%Y\', datetime("published_at")) || \'-01-04\')))',
-                    'America/New_York' => 'strftime(\'%Y\', datetime("published_at", \'-4 hour\')) || \'-\' || (strftime(\'%W\', datetime("published_at", \'-4 hour\')) + (1 - strftime(\'%W\', strftime(\'%Y\', datetime("published_at")) || \'-01-04\')))',
+                    'Pacific/Honolulu' => 'strftime(\'%Y\', datetime("published_at", \'-10 hour\')) || \'-\' || (strftime(\'%W\', datetime("published_at", \'-10 hour\')) + (1 - strftime(\'%W\', strftime(\'%Y\', datetime("published_at")) || \'-01-04\')))',
                 ],
             ],
 
             [
                 'sqlsrv', Trend::BY_WEEKS, [
-                    'UTC'              => 'concat(YEAR(DATEADD(hour, , "published_at")), \'-\', datepart(ISO_WEEK, DATEADD(hour, , "published_at")))',
+                    'UTC'              => 'concat(YEAR(DATEADD(hour, 0, "published_at")), \'-\', datepart(ISO_WEEK, DATEADD(hour, 0, "published_at")))',
                     'Asia/Tokyo'       => 'concat(YEAR(DATEADD(hour, 9, "published_at")), \'-\', datepart(ISO_WEEK, DATEADD(hour, 9, "published_at")))',
-                    'America/New_York' => 'concat(YEAR(DATEADD(hour, -4, "published_at")), \'-\', datepart(ISO_WEEK, DATEADD(hour, -4, "published_at")))',
+                    'Pacific/Honolulu' => 'concat(YEAR(DATEADD(hour, -10, "published_at")), \'-\', datepart(ISO_WEEK, DATEADD(hour, -10, "published_at")))',
                 ],
             ],
 
@@ -258,35 +258,35 @@ class FactoryTest extends TestCase
                 'mariadb', Trend::BY_DAYS, [
                     'UTC'              => 'date_format("published_at", \'%Y-%m-%d\')',
                     'Asia/Tokyo'       => 'date_format("published_at" + INTERVAL 9 HOUR, \'%Y-%m-%d\')',
-                    'America/New_York' => 'date_format("published_at" - INTERVAL 4 HOUR, \'%Y-%m-%d\')',
+                    'Pacific/Honolulu' => 'date_format("published_at" - INTERVAL 10 HOUR, \'%Y-%m-%d\')',
                 ],
             ],
             [
                 'mysql', Trend::BY_DAYS, [
                     'UTC'              => 'date_format("published_at", \'%Y-%m-%d\')',
                     'Asia/Tokyo'       => 'date_format("published_at" + INTERVAL 9 HOUR, \'%Y-%m-%d\')',
-                    'America/New_York' => 'date_format("published_at" - INTERVAL 4 HOUR, \'%Y-%m-%d\')',
+                    'Pacific/Honolulu' => 'date_format("published_at" - INTERVAL 10 HOUR, \'%Y-%m-%d\')',
                 ],
             ],
             [
                 'pgsql', Trend::BY_DAYS, [
                     'UTC'              => 'to_char("published_at", \'YYYY-MM-DD\')',
                     'Asia/Tokyo'       => 'to_char("published_at" + interval \'9 hour\', \'YYYY-MM-DD\')',
-                    'America/New_York' => 'to_char("published_at" - interval \'4 HOUR\', \'YYYY-MM-DD\')',
+                    'Pacific/Honolulu' => 'to_char("published_at" - interval \'10 HOUR\', \'YYYY-MM-DD\')',
                 ],
             ],
             [
                 'sqlite', Trend::BY_DAYS, [
                     'UTC'              => 'strftime(\'%Y-%m-%d\', datetime("published_at", \'+0 hour\'))',
                     'Asia/Tokyo'       => 'strftime(\'%Y-%m-%d\', datetime("published_at", \'+9 hour\'))',
-                    'America/New_York' => 'strftime(\'%Y-%m-%d\', datetime("published_at", \'-4 hour\'))',
+                    'Pacific/Honolulu' => 'strftime(\'%Y-%m-%d\', datetime("published_at", \'-10 hour\'))',
                 ],
             ],
             [
                 'sqlsrv', Trend::BY_DAYS, [
-                    'UTC'              => 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM-dd\')',
+                    'UTC'              => 'FORMAT(DATEADD(hour, 0, "published_at"), \'yyyy-MM-dd\')',
                     'Asia/Tokyo'       => 'FORMAT(DATEADD(hour, 9, "published_at"), \'yyyy-MM-dd\')',
-                    'America/New_York' => 'FORMAT(DATEADD(hour, -4, "published_at"), \'yyyy-MM-dd\')',
+                    'Pacific/Honolulu' => 'FORMAT(DATEADD(hour, -10, "published_at"), \'yyyy-MM-dd\')',
                 ],
             ],
 
@@ -295,35 +295,35 @@ class FactoryTest extends TestCase
                 'mariadb', Trend::BY_HOURS, [
                     'UTC'              => 'date_format("published_at", \'%Y-%m-%d %H:00\')',
                     'Asia/Tokyo'       => 'date_format("published_at" + INTERVAL 9 HOUR, \'%Y-%m-%d %H:00\')',
-                    'America/New_York' => 'date_format("published_at" - INTERVAL 4 HOUR, \'%Y-%m-%d %H:00\')',
+                    'Pacific/Honolulu' => 'date_format("published_at" - INTERVAL 10 HOUR, \'%Y-%m-%d %H:00\')',
                 ],
             ],
             [
                 'mysql', Trend::BY_HOURS, [
                     'UTC'              => 'date_format("published_at", \'%Y-%m-%d %H:00\')',
                     'Asia/Tokyo'       => 'date_format("published_at" + INTERVAL 9 HOUR, \'%Y-%m-%d %H:00\')',
-                    'America/New_York' => 'date_format("published_at" - INTERVAL 4 HOUR, \'%Y-%m-%d %H:00\')',
+                    'Pacific/Honolulu' => 'date_format("published_at" - INTERVAL 10 HOUR, \'%Y-%m-%d %H:00\')',
                 ],
             ],
             [
                 'pgsql', Trend::BY_HOURS, [
                     'UTC'              => 'to_char("published_at", \'YYYY-MM-DD HH24:00\')',
                     'Asia/Tokyo'       => 'to_char("published_at" + interval \'9 hour\', \'YYYY-MM-DD HH24:00\')',
-                    'America/New_York' => 'to_char("published_at" - interval \'4 HOUR\', \'YYYY-MM-DD HH24:00\')',
+                    'Pacific/Honolulu' => 'to_char("published_at" - interval \'10 HOUR\', \'YYYY-MM-DD HH24:00\')',
                 ],
             ],
             [
                 'sqlite', Trend::BY_HOURS, [
                     'UTC'              => 'strftime(\'%Y-%m-%d %H:00\', datetime("published_at", \'+0 hour\'))',
                     'Asia/Tokyo'       => 'strftime(\'%Y-%m-%d %H:00\', datetime("published_at", \'+9 hour\'))',
-                    'America/New_York' => 'strftime(\'%Y-%m-%d %H:00\', datetime("published_at", \'-4 hour\'))',
+                    'Pacific/Honolulu' => 'strftime(\'%Y-%m-%d %H:00\', datetime("published_at", \'-10 hour\'))',
                 ],
             ],
             [
                 'sqlsrv', Trend::BY_HOURS, [
-                    'UTC'              => 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM-dd HH:00\')',
+                    'UTC'              => 'FORMAT(DATEADD(hour, 0, "published_at"), \'yyyy-MM-dd HH:00\')',
                     'Asia/Tokyo'       => 'FORMAT(DATEADD(hour, 9, "published_at"), \'yyyy-MM-dd HH:00\')',
-                    'America/New_York' => 'FORMAT(DATEADD(hour, -4, "published_at"), \'yyyy-MM-dd HH:00\')',
+                    'Pacific/Honolulu' => 'FORMAT(DATEADD(hour, -10, "published_at"), \'yyyy-MM-dd HH:00\')',
                 ],
             ],
 
@@ -332,35 +332,35 @@ class FactoryTest extends TestCase
                 'mariadb', Trend::BY_MINUTES, [
                     'UTC'              => 'date_format("published_at", \'%Y-%m-%d %H:%i:00\')',
                     'Asia/Tokyo'       => 'date_format("published_at" + INTERVAL 9 HOUR, \'%Y-%m-%d %H:%i:00\')',
-                    'America/New_York' => 'date_format("published_at" - INTERVAL 4 HOUR, \'%Y-%m-%d %H:%i:00\')',
+                    'Pacific/Honolulu' => 'date_format("published_at" - INTERVAL 10 HOUR, \'%Y-%m-%d %H:%i:00\')',
                 ],
             ],
             [
                 'mysql', Trend::BY_MINUTES, [
                     'UTC'              => 'date_format("published_at", \'%Y-%m-%d %H:%i:00\')',
                     'Asia/Tokyo'       => 'date_format("published_at" + INTERVAL 9 HOUR, \'%Y-%m-%d %H:%i:00\')',
-                    'America/New_York' => 'date_format("published_at" - INTERVAL 4 HOUR, \'%Y-%m-%d %H:%i:00\')',
+                    'Pacific/Honolulu' => 'date_format("published_at" - INTERVAL 10 HOUR, \'%Y-%m-%d %H:%i:00\')',
                 ],
             ],
             [
                 'pgsql', Trend::BY_MINUTES, [
                     'UTC'              => 'to_char("published_at", \'YYYY-MM-DD HH24:mi:00\')',
                     'Asia/Tokyo'       => 'to_char("published_at" + interval \'9 hour\', \'YYYY-MM-DD HH24:mi:00\')',
-                    'America/New_York' => 'to_char("published_at" - interval \'4 HOUR\', \'YYYY-MM-DD HH24:mi:00\')',
+                    'Pacific/Honolulu' => 'to_char("published_at" - interval \'10 HOUR\', \'YYYY-MM-DD HH24:mi:00\')',
                 ],
             ],
             [
                 'sqlite', Trend::BY_MINUTES, [
                     'UTC'              => 'strftime(\'%Y-%m-%d %H:%M:00\', datetime("published_at", \'+0 hour\'))',
                     'Asia/Tokyo'       => 'strftime(\'%Y-%m-%d %H:%M:00\', datetime("published_at", \'+9 hour\'))',
-                    'America/New_York' => 'strftime(\'%Y-%m-%d %H:%M:00\', datetime("published_at", \'-4 hour\'))',
+                    'Pacific/Honolulu' => 'strftime(\'%Y-%m-%d %H:%M:00\', datetime("published_at", \'-10 hour\'))',
                 ],
             ],
             [
                 'sqlsrv', Trend::BY_MINUTES, [
-                    'UTC'              => 'FORMAT(DATEADD(hour, , "published_at"), \'yyyy-MM-dd HH:mm:00\')',
+                    'UTC'              => 'FORMAT(DATEADD(hour, 0, "published_at"), \'yyyy-MM-dd HH:mm:00\')',
                     'Asia/Tokyo'       => 'FORMAT(DATEADD(hour, 9, "published_at"), \'yyyy-MM-dd HH:mm:00\')',
-                    'America/New_York' => 'FORMAT(DATEADD(hour, -4, "published_at"), \'yyyy-MM-dd HH:mm:00\')',
+                    'Pacific/Honolulu' => 'FORMAT(DATEADD(hour, -10, "published_at"), \'yyyy-MM-dd HH:mm:00\')',
                 ],
             ],
         ];
