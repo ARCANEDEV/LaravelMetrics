@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Exceptions;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Exceptions;
 
 use InvalidArgumentException;
 

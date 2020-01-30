@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Expressions\TrendDateFormat;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Expressions\TrendDateFormat;
 
 use Arcanedev\LaravelMetrics\Exceptions\InvalidTrendUnitException;
 use Arcanedev\LaravelMetrics\Metrics\Trend;
@@ -21,7 +25,7 @@ class SqlServerExpression extends Expression
      *
      * @return mixed
      */
-    public function getValue()
+    public function getValue(): string
     {
         $date = "DATEADD(hour, {$this->interval()}, {$this->wrap($this->value)})";
 
@@ -55,10 +59,9 @@ class SqlServerExpression extends Expression
     {
         $offset = $this->offset();
 
-        if ($offset > 0)
-            return $offset;
-        elseif ($offset === 0)
-            return '';
+        if ($offset >= 0) {
+            return (string) $offset;
+        }
 
         return '-'.($offset * -1);
     }

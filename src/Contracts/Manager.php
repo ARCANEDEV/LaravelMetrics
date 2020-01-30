@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Contracts;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Contracts;
 
 use Illuminate\Support\Collection;
 

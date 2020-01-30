@@ -1,5 +1,10 @@
-<?php namespace Arcanedev\LaravelMetrics\Metrics;
+<?php
 
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Metrics;
+
+use Arcanedev\LaravelMetrics\Metrics\Concerns\HasRoundedValue;
 use Arcanedev\LaravelMetrics\Results\PartitionResult;
 use Illuminate\Support\Facades\DB;
 
@@ -11,6 +16,13 @@ use Illuminate\Support\Facades\DB;
  */
 abstract class Partition extends Metric
 {
+    /* -----------------------------------------------------------------
+     |  Traits
+     | -----------------------------------------------------------------
+     */
+
+    use HasRoundedValue;
+
     /* -----------------------------------------------------------------
      |  Getters
      | -----------------------------------------------------------------
@@ -128,7 +140,7 @@ abstract class Partition extends Metric
             ->get()
             ->mapWithKeys(function ($result) use ($groupBy, $method) {
                 return array_map(function ($value) use ($method) {
-                    return $method === 'count' ? $value : round($value, 0);
+                    return $method === 'count' ? $value : $this->roundValue($value);
                 }, $this->formatAggregateResult($result, $groupBy));
             })
             ->all();

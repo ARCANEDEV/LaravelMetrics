@@ -16,11 +16,11 @@
     "require": {
         "php":               ">=7.2.0",
         "ext-json":          "*",
-        "arcanedev/support": "^5.0",
-        "cakephp/chronos":   "^1.2"
+        "arcanedev/support": "^5.1",
+        "cakephp/chronos":   "^2.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^4.0",
+        "orchestra/testbench": "^4.6",
         "phpunit/phpcov":      "^6.0",
         "phpunit/phpunit":     "^8.0"
     },

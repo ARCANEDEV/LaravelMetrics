@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Metrics\Concerns;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Metrics\Concerns;
 
 /**
  * Trait     HasRanges
@@ -42,7 +46,7 @@ trait HasRanges
     protected function currentRange($range, $now): array
     {
         return [
-            $now->subDays($range),
+            $now->subDays($range ?: 1),
             $now,
         ];
     }
@@ -57,6 +61,10 @@ trait HasRanges
      */
     protected function previousRange($range, $now): array
     {
+        if (is_null($range)) {
+            $range = 1;
+        }
+
         return [
             $now->subDays($range * 2),
             $now->subDays($range)->subSeconds(1),

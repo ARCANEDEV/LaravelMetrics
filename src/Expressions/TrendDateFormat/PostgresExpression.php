@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Expressions\TrendDateFormat;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Expressions\TrendDateFormat;
 
 use Arcanedev\LaravelMetrics\Exceptions\InvalidTrendUnitException;
 use Arcanedev\LaravelMetrics\Metrics\Trend;
@@ -19,9 +23,9 @@ class PostgresExpression extends Expression
     /**
      * Get the value of the expression.
      *
-     * @return mixed
+     * @return string
      */
-    public function getValue()
+    public function getValue(): string
     {
         $interval = $this->interval();
 
@@ -60,10 +64,13 @@ class PostgresExpression extends Expression
     {
         $offset = $this->offset();
 
-        if ($offset > 0)
+        if ($offset > 0) {
             return ' + interval \''.$offset.' hour\'';
-        elseif ($offset === 0)
+        }
+
+        if ($offset === 0) {
             return '';
+        }
 
         return ' - interval \''.($offset * -1).' HOUR\'';
     }

@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Expressions\TrendDateFormat;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Expressions\TrendDateFormat;
 
 use Arcanedev\LaravelMetrics\Expressions\Expression as BaseExpression;
 use Cake\Chronos\Chronos;
@@ -20,7 +24,7 @@ abstract class Expression extends BaseExpression
     /**
      * The query builder being used to build the trend.
      *
-     * @var \Illuminate\Database\Query\Builder
+     * @var \Illuminate\Database\Eloquent\Builder
      */
     public $query;
 
@@ -50,8 +54,6 @@ abstract class Expression extends BaseExpression
      * @param  string                                 $unit
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  string|null                            $timezone
-     *
-     * @return void
      */
     public function __construct($value, string $unit, Builder $query, $timezone = null)
     {

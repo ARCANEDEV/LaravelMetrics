@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Metrics\Concerns;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Metrics\Concerns;
 
 use Closure;
 use DateInterval;
@@ -82,6 +86,6 @@ trait HasCachedResults
      */
     protected function getCachePrefix(): string
     {
-        return config('metrics.cache.prefix', 'arcanedev.metrics');
+        return config()->get('metrics.cache.prefix', 'arcanedev.metrics');
     }
 }

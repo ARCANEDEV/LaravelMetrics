@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Metrics;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Metrics;
 
 use Arcanedev\LaravelMetrics\Exceptions\InvalidTrendUnitException;
 use Arcanedev\LaravelMetrics\Helpers\TrendDatePeriod;
@@ -170,7 +174,7 @@ abstract class Trend extends Metric
         $query      = static::getQuery($model);
         $column     = $column ?? $query->getModel()->getCreatedAtColumn();
         $dateColumn = $dateColumn ?? $query->getModel()->getCreatedAtColumn();
-        $expression = $this->getExpression($query, 'trend_date_format', $dateColumn, [$unit, $query, $timezone]);
+        $expression = static::getExpression($query, 'trend_date_format', $dateColumn, [$unit, $query, $timezone]);
 
         $dates = TrendDatePeriod::make(
             $startingDate = TrendDatePeriod::getStartingDate($unit, $range),
@@ -232,7 +236,7 @@ abstract class Trend extends Metric
 
             case self::BY_WEEKS:
                 [$year, $week] = explode('-', $date);
-                return (new Chronos)->setISODate($year, $week)->setTime(0, 0);
+                return (new Chronos)->setISODate((int) $year, (int) $week)->setTime(0, 0);
 
             case self::BY_DAYS:
                 return Chronos::createFromFormat('Y-m-d', $date);

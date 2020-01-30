@@ -1,8 +1,13 @@
-<?php namespace Arcanedev\LaravelMetrics\Expressions;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Expressions;
 
 use Arcanedev\LaravelMetrics\Exceptions\ExpressionNotFound;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
-use InvalidArgumentException;
+use Illuminate\Support\Traits\Macroable;
 
 /**
  * Class     Factory
@@ -12,6 +17,13 @@ use InvalidArgumentException;
  */
 class Factory
 {
+    /* -----------------------------------------------------------------
+     |  Traits
+     | -----------------------------------------------------------------
+     */
+
+    use Macroable;
+
     /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
@@ -59,9 +71,31 @@ class Factory
     {
         $expression = Arr::get(static::$expressions, "{$name}.{$driver}");
 
-        if (is_null($expression))
+        if (is_null($expression)) {
             throw ExpressionNotFound::make($name, $driver);
+        }
 
         return new $expression($value, ...$params);
+    }
+
+    /**
+     * Resolve the expression.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string                                 $name
+     * @param  mixed                                  $value
+     * @param  array                                  $params
+     *
+     * @return \Arcanedev\LaravelMetrics\Expressions\Expression|mixed
+     */
+    public static function resolveExpression(Builder $query, string $name, $value, array $params)
+    {
+        $driver = $query->getConnection()->getDriverName();
+
+        if (static::hasMacro($driver)) {
+            return static::$driver($name, $value, $params);
+        }
+
+        return static::make($driver, $name, $value, $params);
     }
 }

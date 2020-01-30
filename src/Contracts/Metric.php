@@ -1,8 +1,10 @@
-<?php namespace Arcanedev\LaravelMetrics\Contracts;
+<?php
 
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Http\Request;
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Contracts;
+
+use Illuminate\Contracts\Support\{Arrayable, Jsonable};
 use JsonSerializable;
 
 /**

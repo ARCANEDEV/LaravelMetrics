@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Results;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Results;
 
 use Arcanedev\LaravelMetrics\Concerns\ConvertsToArray;
 use Illuminate\Contracts\Support\Arrayable;
