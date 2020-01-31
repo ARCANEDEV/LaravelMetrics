@@ -232,7 +232,8 @@ abstract class Trend extends Metric
     {
         switch ($unit) {
             case self::BY_MONTHS:
-                return Chronos::createFromFormat('Y-m', $date);
+                [$year, $month] = explode('-', $date);
+                return Chronos::create((int) $year, (int) $month, 1);
 
             case self::BY_WEEKS:
                 [$year, $week] = explode('-', $date);
