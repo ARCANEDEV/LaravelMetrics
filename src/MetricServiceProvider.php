@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Arcanedev\LaravelMetrics;
 
+use Arcanedev\LaravelMetrics\Contracts\Manager as ManagerContract;
 use Arcanedev\Support\Providers\PackageServiceProvider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 
@@ -41,7 +42,7 @@ class MetricServiceProvider extends PackageServiceProvider implements Deferrable
 
         $this->registerConfig();
 
-        $this->singleton(Contracts\Manager::class, Manager::class);
+        $this->singleton(ManagerContract::class, Manager::class);
     }
 
     /**
@@ -49,7 +50,9 @@ class MetricServiceProvider extends PackageServiceProvider implements Deferrable
      */
     public function boot(): void
     {
-        $this->publishConfig();
+        if ($this->app->runningInConsole()) {
+            $this->publishConfig();
+        }
     }
 
     /**
@@ -60,7 +63,7 @@ class MetricServiceProvider extends PackageServiceProvider implements Deferrable
     public function provides(): array
     {
         return [
-            Contracts\Manager::class,
+            ManagerContract::class,
         ];
     }
 }
