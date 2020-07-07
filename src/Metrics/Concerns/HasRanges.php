@@ -38,15 +38,15 @@ trait HasRanges
     /**
      * Calculate the current range.
      *
-     * @param  string|int             $range
-     * @param  \Cake\Chronos\Chronos  $now
+     * @param  int                             $range
+     * @param  \Cake\Chronos\ChronosInterface  $now
      *
      * @return array
      */
-    protected function currentRange($range, $now): array
+    protected function currentRange(int $range, $now): array
     {
         return [
-            $now->subDays($range ?: 1),
+            $now->subDays($range),
             $now,
         ];
     }
@@ -54,17 +54,13 @@ trait HasRanges
     /**
      * Calculate the previous range.
      *
-     * @param  string|int             $range
-     * @param  \Cake\Chronos\Chronos  $now
+     * @param  int                             $range
+     * @param  \Cake\Chronos\ChronosInterface  $now
      *
      * @return array
      */
-    protected function previousRange($range, $now): array
+    protected function previousRange(int $range, $now): array
     {
-        if (is_null($range)) {
-            $range = 1;
-        }
-
         return [
             $now->subDays($range * 2),
             $now->subDays($range)->subSeconds(1),
