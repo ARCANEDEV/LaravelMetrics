@@ -168,7 +168,7 @@ abstract class Trend extends Metric
     protected function aggregate(string $method, string $unit, $model, ?string $column = null, ?string $dateColumn = null)
     {
         $range          = $this->request->input('range');
-        $timezone       = $this->request->input('timezone');
+        $timezone       = $this->getCurrentTimezone($this->request);
         $twelveHourTime = $this->request->input('twelveHourTime') === 'true';
 
         $query      = static::getQuery($model);

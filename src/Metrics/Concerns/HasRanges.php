@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Arcanedev\LaravelMetrics\Metrics\Concerns;
 
+use Illuminate\Http\Request;
+
 /**
  * Trait     HasRanges
  *
@@ -38,32 +40,44 @@ trait HasRanges
     /**
      * Calculate the current range.
      *
-     * @param  int                             $range
-     * @param  \Cake\Chronos\ChronosInterface  $now
+     * @param  int                        $range
+     * @param  \DateTimeZone|string|null  $timezone
      *
      * @return array
      */
-    protected function currentRange(int $range, $now): array
+    protected function currentRange(int $range, $timezone): array
     {
         return [
-            $now->subDays($range),
-            $now,
+            now($timezone)->subDays($range),
+            now($timezone),
         ];
     }
 
     /**
      * Calculate the previous range.
      *
-     * @param  int                             $range
-     * @param  \Cake\Chronos\ChronosInterface  $now
+     * @param  int                        $range
+     * @param  \DateTimeZone|string|null  $timezone
      *
      * @return array
      */
-    protected function previousRange(int $range, $now): array
+    protected function previousRange(int $range, $timezone): array
     {
         return [
-            $now->subDays($range * 2),
-            $now->subDays($range)->subSeconds(1),
+            now($timezone)->subDays($range * 2),
+            now($timezone)->subDays($range)->subSeconds(1),
         ];
+    }
+
+    /**
+     * Get the current timezone.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \DateTimeZone|string|null
+     */
+    protected function getCurrentTimezone(Request $request)
+    {
+        return $request->input('timezone');
     }
 }

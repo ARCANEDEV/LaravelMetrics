@@ -1,10 +1,15 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Metrics;
 
+use Arcanedev\LaravelMetrics\Metrics\RangedValue;
 use Arcanedev\LaravelMetrics\Results\RangedValueResult;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue\{AveragePublishedPostViews, CachedMetric,
-    MaxPublishedPostViews, MinPublishedPostViews, TotalPublishedPosts, TotalPublishedPostViews};
+use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue\{
+    AveragePublishedPostViews, CachedMetric, MaxPublishedPostViews, MinPublishedPostViews, TotalPublishedPosts,
+    TotalPublishedPostViews
+};
+use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;
 use Cake\Chronos\Chronos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -237,6 +242,63 @@ class RangedValueTest extends TestCase
         $this->calculate($metric);
     }
 
+    /** @test */
+    public function it_can_calculate_using_default_timezone()
+    {
+        $now = Carbon::parse('Oct 14 2019 5 pm');           // UTC (future time)
+        $nowCentral = $now->copy()->tz('America/Chicago'); // Now for the user
+
+        Carbon::setTestNow(Carbon::parse($nowCentral));
+
+        factory(User::class)->create(['created_at' => $now]);
+        factory(User::class)->create(['created_at' => $nowCentral]);
+
+        $result = $this->calculate(
+            new class extends RangedValue {
+                public function calculate(Request $request)
+                {
+                    return $this->count(User::class);
+                }
+            },
+            Request::create('/', 'GET', ['timezone' => 'America/Chicago'])
+        );
+
+        static::assertEquals(1, $result->value);
+
+        Carbon::setTestNow();
+    }
+
+    /** @test */
+    public function it_can_calculate_using_custom_timezone()
+    {
+        $now = Carbon::parse('Oct 14 2019 5 pm'); // UTC (future time)
+        $nowCentral = $now->copy()->tz('America/Chicago'); // Now for the user
+
+        Carbon::setTestNow(Carbon::parse($nowCentral));
+
+        factory(User::class)->create(['created_at' => $now]);
+        factory(User::class)->create(['created_at' => $nowCentral]);
+
+        $result = $this->calculate(
+            new class extends RangedValue {
+                public function calculate(Request $request)
+                {
+                    return $this->count(User::class, 'id', 'created_at');
+                }
+
+                protected function getCurrentTimezone(Request $request)
+                {
+                    return 'UTC';
+                }
+            },
+            Request::create('/', 'GET', ['timezone' => 'America/Chicago'])
+        );
+
+        static::assertEquals(2, $result->value);
+
+        Carbon::setTestNow();
+    }
+
     /* -----------------------------------------------------------------
      |  Custom Assertions
      | -----------------------------------------------------------------
@@ -250,7 +312,7 @@ class RangedValueTest extends TestCase
     protected static function assertIsValueMetric($metric)
     {
         static::assertIsMetric($metric);
-        static::assertInstanceOf(\Arcanedev\LaravelMetrics\Metrics\RangedValue::class, $metric);
+        static::assertInstanceOf(RangedValue::class, $metric);
         static::assertSame('ranged-value', $metric->type());
     }
 

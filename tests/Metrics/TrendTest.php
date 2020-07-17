@@ -1,11 +1,14 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Metrics;
 
+use Arcanedev\LaravelMetrics\Metrics\Trend;
 use Arcanedev\LaravelMetrics\Results\TrendResult;
+use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Trend\{CountPublishedPostsByDays, CountPublishedPostsByHours,
     CountPublishedPostsByMinutes, CountPublishedPostsByMonths, CountPublishedPostsByWeeks};
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
 use Cake\Chronos\Chronos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 /**
  * Class     TrendTest
@@ -266,6 +269,65 @@ class TrendTest extends TestCase
 
         static::assertIsTrendMetric($metric);
         static::assertEquals($expected, $metric->toArray());
+    }
+
+    /** @test */
+    public function it_can_calculate_using_default_timezone()
+    {
+        Chronos::setTestNow(Chronos::parse('Dec 14 2019', 'UTC'));
+
+        $now        = Chronos::parse('Nov 1 2019 6:30 AM', 'UTC');
+        $nowCentral = Chronos::parse('Nov 2 2019 12 AM', 'UTC');
+
+        factory(User::class, 2)->create(['created_at' => $now]);
+        factory(User::class, 5)->create(['created_at' => $nowCentral]);
+
+        $metric = new class extends Trend {
+            public function calculate(Request $request)
+            {
+                return $this->countByMonths(User::class);
+            }
+        };
+
+        $result = $this->calculate($metric, Request::create('/?range=2', 'GET', ['timezone' => 'America/Chicago']));
+        static::assertEquals([0, 7], Arr::pluck($result->trend, 'value'));
+
+        $result = $this->calculate($metric, Request::create('/?range=2', 'GET', ['timezone' => 'America/Los_Angeles']));
+        static::assertEquals([2, 5], Arr::pluck($result->trend, 'value'));
+
+        Chronos::setTestNow();
+    }
+
+    /** @test */
+    public function it_can_calculate_using_custom_timezone()
+    {
+        Chronos::setTestNow(Chronos::parse('Dec 14 2019', 'UTC'));
+
+        $now        = Chronos::parse('Nov 1 2019 6:30 AM', 'UTC');
+        $nowCentral = Chronos::parse('Nov 2 2019 12 AM', 'UTC');
+
+        factory(User::class, 2)->create(['created_at' => $now]);
+        factory(User::class, 5)->create(['created_at' => $nowCentral]);
+
+        $metric = new class extends Trend {
+            public function calculate(Request $request)
+            {
+                return $this->countByMonths(User::class);
+            }
+
+            protected function getCurrentTimezone(Request $request)
+            {
+                return 'UTC';
+            }
+        };
+
+        $result = $this->calculate($metric, Request::create('/?range=2', 'GET', ['timezone' => 'America/Chicago']));
+        static::assertEquals([7, 0], Arr::pluck($result->trend, 'value'));
+
+        $result = $this->calculate($metric, Request::create('/?range=2', 'GET', ['timezone' => 'America/Los_Angeles']));
+        static::assertEquals([7, 0], Arr::pluck($result->trend, 'value'));
+
+        Chronos::setTestNow();
     }
 
     /* -----------------------------------------------------------------
