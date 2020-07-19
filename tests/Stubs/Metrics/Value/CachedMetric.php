@@ -1,7 +1,10 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value;
 
 use Arcanedev\LaravelMetrics\Metrics\Value;
-use Cake\Chronos\Chronos;
 use Illuminate\Http\Request;
 
 /**
@@ -36,6 +39,6 @@ class CachedMetric extends Value
      */
     public function cacheFor()
     {
-        return Chronos::now()->addMinutes(5);
+        return now()->addMinutes(5);
     }
 }

@@ -1,5 +1,10 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests\Helpers;
+<?php
 
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests\Helpers;
+
+use Arcanedev\LaravelMetrics\Exceptions\InvalidTrendUnitException;
 use Arcanedev\LaravelMetrics\Helpers\TrendDatePeriod;
 use Arcanedev\LaravelMetrics\Metrics\Trend;
 use Arcanedev\LaravelMetrics\Tests\TestCase;
@@ -209,7 +214,7 @@ class TrendDatePeriodTest extends TestCase
     /** @test */
     public function it_must_throw_an_invalid_unit_exception_on_make()
     {
-        $this->expectException(\Arcanedev\LaravelMetrics\Exceptions\InvalidTrendUnitException::class);
+        $this->expectException(InvalidTrendUnitException::class);
         $this->expectExceptionMessage('Invalid trend unit provided [centuries]');
 
         TrendDatePeriod::make(Chronos::now()->subYears(100), Chronos::now(), 'centuries');
@@ -218,7 +223,7 @@ class TrendDatePeriodTest extends TestCase
     /** @test */
     public function it_must_throw_an_invalid_unit_exception_on_get_starting_date()
     {
-        $this->expectException(\Arcanedev\LaravelMetrics\Exceptions\InvalidTrendUnitException::class);
+        $this->expectException(InvalidTrendUnitException::class);
         $this->expectExceptionMessage('Invalid trend unit provided [centuries]');
 
         TrendDatePeriod::getStartingDate('centuries');

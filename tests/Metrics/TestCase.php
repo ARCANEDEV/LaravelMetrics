@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests\Metrics;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests\Metrics;
 
 use Arcanedev\LaravelMetrics\Tests\TestCase as BaseTestCase;
 use Illuminate\Http\Request;

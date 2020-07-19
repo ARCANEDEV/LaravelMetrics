@@ -71,9 +71,9 @@ class Factory
     {
         $expression = Arr::get(static::$expressions, "{$name}.{$driver}");
 
-        if (is_null($expression)) {
+        if (is_null($expression))
             throw ExpressionNotFound::make($name, $driver);
-        }
+
 
         return new $expression($value, ...$params);
     }
@@ -88,7 +88,7 @@ class Factory
      *
      * @return \Arcanedev\LaravelMetrics\Expressions\Expression|mixed
      */
-    public static function resolveExpression(Builder $query, string $name, $value, array $params)
+    public static function resolveExpression(Builder $query, string $name, $value, array $params = [])
     {
         $driver = $query->getConnection()->getDriverName();
 

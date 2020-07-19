@@ -1,8 +1,13 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests;
 
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;
 use Cake\Chronos\Chronos;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
@@ -60,19 +65,19 @@ abstract class TestCase extends BaseTestCase
     /**
      * Create posts for the tests.
      *
-     * @param  \Cake\Chronos\Chronos|null  $now
+     * @param  \Illuminate\Support\Carbon|null  $now
      *
      * @return \Illuminate\Support\Collection
      */
     protected function createPosts($now = null)
     {
-        $now = $now ?: Chronos::now();
+        $now = $now ?: Carbon::now();
 
         return new Collection([
-            factory(Post::class)->create(['views' => 50, 'published_at' => $now->subDays(30)]),
-            factory(Post::class)->create(['views' => 40, 'published_at' => $now->subDays(14)]),
-            factory(Post::class)->create(['views' => 30, 'published_at' => $now->subDays(7)]),
-            factory(Post::class)->create(['views' => 20, 'published_at' => $now->subDays(3)]),
+            factory(Post::class)->create(['views' => 50, 'published_at' => (clone $now)->subDays(30)]),
+            factory(Post::class)->create(['views' => 40, 'published_at' => (clone $now)->subDays(14)]),
+            factory(Post::class)->create(['views' => 30, 'published_at' => (clone $now)->subDays(7)]),
+            factory(Post::class)->create(['views' => 20, 'published_at' => (clone $now)->subDays(3)]),
             factory(Post::class)->create(['views' => 10, 'published_at' => $now]),
         ]);
     }

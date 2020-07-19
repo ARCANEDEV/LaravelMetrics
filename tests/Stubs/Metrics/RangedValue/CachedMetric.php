@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue;
 
 use Illuminate\Http\Request;
 

@@ -130,7 +130,7 @@ trait FormatsTrends
     /**
      * Format the given date by hours.
      *
-     * @param \Cake\Chronos\Chronos $date
+     * @param \Cake\Chronos\Chronos  $date
      *
      * @return string
      */

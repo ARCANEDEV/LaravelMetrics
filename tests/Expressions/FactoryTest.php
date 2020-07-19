@@ -1,5 +1,10 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests\Expressions;
+<?php
 
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests\Expressions;
+
+use Arcanedev\LaravelMetrics\Exceptions\{ExpressionNotFound, InvalidTrendUnitException};
 use Arcanedev\LaravelMetrics\Expressions\Factory;
 use Arcanedev\LaravelMetrics\Metrics\Trend;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
@@ -85,7 +90,7 @@ class FactoryTest extends TestCase
      */
     public function it_must_throw_an_exception_on_invalid_unit(string $driver)
     {
-        $this->expectException(\Arcanedev\LaravelMetrics\Exceptions\InvalidTrendUnitException::class);
+        $this->expectException(InvalidTrendUnitException::class);
         $this->expectExceptionMessage('Invalid trend unit provided [centuries]');
 
         Factory::make($driver, 'trend_date_format', 'published_at', ['centuries', Post::query()])->getValue();
@@ -94,7 +99,7 @@ class FactoryTest extends TestCase
     /** @test */
     public function it_must_throw_an_exception_on_invalid_driver()
     {
-        $this->expectException(\Arcanedev\LaravelMetrics\Exceptions\ExpressionNotFound::class);
+        $this->expectException(ExpressionNotFound::class);
         $this->expectExceptionMessage('Expression `trend_date_format` not found for `nosql` driver');
 
         Factory::make('nosql', 'trend_date_format', 'created_at');
@@ -103,10 +108,29 @@ class FactoryTest extends TestCase
     /** @test */
     public function it_must_throw_an_exception_on_invalid_name()
     {
-        $this->expectException(\Arcanedev\LaravelMetrics\Exceptions\ExpressionNotFound::class);
+        $this->expectException(ExpressionNotFound::class);
         $this->expectExceptionMessage('Expression `invalid` not found for `mysql` driver');
 
         Factory::make('mysql', 'invalid', 'created_at');
+    }
+
+    /** @test */
+    public function it_can_register_a_custom_expression()
+    {
+        Factory::macro('mysql', function ($name, $value, $params) {
+            FactoryTest::assertSame('mysql', $name);
+            FactoryTest::assertSame('value', $value);
+            FactoryTest::assertEquals(['foo' => 'bar'], $params);
+
+            return 'custom expression';
+        });
+
+        $query = (new Post)->setConnection('mysql')->newQuery();
+
+        static::assertSame(
+            'custom expression',
+            Factory::resolveExpression($query, 'mysql', 'value', ['foo' => 'bar'])
+        );
     }
 
     /* -----------------------------------------------------------------

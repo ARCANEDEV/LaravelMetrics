@@ -6,7 +6,6 @@ namespace Arcanedev\LaravelMetrics\Metrics;
 
 use Arcanedev\LaravelMetrics\Metrics\Concerns\{HasRanges, HasRoundedValue};
 use Arcanedev\LaravelMetrics\Results\RangedValueResult;
-use Cake\Chronos\Chronos;
 
 /**
  * Class     RangedValue
@@ -135,11 +134,10 @@ abstract class RangedValue extends Metric
         $column     = $column ?? $query->getModel()->getQualifiedKeyName();
         $dateColumn = $dateColumn ?? $query->getModel()->getCreatedAtColumn();
         $range      = (int) $this->request->input('range', 1);
-        $timezone   = $this->request->input('timezone');
+        $timezone   = $this->getCurrentTimezone($this->request);
 
-        $now      = Chronos::now($timezone);
-        $previous = with(clone $query)->whereBetween($dateColumn, $this->previousRange($range, $now))->{$method}($column);
-        $current  = with(clone $query)->whereBetween($dateColumn, $this->currentRange($range, $now))->{$method}($column);
+        $current  = with(clone $query)->whereBetween($dateColumn, $this->currentRange($range, $timezone))->{$method}($column);
+        $previous = with(clone $query)->whereBetween($dateColumn, $this->previousRange($range, $timezone))->{$method}($column);
 
         return $this->result($method === 'count' ? $current : $this->roundValue($current))
                     ->previous($method === 'count' ? $previous : $this->roundValue($previous));

@@ -1,8 +1,11 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests;
 
 use Arcanedev\LaravelMetrics\Contracts\Manager as ManagerContract;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value\AveragePostViews;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value\TotalPosts;
+use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value\{AveragePostViews, TotalPosts};
 use Illuminate\Support\Collection;
 
 /**

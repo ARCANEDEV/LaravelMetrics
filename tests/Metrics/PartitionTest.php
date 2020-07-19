@@ -1,9 +1,15 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests\Metrics;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests\Metrics;
 
 use Arcanedev\LaravelMetrics\Metrics\Partition;
 use Arcanedev\LaravelMetrics\Results\PartitionResult;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition\{AverageUserPointsByType, CountUserTypes,
-    CountUserTypesWithCustomLabelsAndColors, MaxUserPointsByType, MinUserPointsByType, SumUserPointsByType};
+use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition\{
+    AverageUserPointsByType, CountUserTypes, CountUserTypesWithCustomLabelsAndColors, MaxUserPointsByType,
+    MinUserPointsByType, SumUserPointsByType
+};
 use Illuminate\Support\Collection;
 
 /**

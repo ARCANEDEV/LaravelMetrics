@@ -1,10 +1,14 @@
 <?php namespace Arcanedev\LaravelMetrics\Tests\Metrics;
 
+use Arcanedev\LaravelMetrics\Metrics\RangedValue;
 use Arcanedev\LaravelMetrics\Results\RangedValueResult;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue\{AveragePublishedPostViews, CachedMetric,
-    MaxPublishedPostViews, MinPublishedPostViews, TotalPublishedPosts, TotalPublishedPostViews};
-use Cake\Chronos\Chronos;
+use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue\{
+    AveragePublishedPostViews, CachedMetric, MaxPublishedPostViews, MinPublishedPostViews, TotalPublishedPosts,
+    TotalPublishedPostViews
+};
+use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -23,8 +27,9 @@ class RangedValueTest extends TestCase
     /** @test */
     public function it_can_calculate_count()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Carbon::setTestNow($now = Carbon::now());
+
+        $this->createPosts($now);
 
         static::assertIsMetric($metric = new TotalPublishedPosts);
 
@@ -51,14 +56,15 @@ class RangedValueTest extends TestCase
             static::assertSame($expected['previous'], $result->previous['value'], "Fails the previous value on range [{$range}]");
         }
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_calculate_average()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Carbon::setTestNow($now = Carbon::now());
+
+        $this->createPosts($now);
 
         static::assertIsMetric($metric = new AveragePublishedPostViews);
 
@@ -85,14 +91,15 @@ class RangedValueTest extends TestCase
             static::assertSame($expected['previous'], $result->previous['value'], "Fails the previous value on range [{$range}]");
         }
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_calculate_sum()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Carbon::setTestNow($now = Carbon::now());
+
+        $this->createPosts($now);
 
         static::assertIsMetric($metric = new TotalPublishedPostViews);
 
@@ -119,14 +126,15 @@ class RangedValueTest extends TestCase
             static::assertSame($expected['previous'], $result->previous['value'], "Fails the previous value on range [{$range}]");
         }
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_calculate_min()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Carbon::setTestNow($now = Carbon::now());
+
+        $this->createPosts($now);
 
         static::assertIsMetric($metric = new MinPublishedPostViews);
 
@@ -153,14 +161,15 @@ class RangedValueTest extends TestCase
             static::assertSame($expected['previous'], $result->previous['value'], "Fails the previous value on range [{$range}]");
         }
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_calculate_max()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Carbon::setTestNow($now = Carbon::now());
+
+        $this->createPosts($now);
 
         static::assertIsMetric($metric = new MaxPublishedPostViews);
 
@@ -187,14 +196,15 @@ class RangedValueTest extends TestCase
             static::assertSame($expected['previous'], $result->previous['value'], "Fails the previous value on range [{$range}]");
         }
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_convert_to_array_and_json()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Carbon::setTestNow($now = Carbon::now());
+
+        $this->createPosts($now);
 
         $metric = new TotalPublishedPosts;
 
@@ -221,10 +231,12 @@ class RangedValueTest extends TestCase
 
         static::assertEquals($expected, $metric->toArray());
 
-        static::assertJsonStringEqualsJsonString(json_encode($expected), json_encode($metric));
-        static::assertJsonStringEqualsJsonString(json_encode($expected), $metric->toJson());
+        $expectedJson = json_encode($expected);
 
-        Chronos::setTestNow();
+        static::assertJsonStringEqualsJsonString($expectedJson, json_encode($metric));
+        static::assertJsonStringEqualsJsonString($expectedJson, $metric->toJson());
+
+        Carbon::setTestNow();
     }
 
     /** @test */
@@ -235,6 +247,63 @@ class RangedValueTest extends TestCase
         static::assertIsValueMetric($metric = new CachedMetric);
 
         $this->calculate($metric);
+    }
+
+    /** @test */
+    public function it_can_calculate_using_default_timezone()
+    {
+        $now = Carbon::parse('Oct 14 2019 5 pm');           // UTC (future time)
+        $nowCentral = $now->copy()->tz('America/Chicago'); // Now for the user
+
+        Carbon::setTestNow(Carbon::parse($nowCentral));
+
+        factory(User::class)->create(['created_at' => $now]);
+        factory(User::class)->create(['created_at' => $nowCentral]);
+
+        $result = $this->calculate(
+            new class extends RangedValue {
+                public function calculate(Request $request)
+                {
+                    return $this->count(User::class);
+                }
+            },
+            Request::create('/', 'GET', ['timezone' => 'America/Chicago'])
+        );
+
+        static::assertEquals(1, $result->value);
+
+        Carbon::setTestNow();
+    }
+
+    /** @test */
+    public function it_can_calculate_using_custom_timezone()
+    {
+        $now = Carbon::parse('Oct 14 2019 5 pm'); // UTC (future time)
+        $nowCentral = $now->copy()->tz('America/Chicago'); // Now for the user
+
+        Carbon::setTestNow(Carbon::parse($nowCentral));
+
+        factory(User::class)->create(['created_at' => $now]);
+        factory(User::class)->create(['created_at' => $nowCentral]);
+
+        $result = $this->calculate(
+            new class extends RangedValue {
+                public function calculate(Request $request)
+                {
+                    return $this->count(User::class, 'id', 'created_at');
+                }
+
+                protected function getCurrentTimezone(Request $request)
+                {
+                    return 'UTC';
+                }
+            },
+            Request::create('/', 'GET', ['timezone' => 'America/Chicago'])
+        );
+
+        static::assertEquals(2, $result->value);
+
+        Carbon::setTestNow();
     }
 
     /* -----------------------------------------------------------------
@@ -250,7 +319,7 @@ class RangedValueTest extends TestCase
     protected static function assertIsValueMetric($metric)
     {
         static::assertIsMetric($metric);
-        static::assertInstanceOf(\Arcanedev\LaravelMetrics\Metrics\RangedValue::class, $metric);
+        static::assertInstanceOf(RangedValue::class, $metric);
         static::assertSame('ranged-value', $metric->type());
     }
 

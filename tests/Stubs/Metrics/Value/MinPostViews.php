@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value;
 
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
 use Arcanedev\LaravelMetrics\Metrics\Value;

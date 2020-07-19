@@ -40,6 +40,7 @@ abstract class Trend extends Metric
     use Concerns\AggregatesTrends,
         Concerns\HasExpressions,
         Concerns\HasRanges,
+        Concerns\HasRoundedValue,
         Concerns\FormatsTrends;
 
     /* -----------------------------------------------------------------
@@ -168,7 +169,7 @@ abstract class Trend extends Metric
     protected function aggregate(string $method, string $unit, $model, ?string $column = null, ?string $dateColumn = null)
     {
         $range          = $this->request->input('range');
-        $timezone       = $this->request->input('timezone');
+        $timezone       = $this->getCurrentTimezone($this->request);
         $twelveHourTime = $this->request->input('twelveHourTime') === 'true';
 
         $query      = static::getQuery($model);
@@ -207,7 +208,7 @@ abstract class Trend extends Metric
                 return [
                     static::formatAggregateKey($date, $unit) => [
                         'label' => static::formatLabelBy($date, $unit, $twelveHourTime),
-                        'value' => $method === 'count' ? intval($value) : round($value, 0),
+                        'value' => $method === 'count' ? intval($value) : $this->roundValue($value),
                     ],
                 ];
             });

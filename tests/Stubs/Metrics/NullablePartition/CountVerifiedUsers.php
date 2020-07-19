@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\NullablePartition;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\NullablePartition;
 
 use Arcanedev\LaravelMetrics\Metrics\NullablePartition;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;

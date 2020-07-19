@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests;
 
 use Arcanedev\LaravelMetrics\MetricServiceProvider;
 

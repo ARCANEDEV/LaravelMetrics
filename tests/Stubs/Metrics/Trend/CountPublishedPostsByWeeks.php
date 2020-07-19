@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Trend;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Trend;
 
 use Arcanedev\LaravelMetrics\Metrics\Trend;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;

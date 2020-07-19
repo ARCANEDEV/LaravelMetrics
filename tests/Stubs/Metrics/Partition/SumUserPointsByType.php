@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition;
 
 use Arcanedev\LaravelMetrics\Metrics\Partition;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;
