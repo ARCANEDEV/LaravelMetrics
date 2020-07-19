@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests\Stubs\Models;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests\Stubs\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +26,7 @@ class Post extends Model
      |  Properties
      | -----------------------------------------------------------------
      */
-    
+
     protected $casts = [
         'id'    => 'integer',
         'views' => 'integer',

@@ -1,11 +1,16 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests\Metrics;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests\Metrics;
 
 use Arcanedev\LaravelMetrics\Metrics\Trend;
 use Arcanedev\LaravelMetrics\Results\TrendResult;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Trend\{CountPublishedPostsByDays, CountPublishedPostsByHours,
-    CountPublishedPostsByMinutes, CountPublishedPostsByMonths, CountPublishedPostsByWeeks};
-use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
+use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Trend\{
+    CountPublishedPostsByDays, CountPublishedPostsByHours, CountPublishedPostsByMinutes, CountPublishedPostsByMonths,
+    CountPublishedPostsByWeeks
+};
+use Arcanedev\LaravelMetrics\Tests\Stubs\Models\{Post, User};
 use Cake\Chronos\Chronos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -328,6 +333,44 @@ class TrendTest extends TestCase
         static::assertEquals([7, 0], Arr::pluck($result->trend, 'value'));
 
         Chronos::setTestNow();
+    }
+
+    /** @test */
+    public function it_can_calculate_using_default_rounding_precision()
+    {
+        factory(Post::class, 2)->create(['views' => 5.4321]);
+
+        $result = $this->calculate(
+            new class extends Trend {
+                public function calculate(Request $request)
+                {
+                    return $this->average(Trend::BY_MONTHS, Post::class, 'views');
+                }
+            },
+            Request::create('/', 'GET', ['range' => 1])
+        );
+
+        static::assertEquals(5, Arr::first($result->trend)['value']);
+    }
+
+    /** @test */
+    public function it_can_calculate_using_custom_rounding_precision()
+    {
+        factory(Post::class, 2)->create(['views' => 5.4321]);
+
+        $result = $this->calculate(
+            new class extends Trend {
+                public $roundingPrecision = 2;
+
+                public function calculate(Request $request)
+                {
+                    return $this->average(Trend::BY_MONTHS, Post::class, 'views');
+                }
+            },
+            Request::create('/', 'GET', ['range' => 1])
+        );
+
+        static::assertSame(5.43, Arr::first($result->trend)['value']);
     }
 
     /* -----------------------------------------------------------------

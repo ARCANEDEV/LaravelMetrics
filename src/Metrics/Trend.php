@@ -40,6 +40,7 @@ abstract class Trend extends Metric
     use Concerns\AggregatesTrends,
         Concerns\HasExpressions,
         Concerns\HasRanges,
+        Concerns\HasRoundedValue,
         Concerns\FormatsTrends;
 
     /* -----------------------------------------------------------------
@@ -207,7 +208,7 @@ abstract class Trend extends Metric
                 return [
                     static::formatAggregateKey($date, $unit) => [
                         'label' => static::formatLabelBy($date, $unit, $twelveHourTime),
-                        'value' => $method === 'count' ? intval($value) : round($value, 0),
+                        'value' => $method === 'count' ? intval($value) : $this->roundValue($value),
                     ],
                 ];
             });

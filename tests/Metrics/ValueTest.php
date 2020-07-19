@@ -1,17 +1,16 @@
-<?php namespace Arcanedev\LaravelMetrics\Tests\Metrics;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelMetrics\Tests\Metrics;
 
 use Arcanedev\LaravelMetrics\Results\ValueResult;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value\{
-    AveragePostViews,
-    AverageViewsCount,
-    CachedMetric,
-    MaxPostViews,
-    MetricExtendedWithMacro,
-    MinPostViews,
-    TotalPosts,
-    TotalPostViews};
+    AveragePostViews, AverageViewsCount, CachedMetric, MaxPostViews, MetricExtendedWithMacro, MinPostViews,
+    TotalPosts, TotalPostViews
+};
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
-use Cake\Chronos\Chronos;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -30,7 +29,7 @@ class ValueTest extends TestCase
     /** @test */
     public function it_can_calculate_count()
     {
-        Chronos::setTestNow($now = Chronos::now());
+        Carbon::setTestNow($now = Carbon::now());
         $this->createPosts($now);
 
         static::assertIsValueMetric($metric = new TotalPosts);
@@ -40,13 +39,13 @@ class ValueTest extends TestCase
         static::assertIsValueResult($result);
         static::assertSame(5, $result->value);
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_calculate_sum()
     {
-        Chronos::setTestNow($now = Chronos::now());
+        Carbon::setTestNow($now = Carbon::now());
         $this->createPosts($now);
 
         static::assertIsValueMetric($metric = new TotalPostViews);
@@ -56,13 +55,13 @@ class ValueTest extends TestCase
         static::assertIsValueResult($result);
         static::assertSame(150.0, $result->value);
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_calculate_average()
     {
-        Chronos::setTestNow($now = Chronos::now());
+        Carbon::setTestNow($now = Carbon::now());
         $this->createPosts($now);
 
         static::assertIsValueMetric($metric = new AveragePostViews);
@@ -72,14 +71,14 @@ class ValueTest extends TestCase
         static::assertIsValueResult($result);
         static::assertSame(30.0, $result->value);
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_calculate_max()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        $this->createPosts($now = Carbon::now());
+        Carbon::setTestNow($now);
 
         static::assertIsValueMetric($metric = new MaxPostViews);
 
@@ -88,14 +87,14 @@ class ValueTest extends TestCase
         static::assertIsValueResult($result);
         static::assertSame(50.0, $result->value);
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_calculate_min()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        $this->createPosts($now = Carbon::now());
+        Carbon::setTestNow($now);
 
         static::assertIsValueMetric($metric = new MinPostViews);
 
@@ -104,13 +103,13 @@ class ValueTest extends TestCase
         static::assertIsValueResult($result);
         static::assertSame(10.0, $result->value);
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_convert_to_array_and_json()
     {
-        Chronos::setTestNow($now = Chronos::now());
+        Carbon::setTestNow($now = Carbon::now());
         $this->createPosts($now);
 
         $metric = new TotalPosts;
@@ -126,7 +125,7 @@ class ValueTest extends TestCase
         static::assertJsonStringEqualsJsonString(json_encode($expected), $metric->toJson());
         static::assertJsonStringEqualsJsonString(json_encode($expected), json_encode($metric));
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
@@ -155,7 +154,7 @@ class ValueTest extends TestCase
     /** @test */
     public function it_can_get_rounded_value_with_custom_precision()
     {
-        Chronos::setTestNow($now = Chronos::now());
+        Carbon::setTestNow($now = Carbon::now());
         $averageViews = factory(Post::class, 2)->create(['published_at' => $now])->average('views');
 
         static::assertIsValueMetric($metric = new AverageViewsCount);
@@ -169,7 +168,7 @@ class ValueTest extends TestCase
     /** @test */
     public function it_can_get_rounded_value_with_default_precision()
     {
-        Chronos::setTestNow($now = Chronos::now());
+        Carbon::setTestNow($now = Carbon::now());
         $averageViews = factory(Post::class, 3)->create(['published_at' => $now])->average('views');
 
         static::assertIsValueMetric($metric = (new AverageViewsCount)->precision(2));

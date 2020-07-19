@@ -7,7 +7,6 @@ use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue\{
     TotalPublishedPostViews
 };
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;
-use Cake\Chronos\Chronos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -28,8 +27,9 @@ class RangedValueTest extends TestCase
     /** @test */
     public function it_can_calculate_count()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Carbon::setTestNow($now = Carbon::now());
+
+        $this->createPosts($now);
 
         static::assertIsMetric($metric = new TotalPublishedPosts);
 
@@ -56,14 +56,15 @@ class RangedValueTest extends TestCase
             static::assertSame($expected['previous'], $result->previous['value'], "Fails the previous value on range [{$range}]");
         }
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_calculate_average()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Carbon::setTestNow($now = Carbon::now());
+
+        $this->createPosts($now);
 
         static::assertIsMetric($metric = new AveragePublishedPostViews);
 
@@ -90,14 +91,15 @@ class RangedValueTest extends TestCase
             static::assertSame($expected['previous'], $result->previous['value'], "Fails the previous value on range [{$range}]");
         }
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_calculate_sum()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Carbon::setTestNow($now = Carbon::now());
+
+        $this->createPosts($now);
 
         static::assertIsMetric($metric = new TotalPublishedPostViews);
 
@@ -124,14 +126,15 @@ class RangedValueTest extends TestCase
             static::assertSame($expected['previous'], $result->previous['value'], "Fails the previous value on range [{$range}]");
         }
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_calculate_min()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Carbon::setTestNow($now = Carbon::now());
+
+        $this->createPosts($now);
 
         static::assertIsMetric($metric = new MinPublishedPostViews);
 
@@ -158,14 +161,15 @@ class RangedValueTest extends TestCase
             static::assertSame($expected['previous'], $result->previous['value'], "Fails the previous value on range [{$range}]");
         }
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_calculate_max()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Carbon::setTestNow($now = Carbon::now());
+
+        $this->createPosts($now);
 
         static::assertIsMetric($metric = new MaxPublishedPostViews);
 
@@ -192,14 +196,15 @@ class RangedValueTest extends TestCase
             static::assertSame($expected['previous'], $result->previous['value'], "Fails the previous value on range [{$range}]");
         }
 
-        Chronos::setTestNow();
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function it_can_convert_to_array_and_json()
     {
-        $this->createPosts($now = Chronos::now());
-        Chronos::setTestNow($now);
+        Carbon::setTestNow($now = Carbon::now());
+
+        $this->createPosts($now);
 
         $metric = new TotalPublishedPosts;
 
@@ -226,10 +231,12 @@ class RangedValueTest extends TestCase
 
         static::assertEquals($expected, $metric->toArray());
 
-        static::assertJsonStringEqualsJsonString(json_encode($expected), json_encode($metric));
-        static::assertJsonStringEqualsJsonString(json_encode($expected), $metric->toJson());
+        $expectedJson = json_encode($expected);
 
-        Chronos::setTestNow();
+        static::assertJsonStringEqualsJsonString($expectedJson, json_encode($metric));
+        static::assertJsonStringEqualsJsonString($expectedJson, $metric->toJson());
+
+        Carbon::setTestNow();
     }
 
     /** @test */

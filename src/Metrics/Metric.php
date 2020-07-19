@@ -146,13 +146,11 @@ abstract class Metric implements MetricContract
      */
     protected static function getQuery($model): Builder
     {
-        if (is_string($model)) {
+        if (is_string($model))
             $model = new $model;
-        }
 
-        if ($model instanceof Builder) {
+        if ($model instanceof Builder)
             return $model;
-        }
 
         return $model->newQuery();
     }
