@@ -12,13 +12,13 @@
          verbose="true">
     <testsuites>
         <testsuite name="Package Test Suite">
-            <directory suffix=".php">./tests/</directory>
-            <exclude>./tests/fixtures/</exclude>
+            <directory suffix=".php">./tests</directory>
+            <exclude>./tests/fixtures</exclude>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">./src/</directory>
+            <directory suffix=".php">./src</directory>
         </whitelist>
     </filter>
     <php>
