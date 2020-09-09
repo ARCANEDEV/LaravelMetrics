@@ -16,12 +16,12 @@
     "require": {
         "php": "^7.3|^8.0",
         "ext-json": "*",
-        "arcanedev/support": "^8.0",
+        "arcanedev/support": "^9.0",
         "cakephp/chronos": "^2.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.2",
-        "orchestra/testbench": "^6.4",
+        "orchestra/testbench": "^7.0",
         "phpunit/phpunit": "^9.3.3"
     },
     "autoload": {
@@ -40,7 +40,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "3.x-dev"
+            "dev-develop": "4.x-dev"
         },
         "laravel": {
             "providers": [
