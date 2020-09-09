@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
 /**
  * Trait     HasCachedResults
  *
- * @package  Arcanedev\LaravelMetrics\Metrics\Concerns
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 trait HasCachedResults

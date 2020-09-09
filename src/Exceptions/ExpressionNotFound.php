@@ -9,7 +9,6 @@ use InvalidArgumentException;
 /**
  * Class     ExpressionNotFound
  *
- * @package  Arcanedev\LaravelMetrics\Exceptions
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ExpressionNotFound extends InvalidArgumentException

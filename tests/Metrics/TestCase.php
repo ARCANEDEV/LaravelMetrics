@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 /**
  * Class     TestCase
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class TestCase extends BaseTestCase
@@ -30,7 +29,6 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         $this->loadMigrations();
-        $this->loadFactories();
     }
 
     /* -----------------------------------------------------------------
@@ -61,7 +59,7 @@ abstract class TestCase extends BaseTestCase
      *
      * @param  object  $metric
      */
-    protected static function assertIsMetric($metric)
+    protected static function assertIsMetric($metric): void
     {
         $expectations = [
             \Illuminate\Contracts\Support\Arrayable::class,

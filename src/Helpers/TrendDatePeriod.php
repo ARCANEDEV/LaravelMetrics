@@ -12,7 +12,6 @@ use Illuminate\Support\Collection;
 /**
  * Class     TrendDatePeriod
  *
- * @package  Arcanedev\LaravelMetrics\Helpers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class TrendDatePeriod

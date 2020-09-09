@@ -10,7 +10,6 @@ use Cake\Chronos\Chronos;
 /**
  * Trait     FormatsTrends
  *
- * @package  Arcanedev\LaravelMetrics\Metrics\Concerns
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 trait FormatsTrends

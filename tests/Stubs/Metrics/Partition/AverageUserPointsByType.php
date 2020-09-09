@@ -9,9 +9,8 @@ use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;
 use Illuminate\Http\Request;
 
 /**
- * Class     AverageUserTypes
+ * Class     AverageUserPointsByType
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class AverageUserPointsByType extends Partition

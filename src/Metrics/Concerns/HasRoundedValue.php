@@ -7,7 +7,6 @@ namespace Arcanedev\LaravelMetrics\Metrics\Concerns;
 /**
  * Trait     HasRoundedValue
  *
- * @package  Arcanedev\LaravelMetrics\Metrics\Concerns
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 trait HasRoundedValue

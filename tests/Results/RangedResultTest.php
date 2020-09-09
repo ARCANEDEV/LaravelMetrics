@@ -9,7 +9,6 @@ use Arcanedev\LaravelMetrics\Results\RangedValueResult;
 /**
  * Class     RangedResultTest
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Results
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class RangedResultTest extends ResultTestCase
@@ -20,21 +19,21 @@ class RangedResultTest extends ResultTestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         $result = $this->makeResult();
 
         static::assertIsMetricResult($result);
 
-        self::assertNull($result->value);
+        static::assertNull($result->value);
     }
 
     /** @test */
-    public function it_can_set_value()
+    public function it_can_set_value(): void
     {
         $result = $this->makeResult()->value(10);
 
-        self::assertSame(10, $result->value);
+        static::assertSame(10, $result->value);
 
         $excepted = [
             'value'    => 10,
@@ -55,7 +54,7 @@ class RangedResultTest extends ResultTestCase
     }
 
     /** @test */
-    public function it_can_convert_to_array()
+    public function it_can_convert_to_array(): void
     {
         $result = $this->makeResult(150)
             ->prefix('$')
@@ -82,7 +81,7 @@ class RangedResultTest extends ResultTestCase
     }
 
     /** @test */
-    public function it_can_convert_to_json()
+    public function it_can_convert_to_json(): void
     {
         $result = $this->makeResult(100)
             ->prefix('$')
@@ -113,7 +112,7 @@ class RangedResultTest extends ResultTestCase
     }
 
     /** @test */
-    public function it_can_calculate_change()
+    public function it_can_calculate_change(): void
     {
         $result = $this->makeResult(10);
 
@@ -185,7 +184,7 @@ class RangedResultTest extends ResultTestCase
      *
      * @return \Arcanedev\LaravelMetrics\Results\RangedValueResult|mixed
      */
-    protected function makeResult($value = null)
+    protected function makeResult($value = null): RangedValueResult
     {
         return new RangedValueResult($value);
     }

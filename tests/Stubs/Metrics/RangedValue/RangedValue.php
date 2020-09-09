@@ -9,7 +9,6 @@ use Arcanedev\LaravelMetrics\Metrics\RangedValue as BaseRangedValue;
 /**
  * Class     RangedValue
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class RangedValue extends BaseRangedValue

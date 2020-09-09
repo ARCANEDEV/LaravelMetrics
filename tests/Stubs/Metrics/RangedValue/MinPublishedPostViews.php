@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 /**
  * Class     MinPublishedPostViews
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class MinPublishedPostViews extends RangedValue

@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class     User
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Models
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
  * @property  int                              id
@@ -32,6 +31,11 @@ class User extends Model
      */
 
     use SoftDeletes;
+
+    /* -----------------------------------------------------------------
+     |  Properties
+     | -----------------------------------------------------------------
+     */
 
     protected $guarded = [];
 

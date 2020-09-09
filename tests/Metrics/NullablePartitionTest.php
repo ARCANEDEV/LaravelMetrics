@@ -11,7 +11,6 @@ use Illuminate\Support\Collection;
 /**
  * Class     NullablePartitionTest
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class NullablePartitionTest extends TestCase
@@ -22,7 +21,7 @@ class NullablePartitionTest extends TestCase
      */
 
     /** @test */
-    public function it_can_calculate_count()
+    public function it_can_calculate_count(): void
     {
         $this->createUsers();
 
@@ -62,7 +61,7 @@ class NullablePartitionTest extends TestCase
      *
      * @param  object  $metric
      */
-    protected static function assertIsNullablePartitionMetric($metric)
+    protected static function assertIsNullablePartitionMetric($metric): void
     {
         static::assertIsMetric($metric);
         static::assertInstanceOf(NullablePartition::class, $metric);

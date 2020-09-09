@@ -7,10 +7,9 @@ namespace Arcanedev\LaravelMetrics\Contracts;
 use Illuminate\Support\Collection;
 
 /**
- * Interface     Manager
+ * Interface  Manager
  *
- * @package  Arcanedev\LaravelMetrics\Contracts
- * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 interface Manager
 {

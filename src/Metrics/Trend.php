@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 /**
  * Class     Trend
  *
- * @package  Arcanedev\LaravelMetrics\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class Trend extends Metric

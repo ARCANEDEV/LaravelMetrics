@@ -9,7 +9,6 @@ use Arcanedev\LaravelMetrics\Metrics\Trend;
 /**
  * Trait     AggregatesTrends
  *
- * @package  Arcanedev\LaravelMetrics\Metrics\Concerns
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 trait AggregatesTrends

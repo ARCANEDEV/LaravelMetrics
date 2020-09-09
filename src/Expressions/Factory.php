@@ -12,7 +12,6 @@ use Illuminate\Support\Traits\Macroable;
 /**
  * Class     Factory
  *
- * @package  Arcanedev\LaravelMetrics\Expressions
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class Factory

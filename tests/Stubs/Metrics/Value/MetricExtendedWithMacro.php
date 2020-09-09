@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 /**
  * Class     MetricExtendedWithMacro
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class MetricExtendedWithMacro extends Value

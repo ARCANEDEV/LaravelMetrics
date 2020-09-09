@@ -15,7 +15,6 @@ use Illuminate\Support\Collection;
 /**
  * Class     PartitionTest
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class PartitionTest extends TestCase
@@ -26,7 +25,7 @@ class PartitionTest extends TestCase
      */
 
     /** @test */
-    public function it_can_calculate_count()
+    public function it_can_calculate_count(): void
     {
         $this->createUsers();
 
@@ -59,7 +58,7 @@ class PartitionTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_average()
+    public function it_can_calculate_average(): void
     {
         $this->createUsers();
 
@@ -92,7 +91,7 @@ class PartitionTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_sum()
+    public function it_can_calculate_sum(): void
     {
         $this->createUsers();
 
@@ -125,7 +124,7 @@ class PartitionTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_max()
+    public function it_can_calculate_max(): void
     {
         $this->createUsers();
 
@@ -158,7 +157,7 @@ class PartitionTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_min()
+    public function it_can_calculate_min(): void
     {
         $this->createUsers();
 
@@ -191,7 +190,7 @@ class PartitionTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_and_sort()
+    public function it_can_calculate_and_sort(): void
     {
         $this->createUsers();
         static::assertIsPartitionMetric($metric = new CountUserTypes);
@@ -271,7 +270,7 @@ class PartitionTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_with_custom_labels_and_colors()
+    public function it_can_calculate_with_custom_labels_and_colors(): void
     {
         $this->createUsers();
         static::assertIsPartitionMetric($metric = new CountUserTypesWithCustomLabelsAndColors);
@@ -315,7 +314,7 @@ class PartitionTest extends TestCase
      *
      * @param  object  $metric
      */
-    protected static function assertIsPartitionMetric($metric)
+    protected static function assertIsPartitionMetric($metric): void
     {
         static::assertIsMetric($metric);
         static::assertInstanceOf(Partition::class, $metric);
@@ -328,7 +327,7 @@ class PartitionTest extends TestCase
      * @param  mixed   $actual
      * @param  string  $message
      */
-    protected static function assertIsPartitionResult($actual, string $message = '')
+    protected static function assertIsPartitionResult($actual, string $message = ''): void
     {
         static::assertInstanceOf(PartitionResult::class, $actual, $message);
     }

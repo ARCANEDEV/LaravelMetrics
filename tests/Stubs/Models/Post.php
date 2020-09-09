@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class     Post
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Models
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
  * @property  int                         id

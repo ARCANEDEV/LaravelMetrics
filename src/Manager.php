@@ -12,7 +12,6 @@ use Illuminate\Contracts\Foundation\Application;
 /**
  * Class     Manager
  *
- * @package  Arcanedev\LaravelMetrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class Manager implements ManagerContract

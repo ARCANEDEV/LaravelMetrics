@@ -13,7 +13,6 @@ use Arcanedev\LaravelMetrics\Tests\TestCase;
 /**
  * Class     FactoryTest
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Expressions
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class FactoryTest extends TestCase
@@ -24,7 +23,7 @@ class FactoryTest extends TestCase
      */
 
     /** @test */
-    public function it_can_get_if_null_expression()
+    public function it_can_get_if_null_expression(): void
     {
         $expectations = [
             'mariadb' => 'IF(ISNULL(`activated_at`), 0, 1)',
@@ -52,7 +51,7 @@ class FactoryTest extends TestCase
      * @param  string  $unit
      * @param  string  $expected
      */
-    public function it_can_get_date_format_expression_for_trends($driver, $unit, $expected)
+    public function it_can_get_date_format_expression_for_trends($driver, $unit, $expected): void
     {
         static::assertSame(
             $expected,
@@ -70,7 +69,7 @@ class FactoryTest extends TestCase
      * @param  string  $unit
      * @param  array   $timezones
      */
-    public function it_can_get_date_format_expression_for_trends_with_timezones($driver, $unit, array $timezones)
+    public function it_can_get_date_format_expression_for_trends_with_timezones($driver, $unit, array $timezones): void
     {
         foreach ($timezones as $timezone => $expected) {
             static::assertSame(
@@ -88,7 +87,7 @@ class FactoryTest extends TestCase
      *
      * @param  string  $driver
      */
-    public function it_must_throw_an_exception_on_invalid_unit(string $driver)
+    public function it_must_throw_an_exception_on_invalid_unit(string $driver): void
     {
         $this->expectException(InvalidTrendUnitException::class);
         $this->expectExceptionMessage('Invalid trend unit provided [centuries]');
@@ -97,7 +96,7 @@ class FactoryTest extends TestCase
     }
 
     /** @test */
-    public function it_must_throw_an_exception_on_invalid_driver()
+    public function it_must_throw_an_exception_on_invalid_driver(): void
     {
         $this->expectException(ExpressionNotFound::class);
         $this->expectExceptionMessage('Expression `trend_date_format` not found for `nosql` driver');
@@ -106,7 +105,7 @@ class FactoryTest extends TestCase
     }
 
     /** @test */
-    public function it_must_throw_an_exception_on_invalid_name()
+    public function it_must_throw_an_exception_on_invalid_name(): void
     {
         $this->expectException(ExpressionNotFound::class);
         $this->expectExceptionMessage('Expression `invalid` not found for `mysql` driver');
@@ -115,7 +114,7 @@ class FactoryTest extends TestCase
     }
 
     /** @test */
-    public function it_can_register_a_custom_expression()
+    public function it_can_register_a_custom_expression(): void
     {
         Factory::macro('mysql', function ($name, $value, $params) {
             FactoryTest::assertSame('mysql', $name);
@@ -143,7 +142,7 @@ class FactoryTest extends TestCase
      *
      * @return array
      */
-    public function provideDatabaseDrivers()
+    public function provideDatabaseDrivers(): array
     {
         return [
             ['mariadb'],
@@ -159,7 +158,7 @@ class FactoryTest extends TestCase
      *
      * @return array
      */
-    public function provideDateFormatForTrendWithoutTimezones()
+    public function provideDateFormatForTrendWithoutTimezones(): array
     {
         return [
             // BY MONTHS
@@ -199,7 +198,10 @@ class FactoryTest extends TestCase
         ];
     }
 
-    public function provideDateFormatForTrendWithTimezones()
+    /**
+     * @return array
+     */
+    public function provideDateFormatForTrendWithTimezones(): array
     {
         return [
             // BY MONTHS

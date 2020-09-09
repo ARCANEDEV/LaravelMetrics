@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace Arcanedev\LaravelMetrics\Tests\Metrics;
 
 use Arcanedev\LaravelMetrics\Results\ValueResult;
+use Arcanedev\LaravelMetrics\Tests\Stubs\Database\Factories\PostFactory;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value\{
     AveragePostViews, AverageViewsCount, CachedMetric, MaxPostViews, MetricExtendedWithMacro, MinPostViews,
     TotalPosts, TotalPostViews
 };
-use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 /**
  * Class     ValueTest
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ValueTest extends TestCase
@@ -27,7 +26,7 @@ class ValueTest extends TestCase
      */
 
     /** @test */
-    public function it_can_calculate_count()
+    public function it_can_calculate_count(): void
     {
         Carbon::setTestNow($now = Carbon::now());
         $this->createPosts($now);
@@ -43,7 +42,7 @@ class ValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_sum()
+    public function it_can_calculate_sum(): void
     {
         Carbon::setTestNow($now = Carbon::now());
         $this->createPosts($now);
@@ -59,7 +58,7 @@ class ValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_average()
+    public function it_can_calculate_average(): void
     {
         Carbon::setTestNow($now = Carbon::now());
         $this->createPosts($now);
@@ -75,7 +74,7 @@ class ValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_max()
+    public function it_can_calculate_max(): void
     {
         $this->createPosts($now = Carbon::now());
         Carbon::setTestNow($now);
@@ -91,7 +90,7 @@ class ValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_min()
+    public function it_can_calculate_min(): void
     {
         $this->createPosts($now = Carbon::now());
         Carbon::setTestNow($now);
@@ -107,7 +106,7 @@ class ValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_convert_to_array_and_json()
+    public function it_can_convert_to_array_and_json(): void
     {
         Carbon::setTestNow($now = Carbon::now());
         $this->createPosts($now);
@@ -129,7 +128,7 @@ class ValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_cache_result()
+    public function it_can_cache_result(): void
     {
         Cache::shouldReceive('remember');
 
@@ -139,7 +138,7 @@ class ValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_extend_with_custom_macros()
+    public function it_can_extend_with_custom_macros(): void
     {
         MetricExtendedWithMacro::macro('authorizedToSee', function ($role) {
             return $this->authorize($role);
@@ -152,10 +151,10 @@ class ValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_rounded_value_with_custom_precision()
+    public function it_can_get_rounded_value_with_custom_precision(): void
     {
         Carbon::setTestNow($now = Carbon::now());
-        $averageViews = factory(Post::class, 2)->create(['published_at' => $now])->average('views');
+        $averageViews = PostFactory::new(['published_at' => $now])->count(2)->create()->average('views');
 
         static::assertIsValueMetric($metric = new AverageViewsCount);
 
@@ -166,10 +165,10 @@ class ValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_rounded_value_with_default_precision()
+    public function it_can_get_rounded_value_with_default_precision(): void
     {
         Carbon::setTestNow($now = Carbon::now());
-        $averageViews = factory(Post::class, 3)->create(['published_at' => $now])->average('views');
+        $averageViews = PostFactory::new(['published_at' => $now])->count(3)->create()->average('views');
 
         static::assertIsValueMetric($metric = (new AverageViewsCount)->precision(2));
 
@@ -189,7 +188,7 @@ class ValueTest extends TestCase
      *
      * @param  object  $metric
      */
-    protected static function assertIsValueMetric($metric)
+    protected static function assertIsValueMetric($metric): void
     {
         static::assertIsMetric($metric);
         static::assertInstanceOf(\Arcanedev\LaravelMetrics\Metrics\Value::class, $metric);
@@ -202,7 +201,7 @@ class ValueTest extends TestCase
      * @param  mixed   $actual
      * @param  string  $message
      */
-    protected static function assertIsValueResult($actual, string $message = '')
+    protected static function assertIsValueResult($actual, string $message = ''): void
     {
         static::assertInstanceOf(ValueResult::class, $actual, $message);
     }

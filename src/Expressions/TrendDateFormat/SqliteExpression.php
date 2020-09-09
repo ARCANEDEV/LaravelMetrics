@@ -10,7 +10,6 @@ use Arcanedev\LaravelMetrics\Metrics\Trend;
 /**
  * Class     SqliteExpression
  *
- * @package  Arcanedev\LaravelMetrics\Expressions\TrendDateFormat
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class SqliteExpression extends Expression

@@ -10,6 +10,7 @@ use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Trend\{
     CountPublishedPostsByDays, CountPublishedPostsByHours, CountPublishedPostsByMinutes, CountPublishedPostsByMonths,
     CountPublishedPostsByWeeks
 };
+use Arcanedev\LaravelMetrics\Tests\Stubs\Database\Factories\{PostFactory, UserFactory};
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\{Post, User};
 use Cake\Chronos\Chronos;
 use Illuminate\Http\Request;
@@ -18,7 +19,6 @@ use Illuminate\Support\Arr;
 /**
  * Class     TrendTest
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class TrendTest extends TestCase
@@ -29,15 +29,15 @@ class TrendTest extends TestCase
      */
 
     /** @test */
-    public function it_can_calculate_count_by_months()
+    public function it_can_calculate_count_by_months(): void
     {
         Chronos::setTestNow($now = Chronos::create(2019, 5, 1, 0, 0, 0));
 
-        factory(Post::class)->create(['views' => 10, 'published_at' => $now]);
-        factory(Post::class)->create(['views' => 50, 'published_at' => $now->subMonths(1)]);
-        factory(Post::class)->create(['views' => 40, 'published_at' => $now->subMonths(1)]);
-        factory(Post::class)->create(['views' => 30, 'published_at' => $now->subMonths(2)]);
-        factory(Post::class)->create(['views' => 20, 'published_at' => $now->subMonths(2)]);
+        PostFactory::new(['views' => 10, 'published_at' => $now])->create();
+        PostFactory::new(['views' => 50, 'published_at' => $now->subMonths(1)])->create();
+        PostFactory::new(['views' => 40, 'published_at' => $now->subMonths(1)])->create();
+        PostFactory::new(['views' => 30, 'published_at' => $now->subMonths(2)])->create();
+        PostFactory::new(['views' => 20, 'published_at' => $now->subMonths(2)])->create();
 
         static::assertIsTrendMetric($metric = new CountPublishedPostsByMonths);
 
@@ -75,15 +75,15 @@ class TrendTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_count_by_weeks()
+    public function it_can_calculate_count_by_weeks(): void
     {
         Chronos::setTestNow($now = Chronos::create(2019, 5, 5, 0, 0, 0));
 
-        factory(Post::class)->create(['views' => 10, 'published_at' => $now]);
-        factory(Post::class)->create(['views' => 50, 'published_at' => $now->subWeeks(1)]);
-        factory(Post::class)->create(['views' => 40, 'published_at' => $now->subWeeks(1)]);
-        factory(Post::class)->create(['views' => 30, 'published_at' => $now->subWeeks(2)]);
-        factory(Post::class)->create(['views' => 20, 'published_at' => $now->subWeeks(2)]);
+        PostFactory::new(['views' => 10, 'published_at' => $now])->create();
+        PostFactory::new(['views' => 50, 'published_at' => $now->subWeeks(1)])->create();
+        PostFactory::new(['views' => 40, 'published_at' => $now->subWeeks(1)])->create();
+        PostFactory::new(['views' => 30, 'published_at' => $now->subWeeks(2)])->create();
+        PostFactory::new(['views' => 20, 'published_at' => $now->subWeeks(2)])->create();
 
         $metric = new CountPublishedPostsByWeeks;
 
@@ -123,15 +123,15 @@ class TrendTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_count_by_days()
+    public function it_can_calculate_count_by_days(): void
     {
         Chronos::setTestNow($now = Chronos::create(2019, 5, 1, 0, 0, 0));
 
-        factory(Post::class)->create(['views' => 10, 'published_at' => $now]);
-        factory(Post::class)->create(['views' => 50, 'published_at' => $now->subDays(1)]);
-        factory(Post::class)->create(['views' => 40, 'published_at' => $now->subDays(1)]);
-        factory(Post::class)->create(['views' => 30, 'published_at' => $now->subDays(2)]);
-        factory(Post::class)->create(['views' => 20, 'published_at' => $now->subDays(2)]);
+        PostFactory::new(['views' => 10, 'published_at' => $now])->create();
+        PostFactory::new(['views' => 50, 'published_at' => $now->subDays(1)])->create();
+        PostFactory::new(['views' => 40, 'published_at' => $now->subDays(1)])->create();
+        PostFactory::new(['views' => 30, 'published_at' => $now->subDays(2)])->create();
+        PostFactory::new(['views' => 20, 'published_at' => $now->subDays(2)])->create();
 
         static::assertIsTrendMetric($metric = new CountPublishedPostsByDays);
 
@@ -170,15 +170,15 @@ class TrendTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_count_by_hours()
+    public function it_can_calculate_count_by_hours(): void
     {
         Chronos::setTestNow($now = Chronos::create(2019, 5, 1, 0, 0, 0));
 
-        factory(Post::class)->create(['views' => 10, 'published_at' => $now]);
-        factory(Post::class)->create(['views' => 50, 'published_at' => $now->subHours(1)]);
-        factory(Post::class)->create(['views' => 40, 'published_at' => $now->subHours(1)]);
-        factory(Post::class)->create(['views' => 30, 'published_at' => $now->subHours(2)]);
-        factory(Post::class)->create(['views' => 20, 'published_at' => $now->subHours(2)]);
+        PostFactory::new(['views' => 10, 'published_at' => $now])->create();
+        PostFactory::new(['views' => 50, 'published_at' => $now->subHours(1)])->create();
+        PostFactory::new(['views' => 40, 'published_at' => $now->subHours(1)])->create();
+        PostFactory::new(['views' => 30, 'published_at' => $now->subHours(2)])->create();
+        PostFactory::new(['views' => 20, 'published_at' => $now->subHours(2)])->create();
 
         static::assertIsTrendMetric($metric = new CountPublishedPostsByHours);
 
@@ -216,15 +216,15 @@ class TrendTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_count_by_minutes()
+    public function it_can_calculate_count_by_minutes(): void
     {
         Chronos::setTestNow($now = Chronos::create(2019, 5, 1, 0, 0, 0));
 
-        factory(Post::class)->create(['views' => 10, 'published_at' => $now]);
-        factory(Post::class)->create(['views' => 50, 'published_at' => $now->subMinutes(1)]);
-        factory(Post::class)->create(['views' => 40, 'published_at' => $now->subMinutes(1)]);
-        factory(Post::class)->create(['views' => 30, 'published_at' => $now->subMinutes(2)]);
-        factory(Post::class)->create(['views' => 20, 'published_at' => $now->subMinutes(2)]);
+        PostFactory::new(['views' => 10, 'published_at' => $now])->create();
+        PostFactory::new(['views' => 50, 'published_at' => $now->subMinutes(1)])->create();
+        PostFactory::new(['views' => 40, 'published_at' => $now->subMinutes(1)])->create();
+        PostFactory::new(['views' => 30, 'published_at' => $now->subMinutes(2)])->create();
+        PostFactory::new(['views' => 20, 'published_at' => $now->subMinutes(2)])->create();
 
         static::assertIsTrendMetric($metric = new CountPublishedPostsByMinutes);
 
@@ -262,7 +262,7 @@ class TrendTest extends TestCase
     }
 
     /** @test */
-    public function it_can_convert_metric_to_array()
+    public function it_can_convert_metric_to_array(): void
     {
         $metric   = new CountPublishedPostsByHours;
         $expected = [
@@ -277,15 +277,15 @@ class TrendTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_using_default_timezone()
+    public function it_can_calculate_using_default_timezone(): void
     {
         Chronos::setTestNow(Chronos::parse('Dec 14 2019', 'UTC'));
 
         $now        = Chronos::parse('Nov 1 2019 6:30 AM', 'UTC');
         $nowCentral = Chronos::parse('Nov 2 2019 12 AM', 'UTC');
 
-        factory(User::class, 2)->create(['created_at' => $now]);
-        factory(User::class, 5)->create(['created_at' => $nowCentral]);
+        UserFactory::new(['created_at' => $now])->count(2)->create();
+        UserFactory::new(['created_at' => $nowCentral])->count(5)->create();
 
         $metric = new class extends Trend {
             public function calculate(Request $request)
@@ -304,15 +304,15 @@ class TrendTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_using_custom_timezone()
+    public function it_can_calculate_using_custom_timezone(): void
     {
         Chronos::setTestNow(Chronos::parse('Dec 14 2019', 'UTC'));
 
         $now        = Chronos::parse('Nov 1 2019 6:30 AM', 'UTC');
         $nowCentral = Chronos::parse('Nov 2 2019 12 AM', 'UTC');
 
-        factory(User::class, 2)->create(['created_at' => $now]);
-        factory(User::class, 5)->create(['created_at' => $nowCentral]);
+        UserFactory::new(['created_at' => $now])->count(2)->create();
+        UserFactory::new(['created_at' => $nowCentral])->count(5)->create();
 
         $metric = new class extends Trend {
             public function calculate(Request $request)
@@ -336,9 +336,9 @@ class TrendTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_using_default_rounding_precision()
+    public function it_can_calculate_using_default_rounding_precision(): void
     {
-        factory(Post::class, 2)->create(['views' => 5.4321]);
+        PostFactory::new(['views' => 5.4321])->count(2)->create();
 
         $result = $this->calculate(
             new class extends Trend {
@@ -354,9 +354,9 @@ class TrendTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_using_custom_rounding_precision()
+    public function it_can_calculate_using_custom_rounding_precision(): void
     {
-        factory(Post::class, 2)->create(['views' => 5.4321]);
+        PostFactory::new(['views' => 5.4321])->count(2)->create();
 
         $result = $this->calculate(
             new class extends Trend {
@@ -383,7 +383,7 @@ class TrendTest extends TestCase
      *
      * @param  object  $metric
      */
-    private static function assertIsTrendMetric($metric)
+    private static function assertIsTrendMetric($metric): void
     {
         static::assertIsMetric($metric);
         static::assertInstanceOf(\Arcanedev\LaravelMetrics\Metrics\Trend::class, $metric);
@@ -396,7 +396,7 @@ class TrendTest extends TestCase
      * @param  mixed   $actual
      * @param  string  $message
      */
-    protected static function assertIsTrendResult($actual, string $message = '')
+    protected static function assertIsTrendResult($actual, string $message = ''): void
     {
         static::assertInstanceOf(TrendResult::class, $actual, $message);
     }

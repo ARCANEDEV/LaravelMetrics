@@ -10,7 +10,6 @@ use Arcanedev\LaravelMetrics\Results\ValueResult;
 /**
  * Class     Value
  *
- * @package  Arcanedev\LaravelMetrics\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class Value extends Metric

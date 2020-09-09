@@ -11,7 +11,6 @@ use Illuminate\Contracts\Support\DeferrableProvider;
 /**
  * Class     MetricServiceProvider
  *
- * @package  Arcanedev\LaravelMetrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class MetricServiceProvider extends PackageServiceProvider implements DeferrableProvider

@@ -9,7 +9,6 @@ use Arcanedev\LaravelMetrics\Expressions\Expression;
 /**
  * Class     SqlServerExpression
  *
- * @package  Arcanedev\LaravelMetrics\Expressions\IfNull
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class SqlServerExpression extends Expression

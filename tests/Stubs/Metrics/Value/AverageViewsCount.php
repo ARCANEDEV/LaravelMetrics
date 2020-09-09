@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 /**
  * Class     AverageViewsCount
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class AverageViewsCount extends Value

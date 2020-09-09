@@ -15,7 +15,6 @@ use Illuminate\Support\Traits\Macroable;
 /**
  * Class     Metric
  *
- * @package  Arcanedev\LaravelMetrics\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class Metric implements MetricContract

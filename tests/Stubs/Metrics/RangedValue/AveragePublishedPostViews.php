@@ -8,9 +8,8 @@ use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
 use Illuminate\Http\Request;
 
 /**
- * Class     AveragePublishedPosts
+ * Class     AveragePublishedPostViews
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class AveragePublishedPostViews extends RangedValue

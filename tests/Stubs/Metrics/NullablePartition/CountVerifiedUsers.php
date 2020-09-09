@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 /**
  * Class     CountVerifiedUsers
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\NullablePartition
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class CountVerifiedUsers extends NullablePartition

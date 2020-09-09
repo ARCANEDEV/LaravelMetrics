@@ -9,7 +9,6 @@ use Arcanedev\LaravelMetrics\MetricServiceProvider;
 /**
  * Class     MetricServiceProviderTest
  *
- * @package  Arcanedev\LaravelMetrics\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class MetricServiceProviderTest extends TestCase
@@ -40,7 +39,7 @@ class MetricServiceProviderTest extends TestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         $expectations = [
             \Illuminate\Support\ServiceProvider::class,
@@ -56,7 +55,7 @@ class MetricServiceProviderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_provides()
+    public function it_can_provides(): void
     {
         $expected = [
             \Arcanedev\LaravelMetrics\Contracts\Manager::class,

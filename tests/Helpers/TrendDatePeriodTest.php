@@ -14,7 +14,6 @@ use Illuminate\Support\Collection;
 /**
  * Class     TrendDatePeriodTest
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Helpers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class TrendDatePeriodTest extends TestCase
@@ -25,7 +24,7 @@ class TrendDatePeriodTest extends TestCase
      */
 
     /** @test */
-    public function it_can_make_range_by_months()
+    public function it_can_make_range_by_months(): void
     {
         Chronos::setTestNow($now = Chronos::create(2019, 05, 1, 0, 0, 0));
         $unit  = Trend::BY_MONTHS;
@@ -58,7 +57,7 @@ class TrendDatePeriodTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_range_by_weeks()
+    public function it_can_make_range_by_weeks(): void
     {
         Chronos::setTestNow($now = Chronos::create(2019, 05, 1, 0, 0, 0));
 
@@ -92,7 +91,7 @@ class TrendDatePeriodTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_range_by_days()
+    public function it_can_make_range_by_days(): void
     {
         Chronos::setTestNow($now = Chronos::create(2019, 05, 1, 0, 0, 0));
 
@@ -134,7 +133,7 @@ class TrendDatePeriodTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_range_by_hours()
+    public function it_can_make_range_by_hours(): void
     {
         Chronos::setTestNow($now = Chronos::create(2019, 05, 1, 0, 0, 0));
 
@@ -174,7 +173,7 @@ class TrendDatePeriodTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_range_by_minutes()
+    public function it_can_make_range_by_minutes(): void
     {
         Chronos::setTestNow($now = Chronos::create(2019, 05, 1, 0, 0, 0));
 
@@ -212,7 +211,7 @@ class TrendDatePeriodTest extends TestCase
     }
 
     /** @test */
-    public function it_must_throw_an_invalid_unit_exception_on_make()
+    public function it_must_throw_an_invalid_unit_exception_on_make(): void
     {
         $this->expectException(InvalidTrendUnitException::class);
         $this->expectExceptionMessage('Invalid trend unit provided [centuries]');
@@ -221,7 +220,7 @@ class TrendDatePeriodTest extends TestCase
     }
 
     /** @test */
-    public function it_must_throw_an_invalid_unit_exception_on_get_starting_date()
+    public function it_must_throw_an_invalid_unit_exception_on_get_starting_date(): void
     {
         $this->expectException(InvalidTrendUnitException::class);
         $this->expectExceptionMessage('Invalid trend unit provided [centuries]');
@@ -240,7 +239,7 @@ class TrendDatePeriodTest extends TestCase
      * @param  array                           $expected
      * @param  \Illuminate\Support\Collection  $actual
      */
-    protected static function assertDatePeriodEquals(array $expected, $actual)
+    protected static function assertDatePeriodEquals(array $expected, $actual): void
     {
         static::assertInstanceOf(Collection::class, $actual);
         static::assertEquals($expected, $actual->map(function (Chronos $date) {

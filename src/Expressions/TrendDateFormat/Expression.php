@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * Class     Expression
  *
- * @package  Arcanedev\LaravelMetrics\Expressions\TrendDateFormat
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class Expression extends BaseExpression
