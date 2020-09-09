@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 /**
  * Class     TotalPublishedPosts
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class TotalPublishedPosts extends RangedValue

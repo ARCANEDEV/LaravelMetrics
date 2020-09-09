@@ -9,7 +9,6 @@ use InvalidArgumentException;
 /**
  * Class     InvalidTrendUnitException
  *
- * @package  Arcanedev\LaravelMetrics\Exceptions
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class InvalidTrendUnitException extends InvalidArgumentException

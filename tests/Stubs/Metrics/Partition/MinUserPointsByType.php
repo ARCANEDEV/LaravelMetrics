@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 /**
  * Class     MinUserPointsByType
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class MinUserPointsByType extends Partition

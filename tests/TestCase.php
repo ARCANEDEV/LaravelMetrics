@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Arcanedev\LaravelMetrics\Tests;
 
-use Arcanedev\LaravelMetrics\Tests\Stubs\Models\Post;
-use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;
-use Cake\Chronos\Chronos;
+use Arcanedev\LaravelMetrics\Tests\Stubs\Database\Factories\{UserFactory, PostFactory};
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Orchestra\Testbench\TestCase as BaseTestCase;
@@ -14,7 +12,6 @@ use Orchestra\Testbench\TestCase as BaseTestCase;
 /**
  * Class     TestCase
  *
- * @package  Arcanedev\LaravelMetrics\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class TestCase extends BaseTestCase
@@ -55,14 +52,6 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Load the factories.
-     */
-    protected function loadFactories()
-    {
-        $this->withFactories(__DIR__.'/fixtures/factories');
-    }
-
-    /**
      * Create posts for the tests.
      *
      * @param  \Illuminate\Support\Carbon|null  $now
@@ -74,11 +63,11 @@ abstract class TestCase extends BaseTestCase
         $now = $now ?: Carbon::now();
 
         return new Collection([
-            factory(Post::class)->create(['views' => 50, 'published_at' => (clone $now)->subDays(30)]),
-            factory(Post::class)->create(['views' => 40, 'published_at' => (clone $now)->subDays(14)]),
-            factory(Post::class)->create(['views' => 30, 'published_at' => (clone $now)->subDays(7)]),
-            factory(Post::class)->create(['views' => 20, 'published_at' => (clone $now)->subDays(3)]),
-            factory(Post::class)->create(['views' => 10, 'published_at' => $now]),
+            PostFactory::new(['views' => 50, 'published_at' => (clone $now)->subDays(30)])->create(),
+            PostFactory::new(['views' => 40, 'published_at' => (clone $now)->subDays(14)])->create(),
+            PostFactory::new(['views' => 30, 'published_at' => (clone $now)->subDays(7)])->create(),
+            PostFactory::new(['views' => 20, 'published_at' => (clone $now)->subDays(3)])->create(),
+            PostFactory::new(['views' => 10, 'published_at' => $now])->create(),
         ]);
     }
 
@@ -89,18 +78,20 @@ abstract class TestCase extends BaseTestCase
      */
     protected function createUsers()
     {
+        $now = Carbon::now();
+
         return new Collection([
             // GOLD
-            factory(User::class, 1)->states(['gold', 'premium', 'verified'])->create(['points' => 2000]),
-            factory(User::class, 2)->states(['gold', 'verified'])->create(['points' => 1000]),
+            UserFactory::new(['points' => 2000])->gold()->verified($now)->premium()->create(),
+            UserFactory::new(['points' => 1000])->gold()->verified($now)->count(2)->create(),
 
             // SILVER
-            factory(User::class, 2)->states(['silver', 'verified'])->create(['points' => 300]),
-            factory(User::class, 2)->states(['silver'])->create(['points' => 250]),
+            UserFactory::new(['points' => 300])->silver()->verified($now)->count(2)->create(),
+            UserFactory::new(['points' => 250])->silver()->count(2)->create(),
 
             // BRONZE
-            factory(User::class, 3)->states(['bronze', 'verified'])->create(['points' => 100]),
-            factory(User::class, 5)->states(['bronze'])->create(['points' => 50]),
+            UserFactory::new(['points' => 100])->bronze()->verified($now)->count(3)->create(),
+            UserFactory::new(['points' => 50])->bronze()->count(5)->create(),
         ]);
     }
 }

@@ -9,7 +9,6 @@ use Arcanedev\LaravelMetrics\Tests\TestCase;
 /**
  * Class     ResultTestCase
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Results
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class ResultTestCase extends TestCase
@@ -20,7 +19,7 @@ abstract class ResultTestCase extends TestCase
      */
 
     /** @test */
-    public function it_can_set_prefix()
+    public function it_can_set_prefix(): void
     {
         $result = $this->makeResult()->prefix('$');
 
@@ -28,7 +27,7 @@ abstract class ResultTestCase extends TestCase
     }
 
     /** @test */
-    public function it_can_set_suffix()
+    public function it_can_set_suffix(): void
     {
         $result = $this->makeResult()->suffix('$');
 
@@ -36,7 +35,7 @@ abstract class ResultTestCase extends TestCase
     }
 
     /** @test */
-    public function it_can_set_format()
+    public function it_can_set_format(): void
     {
         $result = $this->makeResult()->format('0,00');
 
@@ -53,7 +52,7 @@ abstract class ResultTestCase extends TestCase
      *
      * @param  mixed  $result
      */
-    protected static function assertIsMetricResult($result)
+    protected static function assertIsMetricResult($result): void
     {
         $expectations = [
             \JsonSerializable::class,

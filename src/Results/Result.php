@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Arcanedev\LaravelMetrics\Results;
 
 use Arcanedev\LaravelMetrics\Concerns\ConvertsToArray;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\{Arrayable, Jsonable};
 use JsonSerializable;
 
 /**
  * Class     Result
  *
- * @package  Arcanedev\LaravelMetrics\Results
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class Result implements Arrayable, Jsonable, JsonSerializable

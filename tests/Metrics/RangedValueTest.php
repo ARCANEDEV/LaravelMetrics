@@ -2,6 +2,7 @@
 
 use Arcanedev\LaravelMetrics\Metrics\RangedValue;
 use Arcanedev\LaravelMetrics\Results\RangedValueResult;
+use Arcanedev\LaravelMetrics\Tests\Stubs\Database\Factories\UserFactory;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\RangedValue\{
     AveragePublishedPostViews, CachedMetric, MaxPublishedPostViews, MinPublishedPostViews, TotalPublishedPosts,
     TotalPublishedPostViews
@@ -14,7 +15,6 @@ use Illuminate\Support\Facades\Cache;
 /**
  * Class     RangedValueTest
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class RangedValueTest extends TestCase
@@ -25,7 +25,7 @@ class RangedValueTest extends TestCase
      */
 
     /** @test */
-    public function it_can_calculate_count()
+    public function it_can_calculate_count(): void
     {
         Carbon::setTestNow($now = Carbon::now());
 
@@ -60,7 +60,7 @@ class RangedValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_average()
+    public function it_can_calculate_average(): void
     {
         Carbon::setTestNow($now = Carbon::now());
 
@@ -95,7 +95,7 @@ class RangedValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_sum()
+    public function it_can_calculate_sum(): void
     {
         Carbon::setTestNow($now = Carbon::now());
 
@@ -130,7 +130,7 @@ class RangedValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_min()
+    public function it_can_calculate_min(): void
     {
         Carbon::setTestNow($now = Carbon::now());
 
@@ -165,7 +165,7 @@ class RangedValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_max()
+    public function it_can_calculate_max(): void
     {
         Carbon::setTestNow($now = Carbon::now());
 
@@ -200,7 +200,7 @@ class RangedValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_convert_to_array_and_json()
+    public function it_can_convert_to_array_and_json(): void
     {
         Carbon::setTestNow($now = Carbon::now());
 
@@ -240,7 +240,7 @@ class RangedValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_cache_result()
+    public function it_can_cache_result(): void
     {
         Cache::shouldReceive('remember');
 
@@ -250,15 +250,15 @@ class RangedValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_using_default_timezone()
+    public function it_can_calculate_using_default_timezone(): void
     {
         $now = Carbon::parse('Oct 14 2019 5 pm');           // UTC (future time)
         $nowCentral = $now->copy()->tz('America/Chicago'); // Now for the user
 
         Carbon::setTestNow(Carbon::parse($nowCentral));
 
-        factory(User::class)->create(['created_at' => $now]);
-        factory(User::class)->create(['created_at' => $nowCentral]);
+        UserFactory::new(['created_at' => $now])->create();
+        UserFactory::new(['created_at' => $nowCentral])->create();
 
         $result = $this->calculate(
             new class extends RangedValue {
@@ -276,15 +276,15 @@ class RangedValueTest extends TestCase
     }
 
     /** @test */
-    public function it_can_calculate_using_custom_timezone()
+    public function it_can_calculate_using_custom_timezone(): void
     {
         $now = Carbon::parse('Oct 14 2019 5 pm'); // UTC (future time)
         $nowCentral = $now->copy()->tz('America/Chicago'); // Now for the user
 
         Carbon::setTestNow(Carbon::parse($nowCentral));
 
-        factory(User::class)->create(['created_at' => $now]);
-        factory(User::class)->create(['created_at' => $nowCentral]);
+        UserFactory::new(['created_at' => $now])->create();
+        UserFactory::new(['created_at' => $nowCentral])->create();
 
         $result = $this->calculate(
             new class extends RangedValue {
@@ -316,7 +316,7 @@ class RangedValueTest extends TestCase
      *
      * @param  object  $metric
      */
-    protected static function assertIsValueMetric($metric)
+    protected static function assertIsValueMetric($metric): void
     {
         static::assertIsMetric($metric);
         static::assertInstanceOf(RangedValue::class, $metric);
@@ -329,7 +329,7 @@ class RangedValueTest extends TestCase
      * @param  mixed   $actual
      * @param  string  $message
      */
-    protected static function assertIsRangedValueResult($actual, string $message = '')
+    protected static function assertIsRangedValueResult($actual, string $message = ''): void
     {
         static::assertInstanceOf(RangedValueResult::class, $actual, $message);
     }

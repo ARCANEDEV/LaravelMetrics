@@ -7,7 +7,6 @@ namespace Arcanedev\LaravelMetrics\Concerns;
 /**
  * Trait     ConvertsToArray
  *
- * @package  Arcanedev\LaravelMetrics\Concerns
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 trait ConvertsToArray

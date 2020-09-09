@@ -11,7 +11,6 @@ use Illuminate\Support\Collection;
 /**
  * Class     ManagerTest
  *
- * @package  Arcanedev\LaravelMetrics\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ManagerTest extends TestCase
@@ -42,7 +41,7 @@ class ManagerTest extends TestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         $expectations = [
             \Arcanedev\LaravelMetrics\Contracts\Manager::class,
@@ -59,7 +58,7 @@ class ManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_set_selected_metrics()
+    public function it_can_set_selected_metrics(): void
     {
         $metrics = [TotalPosts::class, AveragePostViews::class];
 
@@ -73,7 +72,7 @@ class ManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_register_metrics()
+    public function it_can_register_metrics(): void
     {
         $metrics = [TotalPosts::class, AveragePostViews::class];
 
@@ -89,7 +88,7 @@ class ManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_only_registered_metric()
+    public function it_can_get_only_registered_metric(): void
     {
         $metric = $this->manager->get(TotalPosts::class);
 
@@ -103,7 +102,7 @@ class ManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_and_register_metric()
+    public function it_can_make_and_register_metric(): void
     {
         static::assertEmpty($this->manager->registered());
 
@@ -115,7 +114,7 @@ class ManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_selected_metrics_instances()
+    public function it_can_get_selected_metrics_instances(): void
     {
         $metrics = [TotalPosts::class, AveragePostViews::class];
 

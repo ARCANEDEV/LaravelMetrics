@@ -8,10 +8,9 @@ use Illuminate\Contracts\Support\{Arrayable, Jsonable};
 use JsonSerializable;
 
 /**
- * Interface     Metric
+ * Interface  Metric
  *
- * @package  Arcanedev\LaravelMetrics\Contracts
- * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  *
  * @method  \Arcanedev\LaravelMetrics\Results\Result|mixed  calculate(\Illuminate\Http\Request $request)
  */

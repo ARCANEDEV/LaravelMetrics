@@ -10,7 +10,6 @@ use Illuminate\Support\Collection;
 /**
  * Class     PartitionResult
  *
- * @package  Arcanedev\LaravelMetrics\Results
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class PartitionResult extends Result

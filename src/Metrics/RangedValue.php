@@ -10,7 +10,6 @@ use Arcanedev\LaravelMetrics\Results\RangedValueResult;
 /**
  * Class     RangedValue
  *
- * @package  Arcanedev\LaravelMetrics\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class RangedValue extends Metric

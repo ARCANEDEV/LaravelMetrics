@@ -9,7 +9,6 @@ use Arcanedev\LaravelMetrics\Expressions\Expression;
 /**
  * Class     SqliteExpression
  *
- * @package  Arcanedev\LaravelMetrics\Expressions\IfNull
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class SqliteExpression extends Expression

@@ -9,7 +9,6 @@ use Arcanedev\LaravelMetrics\Expressions\{Expression, Factory};
 /**
  * Trait     HasExpressions
  *
- * @package  Arcanedev\LaravelMetrics\Metrics\Concerns
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 trait HasExpressions

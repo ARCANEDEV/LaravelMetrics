@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 /**
  * Class     CountUserTypes
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class CountUserTypes extends Partition

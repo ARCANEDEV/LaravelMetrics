@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 /**
  * Class     CachedMetric
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class CachedMetric extends Value

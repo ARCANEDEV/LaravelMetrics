@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 /**
  * Class     MaxPostViews
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Value
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class MaxPostViews extends Value

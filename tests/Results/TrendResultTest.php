@@ -9,7 +9,6 @@ use Arcanedev\LaravelMetrics\Results\TrendResult;
 /**
  * Class     TrendResultTest
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Results
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class TrendResultTest extends ResultTestCase
@@ -20,30 +19,30 @@ class TrendResultTest extends ResultTestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         $result = $this->makeResult();
 
         static::assertIsMetricResult($result);
 
-        self::assertNull($result->value);
-        self::assertSame([], $result->trend);
+        static::assertNull($result->value);
+        static::assertSame([], $result->trend);
     }
 
     /** @test */
-    public function it_can_set_value()
+    public function it_can_set_value(): void
     {
         $result = $this->makeResult(10);
 
-        self::assertSame(10, $result->value);
+        static::assertSame(10, $result->value);
 
         $result = $this->makeResult()->value(10);
 
-        self::assertSame(10, $result->value);
+        static::assertSame(10, $result->value);
     }
 
     /** @test */
-    public function it_can_set_trend()
+    public function it_can_set_trend(): void
     {
         $result = $this->makeResult()->trend($trend = [
             '2019-3' => [
@@ -64,7 +63,7 @@ class TrendResultTest extends ResultTestCase
     }
 
     /** @test */
-    public function it_can_show_latest_value()
+    public function it_can_show_latest_value(): void
     {
         $result = $this->makeResult()->trend($trend = [
             '2019-3' => [
@@ -91,7 +90,7 @@ class TrendResultTest extends ResultTestCase
     }
 
     /** @test */
-    public function it_can_convert_to_array()
+    public function it_can_convert_to_array(): void
     {
         $result = $this->makeResult(123)
             ->prefix('$')
@@ -110,7 +109,7 @@ class TrendResultTest extends ResultTestCase
     }
 
     /** @test */
-    public function it_can_convert_to_json()
+    public function it_can_convert_to_json(): void
     {
         $result = $this->makeResult(123)
             ->prefix('$')
@@ -144,7 +143,7 @@ class TrendResultTest extends ResultTestCase
      *
      * @return \Arcanedev\LaravelMetrics\Results\TrendResult|mixed
      */
-    protected function makeResult($value = null)
+    protected function makeResult($value = null): TrendResult
     {
         return new TrendResult($value);
     }

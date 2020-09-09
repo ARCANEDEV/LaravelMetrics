@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 /**
  * Class     CountPublishedPostsByDays
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Trend
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class CountPublishedPostsByDays extends Trend

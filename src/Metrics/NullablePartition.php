@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 /**
  * Class     NullablePartition
  *
- * @package  Arcanedev\LaravelMetrics\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class NullablePartition extends Metric

@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 /**
  * Trait     HasRanges
  *
- * @package  Arcanedev\LaravelMetrics\Metrics\Concerns
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
  * @property  \Illuminate\Http\Request  $request

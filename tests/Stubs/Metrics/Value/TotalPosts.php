@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 /**
  * Class     TotalPosts
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class TotalPosts extends Value

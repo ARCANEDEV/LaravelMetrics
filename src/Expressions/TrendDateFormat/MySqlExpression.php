@@ -10,7 +10,6 @@ use Arcanedev\LaravelMetrics\Metrics\Trend;
 /**
  * Class     MySqlExpression
  *
- * @package  Arcanedev\LaravelMetrics\Expressions\TrendDateFormat
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class MySqlExpression extends Expression

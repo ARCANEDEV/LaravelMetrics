@@ -10,7 +10,6 @@ use Illuminate\Support\Collection;
 /**
  * Class     PartitionResultTest
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Results
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class PartitionResultTest extends ResultTestCase
@@ -21,40 +20,40 @@ class PartitionResultTest extends ResultTestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         $result = $this->makeResult();
 
         static::assertIsMetricResult($result);
 
-        self::assertInstanceOf(Collection::class, $result->value);
-        self::assertTrue($result->value->isEmpty());
+        static::assertInstanceOf(Collection::class, $result->value);
+        static::assertTrue($result->value->isEmpty());
     }
 
     /** @test */
-    public function it_can_set_value()
+    public function it_can_set_value(): void
     {
         $result = $this->makeResult(10);
 
-        self::assertInstanceOf(Collection::class, $result->value);
-        self::assertCount(1, $result->value);
-        self::assertEquals([10], $result->value->all());
+        static::assertInstanceOf(Collection::class, $result->value);
+        static::assertCount(1, $result->value);
+        static::assertEquals([10], $result->value->all());
 
         $result = $this->makeResult()->value(10);
 
-        self::assertInstanceOf(Collection::class, $result->value);
-        self::assertCount(1, $result->value);
-        self::assertEquals([10], $result->value->all());
+        static::assertInstanceOf(Collection::class, $result->value);
+        static::assertCount(1, $result->value);
+        static::assertEquals([10], $result->value->all());
 
         $result->value($expected = ['key' => 'hello', 'value' => 'world']);
 
-        self::assertInstanceOf(Collection::class, $result->value);
-        self::assertCount(2, $result->value);
-        self::assertEquals($expected, $result->value->all());
+        static::assertInstanceOf(Collection::class, $result->value);
+        static::assertCount(2, $result->value);
+        static::assertEquals($expected, $result->value->all());
     }
 
     /** @test */
-    public function it_can_convert_to_array()
+    public function it_can_convert_to_array(): void
     {
         $result = $this->makeResult(['plan-1' => 123, 'plan-2' => 321])
             ->prefix('$')
@@ -75,7 +74,7 @@ class PartitionResultTest extends ResultTestCase
     }
 
     /** @test */
-    public function it_can_convert_to_json()
+    public function it_can_convert_to_json(): void
     {
         $result = $this->makeResult(['plan-1' => 123, 'plan-2' => 321])
             ->prefix('$')
@@ -111,7 +110,7 @@ class PartitionResultTest extends ResultTestCase
      *
      * @return \Arcanedev\LaravelMetrics\Results\PartitionResult
      */
-    protected function makeResult($value = null)
+    protected function makeResult($value = null): PartitionResult
     {
         return new PartitionResult($value);
     }

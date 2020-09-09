@@ -7,7 +7,6 @@ namespace Arcanedev\LaravelMetrics\Results;
 /**
  * Class     RangedValueResult
  *
- * @package  Arcanedev\LaravelMetrics\Results
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class RangedValueResult extends ValueResult

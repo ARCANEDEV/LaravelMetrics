@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 /**
  * Class     CountUserTypesWithCustomLabelsAndColors
  *
- * @package  Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class CountUserTypesWithCustomLabelsAndColors extends CountUserTypes
