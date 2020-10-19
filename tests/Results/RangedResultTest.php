@@ -45,8 +45,9 @@ class RangedResultTest extends ResultTestCase
                 'label' => null,
             ],
             'change' => [
-                'value' => null,
-                'label' => 'No Prior Data',
+                'value'  => null,
+                'label'  => 'No Prior Data',
+                'growth' => 'no_prior_data',
             ],
         ];
 
@@ -72,8 +73,9 @@ class RangedResultTest extends ResultTestCase
                 'label' => 'Previous value',
             ],
             'change' => [
-                'value' => 66.67,
-                'label' => '66.67% Increase',
+                'value'  => 66.67,
+                'label'  => '66.67% Increase',
+                'growth' => 'increase',
             ],
         ];
 
@@ -99,8 +101,9 @@ class RangedResultTest extends ResultTestCase
                 'label' => 'Previous value',
             ],
             'change' => [
-                'value' => -100,
-                'label' => '100% Decrease',
+                'value'  => -100,
+                'label'  => '100% Decrease',
+                'growth' => 'decrease',
             ],
         ]);
 
@@ -126,8 +129,9 @@ class RangedResultTest extends ResultTestCase
                 'label' => null,
             ],
             'change'   => [
-                'value' => null,
-                'label' => 'No Prior Data',
+                'value'  => null,
+                'label'  => 'No Prior Data',
+                'growth' => 'no_prior_data'
             ],
         ];
 
@@ -145,8 +149,9 @@ class RangedResultTest extends ResultTestCase
                 'label' => null,
             ],
             'change'   => [
-                'value' => -100.0,
-                'label' => '100% Decrease',
+                'value'  => -100.0,
+                'label'  => '100% Decrease',
+                'growth' => 'decrease',
             ],
         ];
 
@@ -164,8 +169,9 @@ class RangedResultTest extends ResultTestCase
                 'label' => null,
             ],
             'change'   => [
-                'value' => 0,
-                'label' => 'Constant',
+                'value'  => 0,
+                'label'  => 'Constant',
+                'growth' => 'constant',
             ],
         ];
 
