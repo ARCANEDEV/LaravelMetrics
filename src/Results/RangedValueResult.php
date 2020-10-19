@@ -12,6 +12,16 @@ namespace Arcanedev\LaravelMetrics\Results;
 class RangedValueResult extends ValueResult
 {
     /* -----------------------------------------------------------------
+     |  Constants
+     | -----------------------------------------------------------------
+     */
+
+    public const GROWTH_CONSTANT       = 'constant';
+    public const GROWTH_INCREASE       = 'increase';
+    public const GROWTH_DECREASE       = 'decrease';
+    public const GROWTH_NOT_PRIOR_DATA = 'no_prior_data';
+
+    /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
      */
@@ -75,12 +85,13 @@ class RangedValueResult extends ValueResult
      *
      * @param  mixed        $value
      * @param  string|null  $label
+     * @param  string|null  $growth
      *
      * @return $this
      */
-    public function change($value, $label = null)
+    public function change($value, $label = null, $growth = null)
     {
-        $this->change = compact('value', 'label');
+        $this->change = compact('value', 'label', 'growth');
 
         return $this;
     }
@@ -99,17 +110,22 @@ class RangedValueResult extends ValueResult
     {
         $current  = $this->value;
         $previous = $this->previous['value'];
-        $change   = null;
-        $label    = __('No Prior Data');
 
-        if ($previous && $previous > 0) {
-            $change = static::calculateChange($current, $previous);
-            $label  = $change === 0
-                ? 'Constant'
-                : (abs($change) . '% ' . __($change > 0 ? 'Increase' : 'Decrease'));
+        if (is_null($previous) || $previous === 0)
+            return $this->change(null, __('No Prior Data'), static::GROWTH_NOT_PRIOR_DATA);
+
+        $change = static::calculateChange($current, $previous);
+
+        switch (true) {
+            case $change === 0:
+                return $this->change($change, __('Constant'), static::GROWTH_CONSTANT);
+
+            case $change > 0:
+                return $this->change($change, abs($change).'% '.__('Increase'), static::GROWTH_INCREASE);
+
+            case $change < 0:
+                return $this->change($change, abs($change).'% '.__('Decrease'), static::GROWTH_DECREASE);
         }
-
-        return $this->change($change, $label);
     }
 
     /**
