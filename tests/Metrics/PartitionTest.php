@@ -6,11 +6,14 @@ namespace Arcanedev\LaravelMetrics\Tests\Metrics;
 
 use Arcanedev\LaravelMetrics\Metrics\Partition;
 use Arcanedev\LaravelMetrics\Results\PartitionResult;
+use Arcanedev\LaravelMetrics\Tests\Stubs\Models\User;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Partition\{
     AverageUserPointsByType, CountUserTypes, CountUserTypesWithCustomLabelsAndColors, MaxUserPointsByType,
     MinUserPointsByType, SumUserPointsByType
 };
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class     PartitionTest
@@ -19,6 +22,19 @@ use Illuminate\Support\Collection;
  */
 class PartitionTest extends TestCase
 {
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
+     */
+
+    public function tearDown(): void
+    {
+        DB::disableQueryLog();
+        DB::flushQueryLog();
+
+        parent::tearDown();
+    }
+
     /* -----------------------------------------------------------------
      |  Tests
      | -----------------------------------------------------------------
@@ -302,6 +318,27 @@ class PartitionTest extends TestCase
 
         static::assertInstanceOf(Collection::class, $result->value);
         static::assertEquals($expected, $result->toArray());
+    }
+
+    /** @test */
+    public function it_can_provides_data_with_raw_column_expression(): void
+    {
+        DB::enableQueryLog();
+        DB::flushQueryLog();
+
+        $this->calculate(
+            new class extends Partition {
+                public function calculate(Request $request)
+                {
+                    return $this->max(User::class, DB::raw('json_extract(meta, "$.value")'), 'id');
+                }
+            }
+        );
+
+        static::assertSame(
+            'select "id", max(json_extract(meta, "$.value")) as aggregate from "users" where "users"."deleted_at" is null group by "id"',
+            DB::getQueryLog()[0]['query']
+        );
     }
 
     /* -----------------------------------------------------------------

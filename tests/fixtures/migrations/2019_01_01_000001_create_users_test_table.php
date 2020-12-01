@@ -20,6 +20,7 @@ class CreateUsersTestTable extends Migration
             $table->enum('type', ['bronze', 'silver', 'gold'])->default('bronze');
             $table->integer('points')->default(0);
             $table->boolean('is_premium')->default(false);
+            $table->json('meta')->nullable();
             $table->timestamps();
             $table->timestamp('verified_at')->nullable();
             $table->softDeletes();

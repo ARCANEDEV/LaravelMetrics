@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property  string                           type
  * @property  int                              points
  * @property  bool                             is_premium
+ * @property  array                            meta
  * @property  \Illuminate\Support\Carbon       created_at
  * @property  \Illuminate\Support\Carbon       updated_at
  * @property  \Illuminate\Support\Carbon|null  verified_at
@@ -42,7 +43,8 @@ class User extends Model
     protected $casts = [
         'id'         => 'integer',
         'points'     => 'integer',
-        'is_premium' => 'boolean'
+        'is_premium' => 'boolean',
+        'meta'       => 'array',
     ];
 
     protected $dates = [

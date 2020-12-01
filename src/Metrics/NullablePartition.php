@@ -6,6 +6,7 @@ namespace Arcanedev\LaravelMetrics\Metrics;
 
 use Arcanedev\LaravelMetrics\Metrics\Concerns\HasExpressions;
 use Arcanedev\LaravelMetrics\Results\PartitionResult;
+use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -45,9 +46,9 @@ abstract class NullablePartition extends Metric
     /**
      * Calculate the `count` of the metric.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string                                        $groupBy
-     * @param  string|null                                   $column
+     * @param  \Illuminate\Database\Eloquent\Builder|string       $model
+     * @param  string                                             $groupBy
+     * @param  \Illuminate\Database\Query\Expression|string|null  $column
      *
      * @return \Arcanedev\LaravelMetrics\Results\PartitionResult|mixed
      */
@@ -64,19 +65,21 @@ abstract class NullablePartition extends Metric
     /**
      * Handle the aggregate calculation of the metric.
      *
-     * @param  string                                        $method
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string                                        $column
-     * @param  string                                        $groupBy
+     * @param  string                                             $method
+     * @param  \Illuminate\Database\Eloquent\Builder|string       $model
+     * @param  \Illuminate\Database\Query\Expression|string|null  $column
+     * @param  string                                             $groupBy
      *
      * @return \Arcanedev\LaravelMetrics\Results\PartitionResult|mixed
      */
-    protected function aggregate(string $method, $model, ?string $column, string $groupBy)
+    protected function aggregate(string $method, $model, $column, string $groupBy)
     {
         $query         = static::getQuery($model);
-        $wrappedColumn = $query->getQuery()->getGrammar()->wrap(
-            $column ?? $query->getModel()->getQualifiedKeyName()
-        );
+        $wrappedColumn = $column instanceof Expression
+            ? (string) $column
+            : $query->getQuery()->getGrammar()->wrap(
+                $column ?? $query->getModel()->getQualifiedKeyName()
+            );
 
         $groupAlias = "{$groupBy}_count";
         $expression = static::getExpression($query, 'if_null', $groupBy);

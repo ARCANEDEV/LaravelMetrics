@@ -131,7 +131,7 @@ abstract class RangedValue extends Metric
     {
         $query      = static::getQuery($model);
         $column     = $column ?? $query->getModel()->getQualifiedKeyName();
-        $dateColumn = $dateColumn ?? $query->getModel()->getCreatedAtColumn();
+        $dateColumn = $dateColumn ?? $query->getModel()->getQualifiedCreatedAtColumn();
         $range      = (int) $this->request->input('range', 1);
         $timezone   = $this->getCurrentTimezone($this->request);
 

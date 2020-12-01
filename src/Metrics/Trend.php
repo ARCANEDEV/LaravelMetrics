@@ -65,10 +65,10 @@ abstract class Trend extends Metric
     /**
      * Calculate the `count` of the metric.
      *
-     * @param  string                                        $unit
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string|null                                   $dateColumn
-     * @param  string|null                                   $column
+     * @param  string                                             $unit
+     * @param  \Illuminate\Database\Eloquent\Builder|string       $model
+     * @param  string|null                                        $dateColumn
+     * @param  \Illuminate\Database\Query\Expression|string|null  $column
      *
      * @return \Arcanedev\LaravelMetrics\Results\TrendResult|mixed
      */
@@ -82,7 +82,7 @@ abstract class Trend extends Metric
      *
      * @param  string                                        $unit
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string                                        $column
+     * @param  \Illuminate\Database\Query\Expression|string  $column
      * @param  string|null                                   $dateColumn
      *
      * @return \Arcanedev\LaravelMetrics\Results\TrendResult|mixed
@@ -97,7 +97,7 @@ abstract class Trend extends Metric
      *
      * @param  string                                        $unit
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string                                        $column
+     * @param  \Illuminate\Database\Query\Expression|string  $column
      * @param  string|null                                   $dateColumn
      *
      * @return \Arcanedev\LaravelMetrics\Results\TrendResult|mixed
@@ -112,7 +112,7 @@ abstract class Trend extends Metric
      *
      * @param  string                                        $unit
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string                                        $column
+     * @param  \Illuminate\Database\Query\Expression|string  $column
      * @param  string|null                                   $dateColumn
      *
      * @return \Arcanedev\LaravelMetrics\Results\TrendResult|mixed
@@ -127,7 +127,7 @@ abstract class Trend extends Metric
      *
      * @param  string                                        $unit
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string                                        $column
+     * @param  \Illuminate\Database\Query\Expression|string  $column
      * @param  string|null                                   $dateColumn
      *
      * @return \Arcanedev\LaravelMetrics\Results\TrendResult|mixed
@@ -157,23 +157,23 @@ abstract class Trend extends Metric
     /**
      * Handle the aggregate calculation of the metric.
      *
-     * @param  string                                        $method
-     * @param  string                                        $unit
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string|null                                   $column
-     * @param  string|null                                   $dateColumn
+     * @param  string                                             $method
+     * @param  string                                             $unit
+     * @param  \Illuminate\Database\Eloquent\Builder|string       $model
+     * @param  \Illuminate\Database\Query\Expression|string|null  $column
+     * @param  string|null                                        $dateColumn
      *
      * @return \Arcanedev\LaravelMetrics\Results\TrendResult|mixed
      */
-    protected function aggregate(string $method, string $unit, $model, ?string $column = null, ?string $dateColumn = null)
+    protected function aggregate(string $method, string $unit, $model, $column = null, ?string $dateColumn = null)
     {
         $range          = $this->request->input('range');
         $timezone       = $this->getCurrentTimezone($this->request);
         $twelveHourTime = $this->request->input('twelveHourTime') === 'true';
 
         $query      = static::getQuery($model);
-        $column     = $column ?? $query->getModel()->getCreatedAtColumn();
-        $dateColumn = $dateColumn ?? $query->getModel()->getCreatedAtColumn();
+        $column     = $column ?? $query->getModel()->getQualifiedCreatedAtColumn();
+        $dateColumn = $dateColumn ?? $query->getModel()->getQualifiedCreatedAtColumn();
         $expression = static::getExpression($query, 'trend_date_format', $dateColumn, [$unit, $query, $timezone]);
 
         $dates = TrendDatePeriod::make(
@@ -197,7 +197,7 @@ abstract class Trend extends Metric
                 DB::raw("{$method}({$wrappedColumn}) as aggregate")
             ])
             ->whereBetween($dateColumn, [$startingDate, $endingDate])
-            ->groupBy('date_result')
+            ->groupBy(DB::raw($expression))
             ->orderBy('date_result')
             ->get()
             ->mapWithKeys(function ($result) use ($method, $unit, $twelveHourTime) {

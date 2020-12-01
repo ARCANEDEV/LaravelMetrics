@@ -10,6 +10,7 @@ use Arcanedev\LaravelMetrics\Tests\Stubs\Metrics\Trend\{
     CountPublishedPostsByDays, CountPublishedPostsByHours, CountPublishedPostsByMinutes, CountPublishedPostsByMonths,
     CountPublishedPostsByWeeks
 };
+use Illuminate\Support\Facades\DB;
 use Arcanedev\LaravelMetrics\Tests\Stubs\Database\Factories\{PostFactory, UserFactory};
 use Arcanedev\LaravelMetrics\Tests\Stubs\Models\{Post, User};
 use Cake\Chronos\Chronos;
@@ -23,6 +24,19 @@ use Illuminate\Support\Arr;
  */
 class TrendTest extends TestCase
 {
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
+     */
+
+    public function tearDown(): void
+    {
+        DB::disableQueryLog();
+        DB::flushQueryLog();
+
+        parent::tearDown();
+    }
+
     /* -----------------------------------------------------------------
      |  Count Tests
      | -----------------------------------------------------------------
@@ -371,6 +385,24 @@ class TrendTest extends TestCase
         );
 
         static::assertSame(5.43, Arr::first($result->trend)['value']);
+    }
+
+    /** @test */
+    public function it_can_provide_data_with_raw_column_expression(): void
+    {
+        DB::enableQueryLog();
+        DB::flushQueryLog();
+
+        $this->calculate(new class extends Trend {
+            public function calculate(Request $request) {
+                return $this->max(Trend::BY_DAYS, User::class, DB::raw('json_extract(meta, "$.value")'));
+            }
+        });
+
+        static::assertSame(
+            'select strftime(\'%Y-%m-%d\', datetime("users"."created_at", \'+0 hour\')) as date_result, max(json_extract(meta, "$.value")) as aggregate from "users" where "users"."created_at" between ? and ? and "users"."deleted_at" is null group by strftime(\'%Y-%m-%d\', datetime("users"."created_at", \'+0 hour\')) order by "date_result" asc',
+            DB::getQueryLog()[0]['query']
+        );
     }
 
     /* -----------------------------------------------------------------

@@ -44,8 +44,8 @@ abstract class Value extends Metric
     /**
      * Calculate the `count` of the metric.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string|string                                 $column
+     * @param  \Illuminate\Database\Eloquent\Builder|string       $model
+     * @param  \Illuminate\Database\Query\Expression|string|null  $column
      *
      * @return \Arcanedev\LaravelMetrics\Results\ValueResult|mixed
      */
@@ -58,7 +58,7 @@ abstract class Value extends Metric
      * Calculate the `average` of the metric.
      *
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string                                        $column
+     * @param  \Illuminate\Database\Query\Expression|string  $column
      *
      * @return \Arcanedev\LaravelMetrics\Results\ValueResult|mixed
      */
@@ -71,7 +71,7 @@ abstract class Value extends Metric
      * Calculate the `sum` of the metric.
      *
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string                                        $column
+     * @param  \Illuminate\Database\Query\Expression|string  $column
      *
      * @return \Arcanedev\LaravelMetrics\Results\ValueResult|mixed
      */
@@ -84,7 +84,7 @@ abstract class Value extends Metric
      * Calculate the `max` of the metric.
      *
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string                                        $column
+     * @param  \Illuminate\Database\Query\Expression|string  $column
      *
      * @return \Arcanedev\LaravelMetrics\Results\ValueResult|mixed
      */
@@ -97,7 +97,7 @@ abstract class Value extends Metric
      * Calculate the `min` of the metric.
      *
      * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string                                        $column
+     * @param  \Illuminate\Database\Query\Expression|string  $column
      *
      * @return \Arcanedev\LaravelMetrics\Results\ValueResult|mixed
      */
@@ -114,13 +114,13 @@ abstract class Value extends Metric
     /**
      * Handle the aggregate calculation of the metric.
      *
-     * @param string                                         $method
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string|null                                   $column
+     * @param  string                                             $method
+     * @param  \Illuminate\Database\Eloquent\Builder|string       $model
+     * @param  \Illuminate\Database\Query\Expression|string|null  $column
      *
      * @return \Arcanedev\LaravelMetrics\Results\ValueResult|mixed
      */
-    protected function aggregate(string $method, $model, string $column = null)
+    protected function aggregate(string $method, $model, $column = null)
     {
         $query  = static::getQuery($model);
         $column = $column ?? $query->getModel()->getQualifiedKeyName();
