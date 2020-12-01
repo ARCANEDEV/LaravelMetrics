@@ -65,6 +65,6 @@ trait HasRoundedValue
      */
     public function roundValue($value)
     {
-        return round($value, $this->roundingPrecision, $this->roundingMode);
+        return round((float) $value, $this->roundingPrecision, $this->roundingMode);
     }
 }
